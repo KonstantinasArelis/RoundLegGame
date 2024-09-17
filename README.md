@@ -5,4 +5,5 @@ Setup:
 2. Download Unity hub
 3. Create unity 6.0 project with universal 3d template
 4. copy and paste files from newly created template project to the repo folder, ignore duplicates
-5. Run the game
+5. Open repo folder with unity hub
+6. Run the game
