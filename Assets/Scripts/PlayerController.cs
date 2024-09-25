@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && gunCooledDown)
         {
             GameObject bulletInstance = Instantiate(bullet, gun.transform.position + gun.transform.up, gun.transform.rotation);
-            bulletInstance.GetComponent<Rigidbody>().linearVelocity = bulletInstance.transform.up * bulletSpeed;
+            bulletInstance.GetComponent<Rigidbody>().AddForce(gun.transform.up * bulletSpeed, ForceMode.Impulse);
             lastShotTime = Time.time;
             StartCoroutine(DisposeBulletCoroutine(bulletInstance));
         }
