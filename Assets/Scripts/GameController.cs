@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject zombie;
     [SerializeField] private float spawnTimeSeconds = 3f;
     [SerializeField] private Vector3 randomSpawnPositionBounds = new (10f, 0f, 10f);
+    private readonly int maxZombiesAtOneTime = 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,7 +23,7 @@ public class GameController : MonoBehaviour
 
     private IEnumerator SpawnZombiesCoroutine()
     {
-        for ( ; ; )
+        while (transform.childCount < maxZombiesAtOneTime)
         {
             yield return new WaitForSeconds(spawnTimeSeconds);
             Vector3 randomPosition = new (
@@ -31,7 +32,8 @@ public class GameController : MonoBehaviour
                 Random.Range(-randomSpawnPositionBounds.z, randomSpawnPositionBounds.z)
             );
             // TODO: exclude player position for zombie spawn cause it messes up camera
-            Instantiate(zombie, randomPosition, Quaternion.identity);
+            // attach to GameSystem so it's organised
+            Instantiate(zombie, randomPosition, Quaternion.identity, transform);
         }
     }
 }

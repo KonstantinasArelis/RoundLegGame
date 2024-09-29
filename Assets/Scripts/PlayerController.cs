@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 initialRight;
     private GameObject gun;
     private float lastShotTime = 0.0f;
+    private Vector3 positionOffsetFromCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,13 +22,21 @@ public class PlayerController : MonoBehaviour
         initialRight = transform.right;
         camera = Camera.main.gameObject;
         gun = transform.Find("Gun").gameObject;
+        positionOffsetFromCamera = transform.position - camera.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        MakeCameraKeepOffset();
         Move();
         Shoot();
+    }
+
+    private void MakeCameraKeepOffset()
+    {
+        // keep offset that the distance when placer in scene
+        camera.transform.position = transform.position - positionOffsetFromCamera;
     }
 
     private void Move()
@@ -59,9 +68,7 @@ public class PlayerController : MonoBehaviour
         // make player look at the direction it's moving
         transform.rotation = Quaternion.LookRotation(moveDirection, transform.up);
         moveDirection *= speed * Time.deltaTime;
-        // move camera and player in the same direction
         transform.position += moveDirection;
-        camera.transform.position += moveDirection;
     }
 
     private void Shoot()

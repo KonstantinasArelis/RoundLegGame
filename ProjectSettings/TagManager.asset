@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Damager
+  - Building
+  - Enemy
   layers:
   - Default
   - TransparentFX
