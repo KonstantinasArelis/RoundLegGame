@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void MakeCameraKeepOffset()
     {
-        // keep offset that the distance when placer in scene
+        // keep the same camera start offset from the player
         camera.transform.position = transform.position - positionOffsetFromCamera;
     }
 

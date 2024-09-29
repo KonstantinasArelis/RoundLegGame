@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] private GameObject zombie;
+    [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private GameObject player;
     [SerializeField] private float spawnTimeSeconds = 3f;
-    [SerializeField] private Vector3 randomSpawnPositionBounds = new (10f, 0f, 10f);
-    private readonly int maxZombiesAtOneTime = 10;
+    private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
+    private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
+    private readonly int maxZombiesAtOneTime = 20;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,17 +25,26 @@ public class GameController : MonoBehaviour
 
     private IEnumerator SpawnZombiesCoroutine()
     {
-        while (transform.childCount < maxZombiesAtOneTime)
+        for ( ; ; )
         {
             yield return new WaitForSeconds(spawnTimeSeconds);
+            if (transform.childCount >= maxZombiesAtOneTime)
+            {
+                continue;
+            }
+            float randomX = Random.Range(-randomSpawnPositionBounds.x, randomSpawnPositionBounds.x);
+            float randomZ = Random.Range(-randomSpawnPositionBounds.z, randomSpawnPositionBounds.z);
             Vector3 randomPosition = new (
-                Random.Range(-randomSpawnPositionBounds.x, randomSpawnPositionBounds.x),
-                Random.Range(-randomSpawnPositionBounds.y, randomSpawnPositionBounds.y),
-                Random.Range(-randomSpawnPositionBounds.z, randomSpawnPositionBounds.z)
+                randomX < 0
+                    ? player.transform.position.x + randomX - worldViewFromPlayerBounds.x
+                    : player.transform.position.x + randomX + worldViewFromPlayerBounds.x,
+                randomSpawnPositionBounds.y,
+                randomZ < 0
+                    ? player.transform.position.z + randomX - worldViewFromPlayerBounds.z
+                    : player.transform.position.z + randomX + worldViewFromPlayerBounds.z
             );
-            // TODO: exclude player position for zombie spawn cause it messes up camera
             // attach to GameSystem so it's organised
-            Instantiate(zombie, randomPosition, Quaternion.identity, transform);
+            Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);
         }
     }
 }
