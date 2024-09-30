@@ -7,15 +7,16 @@ TagManager:
   - Damager
   - Building
   - Enemy
+  - Gun
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Enemy
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Bot
   - 
   - 
   - 

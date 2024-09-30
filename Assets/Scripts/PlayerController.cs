@@ -4,15 +4,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private float bulletSpeed = 20.0f;
-    [SerializeField] private float shotCooldownSeconds = 0.5f;
-    [SerializeField] private float bulletDisposeSeconds = 2.0f;
-    [SerializeField] private GameObject bullet;
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
-    private GameObject gun;
-    private float lastShotTime = 0.0f;
+    private  GunController gunController;
     private Vector3 positionOffsetFromCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -21,7 +16,7 @@ public class PlayerController : MonoBehaviour
         initalForward = transform.forward;
         initialRight = transform.right;
         camera = Camera.main.gameObject;
-        gun = transform.Find("Gun").gameObject;
+        gunController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<GunController>();
         positionOffsetFromCamera = transform.position - camera.transform.position;
     }
 
@@ -73,20 +68,9 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-        float lastShotDifference = Time.time - lastShotTime;
-        bool gunCooledDown = lastShotDifference >= shotCooldownSeconds;
-        if (Input.GetKey(KeyCode.Space) && gunCooledDown)
+        if (Input.GetKey(KeyCode.Space))
         {
-            GameObject bulletInstance = Instantiate(bullet, gun.transform.position + gun.transform.up, gun.transform.rotation);
-            bulletInstance.GetComponent<Rigidbody>().AddForce(gun.transform.up * bulletSpeed, ForceMode.Impulse);
-            lastShotTime = Time.time;
-            StartCoroutine(DisposeBulletCoroutine(bulletInstance));
+            gunController.Fire();
         }
-    }
-
-    private IEnumerator DisposeBulletCoroutine(GameObject bulletInstance)
-    {
-        yield return new WaitForSeconds(bulletDisposeSeconds);
-        Destroy(bulletInstance);
     }
 }
