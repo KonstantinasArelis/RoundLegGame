@@ -1,4 +1,8 @@
-This is a video game for the video game course
+Round Leg - The Game is a Zombie wave top-down shooter with skill-upgrade progression inspired by boxheads, zombie survivor, diep.io.
+
+The main goal of the game is to survive as many waves as possible. This is made difficult by an ever increasing number of enemies, along with mechanics that make enemies stronger.
+
+The game play loop consists of shooting and dodging enemies, upgrading your character by skills, then shooting some more enemies and so on.
 
 Setup:
 1. clone the repo
