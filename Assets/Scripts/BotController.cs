@@ -6,16 +6,23 @@ using UnityEngine;
 public class BotController : MonoBehaviour
 {
     private GunController gunController;
-    private readonly float detectionRange = 10f;
-    private readonly float TakeActionCooldown = 0.2f;
+    private readonly float playerDetectionRange = 8f;
+    private readonly float enemyDetectionRange = 12f;
+    private readonly int enemiesDetectedMax = 6;
+    private readonly float initialTakeActionCooldown = 0.2f;
+
+
+    private float takeActionCooldown;
+    private readonly float idleCooldownMultiplier = 3f;
     private readonly float speedDelta = 2f;
     private float enemyTooCloseRange = 6f;
-    private float playerTooCloseRange = 5f;
+    private float playerTooCloseRange = 4f;
     private LayerMask enemyLayer;
     private LayerMask playerLayer;
     private Vector3[] availableMovementDirections;
     private bool isLockedIn = false;
     private bool shouldMove = false;
+    private bool shouldIdle = false;
     private Vector3 optimalMoveTarget;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,6 +39,7 @@ public class BotController : MonoBehaviour
             (Vector3.right + Vector3.forward).normalized,
             (Vector3.right + Vector3.back).normalized
         };
+        takeActionCooldown = initialTakeActionCooldown;
         enemyLayer = LayerMask.GetMask("Enemy");
         playerLayer = LayerMask.GetMask("Player");
         gunController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<GunController>();
@@ -51,20 +59,37 @@ public class BotController : MonoBehaviour
     IEnumerator TakeActionCoroutine()
     {
         while (true) {
+            takeActionCooldown = initialTakeActionCooldown;
             TargetEnemies();
             if (!isLockedIn)
             {
                 FollowPlayers();
             }
-            yield return new WaitForSeconds(TakeActionCooldown);
+            if (shouldIdle)
+            {
+                Idle();
+            }
+            yield return new WaitForSeconds(takeActionCooldown);
         }
+    }
+
+    void Idle()
+    {
+        // pick random from available movement directions to walk to
+        optimalMoveTarget = transform.position + availableMovementDirections[Random.Range(0, availableMovementDirections.Length)];
+        RotateTo(optimalMoveTarget);
+        shouldMove = true;
+        shouldIdle = false;
+        takeActionCooldown *= idleCooldownMultiplier;
     }
 
     void TargetEnemies()
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, enemyDetectionRange, enemyLayer);
         Vector3 enemyPositionAverage = Vector3.zero;
         int tooCloseEnemiesCount = 0;
+        // implement locking in on closest enemy
+        // bug: if the first enemy is not detected as close it locks on it even though others can be close
         foreach (Collider enemy in hitEnemies) {
             // lock on the first enemy detected
             if ((enemy.transform.position - transform.position).sqrMagnitude <= enemyTooCloseRange)
@@ -74,6 +99,10 @@ public class BotController : MonoBehaviour
             }
             if (tooCloseEnemiesCount > 0)
             {
+                if (enemiesDetectedMax <= tooCloseEnemiesCount)
+                {
+                    break;
+                }
                 continue;
             }
             isLockedIn = true;
@@ -92,7 +121,7 @@ public class BotController : MonoBehaviour
 
     void FollowPlayers()
     {
-        Collider[] hitPlayers = Physics.OverlapSphere(transform.position, detectionRange, playerLayer);
+        Collider[] hitPlayers = Physics.OverlapSphere(transform.position, playerDetectionRange, playerLayer);
         foreach (Collider player in hitPlayers) {
             // follow first player detected
             if ((player.transform.position - transform.position).sqrMagnitude <= playerTooCloseRange)
@@ -105,6 +134,7 @@ public class BotController : MonoBehaviour
             return;
         }
         shouldMove = false;
+        shouldIdle = true;
     }
 
     private void LockOnEnemy(Transform enemyTransform)
