@@ -7,23 +7,41 @@ public class BotController : MonoBehaviour
 {
     private GunController gunController;
     private readonly float playerDetectionRange = 8f;
-    private readonly float enemyDetectionRange = 12f;
-    private readonly int enemiesDetectedMax = 6;
+    private readonly float enemyDetectionRange = 14f;
     private readonly float initialTakeActionCooldown = 0.2f;
 
 
     private float takeActionCooldown;
-    private readonly float idleCooldownMultiplier = 3f;
-    private readonly float speedDelta = 2f;
+    private readonly float idleCooldownMultiplier = 4f;
+    private readonly float speedDelta = 2.5f;
     private float enemyTooCloseRange = 6f;
     private float playerTooCloseRange = 4f;
     private LayerMask enemyLayer;
     private LayerMask playerLayer;
     private Vector3[] availableMovementDirections;
-    private bool isLockedIn = false;
-    private bool shouldMove = false;
-    private bool shouldIdle = false;
+    private BotState botState = BotState.Idle;
     private Vector3 optimalMoveTarget;
+    // the bot will make the "good" decision botSmartness percent of the time
+    private readonly float botSmartness = 2f;
+
+
+    private enum BotState
+    {
+        Idle,
+        FollowPlayer,
+        Aiming,
+        EscapeFromEnemy
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, playerDetectionRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, enemyDetectionRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(optimalMoveTarget, 0.3f);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,34 +61,70 @@ public class BotController : MonoBehaviour
         enemyLayer = LayerMask.GetMask("Enemy");
         playerLayer = LayerMask.GetMask("Player");
         gunController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<GunController>();
+        // languagues don't have identifier dynamic renaming without newly initializing :(
+        // this is so to convert it to square magnitude for optimization
         playerTooCloseRange *= playerTooCloseRange;
         enemyTooCloseRange *= enemyTooCloseRange;
         StartCoroutine(TakeActionCoroutine());
     }
 
+
     void Update()
     {
-        if (shouldMove)
+        if
+        (
+            botState == BotState.Idle
+            || botState == BotState.FollowPlayer
+            || botState == BotState.EscapeFromEnemy
+            || botState == BotState.Aiming
+        )
         {
             MoveToTarget();
         }
     }
 
+    bool DidBotThinkOfThis()
+    {
+        return Random.Range(0f, 1f) < botSmartness;
+    }
+
     IEnumerator TakeActionCoroutine()
     {
-        while (true) {
+        while (true)
+        {
             takeActionCooldown = initialTakeActionCooldown;
-            TargetEnemies();
-            if (!isLockedIn)
-            {
-                FollowPlayers();
-            }
-            if (shouldIdle)
-            {
-                Idle();
-            }
+            ActivateNextAction();
             yield return new WaitForSeconds(takeActionCooldown);
         }
+    }
+
+    void ActivateNextAction()
+    {
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, enemyDetectionRange))
+        {
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                Shoot();
+            }
+        }
+        // enemies take priority in state
+        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, enemyDetectionRange, enemyLayer);
+        if (hitEnemies.Length > 0)
+        {
+            TargetEnemies(hitEnemies);
+            return;
+        }
+        Collider[] hitPlayers = Physics.OverlapSphere(transform.position, playerDetectionRange, playerLayer);
+        foreach (Collider player in hitPlayers) {
+            // follow first player that is too close detected
+            if ((player.transform.position - transform.position).sqrMagnitude <= playerTooCloseRange)
+            {
+                continue;
+            }
+            FollowPlayer(player);
+            return;
+        }
+        Idle();
     }
 
     void Idle()
@@ -78,70 +132,58 @@ public class BotController : MonoBehaviour
         // pick random from available movement directions to walk to
         optimalMoveTarget = transform.position + availableMovementDirections[Random.Range(0, availableMovementDirections.Length)];
         RotateTo(optimalMoveTarget);
-        shouldMove = true;
-        shouldIdle = false;
+        // reduce cooldown of the TakeActionCoroutine
         takeActionCooldown *= idleCooldownMultiplier;
+        botState = BotState.Idle;
     }
 
-    void TargetEnemies()
+    void TargetEnemies(Collider[] hitEnemies)
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position, enemyDetectionRange, enemyLayer);
-        Vector3 enemyPositionAverage = Vector3.zero;
-        int tooCloseEnemiesCount = 0;
-        // implement locking in on closest enemy
-        // bug: if the first enemy is not detected as close it locks on it even though others can be close
-        foreach (Collider enemy in hitEnemies) {
-            // lock on the first enemy detected
-            if ((enemy.transform.position - transform.position).sqrMagnitude <= enemyTooCloseRange)
+        if (!DidBotThinkOfThis()) {
+            return;
+        }
+        Collider closestEnemy = hitEnemies
+            .OrderBy(e => (e.transform.position - transform.position).sqrMagnitude)
+            .FirstOrDefault();
+        if ((closestEnemy.transform.position - transform.position).sqrMagnitude > enemyTooCloseRange)
+        {
+            LockOnEnemy(closestEnemy.transform);
+            return;
+        }
+        // enemy is too close detected
+        // escape either away from closest enemy or first enemyless available direction
+        Vector3 safestDirection = transform.position - closestEnemy.transform.position;
+        // check for enemyless directions on the player side of the plane. The plane is between the player and the enemy
+        IEnumerable<Vector3> bestAvailableDirections = availableMovementDirections
+            .Where(direction => Vector3.Dot(direction, safestDirection) >= 0);
+        foreach (Vector3 availableDirection in availableMovementDirections)
+        {
+            // check enemyless directions
+            if (Physics.Raycast(transform.position, availableDirection, out RaycastHit hit, enemyDetectionRange))
             {
-                ++tooCloseEnemiesCount;
-                enemyPositionAverage += enemy.transform.position;
-            }
-            if (tooCloseEnemiesCount > 0)
-            {
-                if (enemiesDetectedMax <= tooCloseEnemiesCount)
+                if (!hit.collider.CompareTag("Enemy"))
                 {
+                    // no enemies found path
+                    safestDirection = availableDirection;
                     break;
                 }
-                continue;
             }
-            isLockedIn = true;
-            LockOnEnemy(enemy.transform);
-            return;
         }
-        if (tooCloseEnemiesCount > 0)
-        {
-            enemyPositionAverage /= tooCloseEnemiesCount;
-            // escape away the center of all enemies that are too close
-            EscapeFromEnemy(enemyPositionAverage);
-            return;
-        }
-        isLockedIn = false;
+        EscapeFromEnemy(transform.position - safestDirection * 3);
     }
 
-    void FollowPlayers()
+    void FollowPlayer(Collider player)
     {
-        Collider[] hitPlayers = Physics.OverlapSphere(transform.position, playerDetectionRange, playerLayer);
-        foreach (Collider player in hitPlayers) {
-            // follow first player detected
-            if ((player.transform.position - transform.position).sqrMagnitude <= playerTooCloseRange)
-            {
-                continue;
-            }
-            shouldMove = true;
-            optimalMoveTarget = FindOptimalMovementTarget(player.transform.position);
-            RotateTo(optimalMoveTarget);
-            return;
-        }
-        shouldMove = false;
-        shouldIdle = true;
+        optimalMoveTarget = FindOptimalMovementTarget(player.transform.position);
+        RotateTo(optimalMoveTarget);
+        botState = BotState.FollowPlayer;
     }
 
     private void LockOnEnemy(Transform enemyTransform)
     {
         optimalMoveTarget = FindOptimalMovementTarget(enemyTransform.position);
         RotateTo(optimalMoveTarget);
-        Shoot();
+        botState = BotState.Aiming;
     }
 
     private void EscapeFromEnemy(Vector3 enemyPosition)
@@ -149,7 +191,7 @@ public class BotController : MonoBehaviour
         Vector3 escapePositionFromEnemy = (transform.position - enemyPosition) * 2;
         optimalMoveTarget = FindOptimalMovementTarget(escapePositionFromEnemy);
         RotateTo(optimalMoveTarget);
-        shouldMove = true;
+        botState = BotState.EscapeFromEnemy;
     }
 
     private void MoveToTarget()
