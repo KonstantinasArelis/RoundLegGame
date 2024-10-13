@@ -8,8 +8,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 initalForward;
     private Vector3 initialRight;
     private  GunController gunController;
+    private  UziController uziController;
     private Vector3 positionOffsetFromCamera;
-
+    Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,7 +18,9 @@ public class PlayerController : MonoBehaviour
         initialRight = transform.right;
         camera = Camera.main.gameObject;
         gunController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<GunController>();
+        uziController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<UziController>();
         positionOffsetFromCamera = transform.position - camera.transform.position;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -40,22 +43,27 @@ public class PlayerController : MonoBehaviour
         // move in x, z plane using wasd
         if (Input.GetKey(KeyCode.W))
         {
+        animator.SetBool("isWalking", true);
             moveDirection += initalForward;
         }
         if (Input.GetKey(KeyCode.S))
         {
+        animator.SetBool("isWalking", true);
             moveDirection -= initalForward;
         }
         if (Input.GetKey(KeyCode.A))
         {
+        animator.SetBool("isWalking", true);
             moveDirection -= initialRight;
         }
         if (Input.GetKey(KeyCode.D))
         {
+        animator.SetBool("isWalking", true);
             moveDirection += initialRight;
         }
         if (moveDirection == Vector3.zero)
         {
+        	animator.SetBool("isWalking", false);
             // player not moving
             return;
         }
@@ -70,7 +78,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            gunController.Fire();
+            //gunController.Fire();
+            uziController.Fire();
         }
     }
 }

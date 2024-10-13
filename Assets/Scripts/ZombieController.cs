@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ZombieController : MonoBehaviour
@@ -9,6 +8,8 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private float health = 3f;
     [SerializeField] private float maxHealth = 3f;
     [SerializeField] private GameObject healthbar;
+    [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
+
     private LayerMask targetLayerMask;
     private readonly float chaseTargetCooldownSeconds = 0.5f;
     private readonly float speedDeltaToPlayer = 1f;
@@ -16,26 +17,32 @@ public class ZombieController : MonoBehaviour
     private readonly float SUICIDE_Y = -10f;
 
     private GameObject nearestPlayer;
-
+    private Rigidbody rb; // Add a Rigidbody component
+	
+    private bool isDying = false;
+    
+    Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // how much the zombie moves towards the player at an instant
         healthbar = Instantiate(healthbar, transform.position, healthbar.transform.rotation, transform);
         healthbar.GetComponent<HealthbarController>().SetupHealthbar(health, maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
         StartCoroutine(ChaseNearestTargetCoroutine());
+        rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));
-        // move towards player
-        transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
+        if (nearestPlayer != null && isDying != true) 
+        {
+            transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));   
+            // move towards player
+            transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
+        }
 
-        // magic offset because UI positions weirdly as an object
-        // TODO: make it look uniform to in respect to camera
         healthbar.transform.position = transform.position + new Vector3(0, -4f, -7);
     }
 
@@ -59,9 +66,12 @@ public class ZombieController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Damager"))
         {
-            // TODO: check what collider it was and how much damage it inflicts (maybe creater a Damager.GetDamage() interface?)
             TakeDamage(1);
             Destroy(collision.gameObject);
+        }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            animator.SetTrigger("Hitting");
         }
     }
 
@@ -70,30 +80,45 @@ public class ZombieController : MonoBehaviour
         return health <= 0;
     }
 
-    void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
+        animator.SetTrigger("Shot");
         health -= damage;
         healthbar.GetComponent<HealthbarController>().OnDamage(damage);
+
+        // Apply knockback
+        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+	//animator.ResetTrigger("Shot");
         if (IsDead())
         {
-            Suicide();
+        	//animator.SetTrigger("Shot");
+        	animator.SetTrigger("Died");
+        	StartCoroutine(DelayedSuicide()); // Start the coroutine
         }
     }
 
     private IEnumerator SuicideOnOutOfBounds()
     {
-        for ( ; ; ) {
+        for (; ; )
+        {
             if (transform.position.y < SUICIDE_Y)
             {
-                Suicide();
+                StartCoroutine(DelayedSuicide()); // Start the coroutine
             }
             yield return new WaitForSeconds(OUT_OF_BOUNDS_CHECK_SECONDS);
         }
     }
 
-    private void Suicide()
+    private IEnumerator DelayedSuicide() 
     {
+    	
+    isDying = true;
+    //GetComponent<Collider>().enabled = false; 
+    
+        yield return new WaitForSeconds(5f);
         Destroy(healthbar);
         Destroy(gameObject);
     }
+
 }
