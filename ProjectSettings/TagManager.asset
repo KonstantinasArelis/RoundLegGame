@@ -8,6 +8,10 @@ TagManager:
   - Building
   - Enemy
   - Gun
+  - Uzi
+  - Pistol
+  - misc
+  - Shotgun
   layers:
   - Default
   - TransparentFX
