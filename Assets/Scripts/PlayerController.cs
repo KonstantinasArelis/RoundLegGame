@@ -4,23 +4,34 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
+    [SerializeField] private int selectedGun = 2;
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
-    private  GunController gunController;
+    private  PistolController pistolController;
     private  UziController uziController;
     private Vector3 positionOffsetFromCamera;
     Animator animator;
+
+    public GameObject gunObject; 
+    public GameObject uziObject; 
+    public GameObject shotgunObject; 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         initalForward = transform.forward;
         initialRight = transform.right;
         camera = Camera.main.gameObject;
-        gunController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<GunController>();
-        uziController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<UziController>();
+        pistolController = gameObject.FindComponentInChildWithTag<Transform>("Pistol").GetComponent<PistolController>();
+        uziController = gameObject.FindComponentInChildWithTag<Transform>("Uzi").GetComponent<UziController>();
         positionOffsetFromCamera = transform.position - camera.transform.position;
         animator = GetComponent<Animator>();
+
+        //default gun
+        gunObject.SetActive(false);
+        uziObject.SetActive(true); 
+        shotgunObject.SetActive(false);  
     }
 
     // Update is called once per frame
@@ -29,6 +40,7 @@ public class PlayerController : MonoBehaviour
         MakeCameraKeepOffset();
         Move();
         Shoot();
+        extraControls();
     }
 
     private void MakeCameraKeepOffset()
@@ -74,12 +86,38 @@ public class PlayerController : MonoBehaviour
         transform.position += moveDirection;
     }
 
+    private void extraControls()
+    {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            gunObject.SetActive(true);
+            uziObject.SetActive(false);
+            shotgunObject.SetActive(false);  
+            selectedGun = 1;
+        } else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            gunObject.SetActive(false);
+            uziObject.SetActive(true); 
+            shotgunObject.SetActive(false);  
+            selectedGun = 2;
+        } else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            gunObject.SetActive(false);
+            uziObject.SetActive(false); 
+            shotgunObject.SetActive(true);  
+            selectedGun = 3;
+        }
+    }
+
     private void Shoot()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            //gunController.Fire();
-            uziController.Fire();
+            if(selectedGun == 1){
+                pistolController.Fire();
+            } else if(selectedGun == 2){
+                uziController.Fire();
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BotController : MonoBehaviour
 {
-    private GunController gunController;
+    private PistolController pistolController;
     private readonly float playerDetectionRange = 8f;
     private readonly float enemyDetectionRange = 14f;
     private readonly float initialTakeActionCooldown = 0.2f;
@@ -60,7 +60,7 @@ public class BotController : MonoBehaviour
         takeActionCooldown = initialTakeActionCooldown;
         enemyLayer = LayerMask.GetMask("Enemy");
         playerLayer = LayerMask.GetMask("Player");
-        gunController = gameObject.FindComponentInChildWithTag<Transform>("Gun").GetComponent<GunController>();
+        pistolController = gameObject.FindComponentInChildWithTag<Transform>("Pistol").GetComponent<PistolController>();
         // languagues don't have identifier dynamic renaming without newly initializing :(
         // this is so to convert it to square magnitude for optimization
         playerTooCloseRange *= playerTooCloseRange;
@@ -208,7 +208,7 @@ public class BotController : MonoBehaviour
 
     private void Shoot()
     {
-        gunController.Fire();
+        pistolController.Fire();
     }
 
     private Vector3 FindOptimalMovementTarget(Vector3 target)
