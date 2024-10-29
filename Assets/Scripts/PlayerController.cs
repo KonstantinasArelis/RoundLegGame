@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private int selectedGun = 2;
+    [SerializeField] private GunEnum selectedGun = GunEnum.Uzi;
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
@@ -15,8 +18,16 @@ public class PlayerController : MonoBehaviour
 
     public GameObject gunObject; 
     public GameObject uziObject; 
-    public GameObject shotgunObject; 
+    public GameObject shotgunObject;
 
+    private enum GunEnum
+    {
+        Pistol,
+        Uzi,
+        Shotgun
+    }
+
+    private Dictionary<GunEnum, GameObject> gunToObject;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,11 +38,14 @@ public class PlayerController : MonoBehaviour
         uziController = gameObject.FindComponentInChildWithTag<Transform>("Uzi").GetComponent<UziController>();
         positionOffsetFromCamera = transform.position - camera.transform.position;
         animator = GetComponent<Animator>();
+        gunToObject = new () {
+            {GunEnum.Pistol, gunObject},
+            {GunEnum.Uzi, uziObject},
+            {GunEnum.Shotgun, shotgunObject}
+        };
 
         //default gun
-        gunObject.SetActive(false);
-        uziObject.SetActive(true); 
-        shotgunObject.SetActive(false);  
+        SelectGun(selectedGun);
     }
 
     // Update is called once per frame
@@ -40,7 +54,7 @@ public class PlayerController : MonoBehaviour
         MakeCameraKeepOffset();
         Move();
         Shoot();
-        extraControls();
+        ExtraControls();
     }
 
     private void MakeCameraKeepOffset()
@@ -86,26 +100,17 @@ public class PlayerController : MonoBehaviour
         transform.position += moveDirection;
     }
 
-    private void extraControls()
+    private void ExtraControls()
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            gunObject.SetActive(true);
-            uziObject.SetActive(false);
-            shotgunObject.SetActive(false);  
-            selectedGun = 1;
+            SelectGun(GunEnum.Pistol);
         } else if (Input.GetKey(KeyCode.Alpha2))
         {
-            gunObject.SetActive(false);
-            uziObject.SetActive(true); 
-            shotgunObject.SetActive(false);  
-            selectedGun = 2;
+            SelectGun(GunEnum.Uzi);
         } else if (Input.GetKey(KeyCode.Alpha3))
         {
-            gunObject.SetActive(false);
-            uziObject.SetActive(false); 
-            shotgunObject.SetActive(true);  
-            selectedGun = 3;
+            SelectGun(GunEnum.Shotgun); 
         }
     }
 
@@ -113,11 +118,30 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            if(selectedGun == 1){
+            FireSelectedGun();
+        }
+    }
+
+    private void SelectGun(GunEnum gun)
+    {
+        foreach (var g in gunToObject)
+        {
+            g.Value.SetActive(false);
+        }
+        gunToObject[gun].SetActive(true);
+        selectedGun = gun;
+    }
+
+    private void FireSelectedGun()
+    {
+        switch (selectedGun)
+        {
+            case GunEnum.Pistol:
                 pistolController.Fire();
-            } else if(selectedGun == 2){
+                break;
+            case GunEnum.Uzi:
                 uziController.Fire();
-            }
+                break;
         }
     }
 }
