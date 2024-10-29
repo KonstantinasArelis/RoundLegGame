@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class LineFire : MonoBehaviour
+public class FireLine : MonoBehaviour
 {
     	private Vector3 initalForward;
     	LineRenderer lineRenderer; 

@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 1815222441826592199}
   - component: {fileID: 1440872841304649034}
   m_Layer: 0
-  m_Name: LineFire
+  m_Name: FireLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

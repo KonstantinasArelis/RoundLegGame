@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 initialRight;
     private  PistolController pistolController;
     private  UziController uziController;
+    private  ShotgunController shotgunController;
     private Vector3 positionOffsetFromCamera;
     Animator animator;
 
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
         camera = Camera.main.gameObject;
         pistolController = gameObject.FindComponentInChildWithTag<Transform>("Pistol").GetComponent<PistolController>();
         uziController = gameObject.FindComponentInChildWithTag<Transform>("Uzi").GetComponent<UziController>();
+        shotgunController = gameObject.FindComponentInChildWithTag<Transform>("Shotgun").GetComponent<ShotgunController>();
         positionOffsetFromCamera = transform.position - camera.transform.position;
         animator = GetComponent<Animator>();
         gunToObject = new () {
@@ -141,6 +143,9 @@ public class PlayerController : MonoBehaviour
                 break;
             case GunEnum.Uzi:
                 uziController.Fire();
+                break;
+            case GunEnum.Shotgun:
+                shotgunController.Fire();
                 break;
         }
     }

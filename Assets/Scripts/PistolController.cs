@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class PistolController : MonoBehaviour
 {
-    private LineFire lineFire;
+    private FireLine fireLine;
 
     void Start()
     {
-        lineFire = GetComponentInChildren<LineFire>();
+        fireLine = GetComponentInChildren<FireLine>();
     }
 
     public void Fire()
     {
         // just delegate so that you can add extra logic later
-        lineFire.Fire();
+        fireLine.Fire();
     }
 }
