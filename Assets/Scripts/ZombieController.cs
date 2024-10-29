@@ -114,7 +114,8 @@ public class ZombieController : MonoBehaviour
     {
     	
     isDying = true;
-    //GetComponent<Collider>().enabled = false; 
+    GetComponent<Collider>().isTrigger = true;
+    GetComponent<Rigidbody>().useGravity = false; 
     
         yield return new WaitForSeconds(5f);
         Destroy(healthbar);
