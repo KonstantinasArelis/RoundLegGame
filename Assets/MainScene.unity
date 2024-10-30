@@ -1214,6 +1214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   selectedGun: 1
+  healthbar: {fileID: 1549358798561699462, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
   gunObject: {fileID: 1035147002}
   uziObject: {fileID: 1860242743}
   shotgunObject: {fileID: 389456858}
@@ -1493,8 +1494,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 13, y: -0.0000092983}
-  m_SizeDelta: {x: 328.58, y: 54.3975}
+  m_AnchoredPosition: {x: -1.2918, y: -2.1987}
+  m_SizeDelta: {x: 299.9962, y: 58.795}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1683441253
 MonoBehaviour:
@@ -1543,13 +1544,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2191,7 +2192,8 @@ PrefabInstance:
       value: 0.5125457
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -1805908500567270963, guid: 923c07f6d7f9ff847b66b8692a97b08a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 923c07f6d7f9ff847b66b8692a97b08a, type: 3}

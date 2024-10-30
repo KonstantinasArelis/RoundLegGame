@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,8 +10,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private GunEnum selectedGun = GunEnum.Uzi;
 
-    [SerializeField] private GameObject healthbar;
+    [SerializeField] private GameObject healthBar;
+    [SerializeField] private GameObject xpBar;
+
+    private Vector3 healthBarOffset = new (0.27f, 0.06f, -10.9f);
+    private Vector3 xpBarOffset = new (0.27f, 0f, -10.7f);
     public HealthProvider healthProvider;
+    public LevelProvider levelProvider;
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
@@ -18,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private  UziController uziController;
     private  ShotgunController shotgunController;
     private Vector3 positionOffsetFromCamera;
+
+    private TextMeshProUGUI levelText;
 
     public Cooldown damageCooldown;
     Animator animator;
@@ -37,7 +45,6 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        damageCooldown = new Cooldown(0.5f);
         initalForward = transform.forward;
         initialRight = transform.right;
         camera = Camera.main.gameObject;
@@ -54,11 +61,17 @@ public class PlayerController : MonoBehaviour
 
         
 
-        healthProvider = new HealthProvider(health: 10, maxHealth: 10);
+        healthProvider = new HealthProvider(maxHealth: 10);
 
-        healthbar = Instantiate(healthbar, transform.position, healthbar.transform.rotation);
-        healthbar.GetComponent<HealthbarController>().SetupHealthbar(healthProvider.health, healthProvider.maxHealth, 0.2f);
+        healthBar = Instantiate(healthBar, transform.position, healthBar.transform.rotation);
+        healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth, 0.2f);
 
+        levelProvider = new LevelProvider(xpNeededPerLevel: new int[]{20, 20});
+        xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
+        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.1f);
+        levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
+
+        damageCooldown = new Cooldown(0.5f);
         //default gun
         SelectGun(selectedGun);
     }
@@ -66,17 +79,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MakeHealthBarKeepOffset();
+        MakeStatBarsKeepOffset();
         MakeCameraKeepOffset();
         Move();
         Shoot();
         ExtraControls();
     }
 
-    private void MakeHealthBarKeepOffset()
+    private void MakeStatBarsKeepOffset()
     {
-        // keep the same healthbar start position from the player
-        healthbar.transform.position = transform.position + new Vector3(0.3f, -1.7f, -9.5f);
+        healthBar.transform.position = transform.position + healthBarOffset;
+        xpBar.transform.position = transform.position + xpBarOffset;
     }
 
     private void MakeCameraKeepOffset()
@@ -172,18 +185,32 @@ public class PlayerController : MonoBehaviour
 
     private void OnDeath()
     {
-        Destroy(healthbar);
+        Destroy(healthBar);
         Destroy(gameObject);
     }
 
     public void TakeDamage(int damage)
     {
         if (!damageCooldown.IsReady()) return;
-        healthbar.GetComponent<HealthbarController>().OnDamage(damage);
+        healthBar.GetComponent<QuantityBarController>().Subtract(damage);
         healthProvider.TakeDamage(damage);
         if (healthProvider.IsDead())
         {
             OnDeath();
         }
+    }
+
+    public void GainXp(int xp)
+    {
+        bool didLevelUp = levelProvider.GainXp(xp);
+        if (didLevelUp) OnLevelUp();
+        else if (!levelProvider.IsMaxLevelReached()) xpBar.GetComponent<QuantityBarController>().Add(xp);
+    }
+
+    private void OnLevelUp()
+    {
+        int xpNeededForLevelUp = levelProvider.XpNeededForCurrentLevel();
+        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.1f);
+        levelText.text = (levelProvider.level + 1).ToString();
     }
 }

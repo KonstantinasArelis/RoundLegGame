@@ -8,6 +8,11 @@ public class HealthProvider
       this.health = health;
       this.maxHealth = maxHealth;
   }
+  public HealthProvider(int maxHealth)
+  {
+      this.maxHealth = maxHealth;
+      health = maxHealth;
+  }
 
   public void Heal(int healAmount)
   {

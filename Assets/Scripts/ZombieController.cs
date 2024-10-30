@@ -10,6 +10,7 @@ public class ZombieController : MonoBehaviour
     [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
 
     [SerializeField] private int scoreGivenOnDeath = 10;
+    [SerializeField] private int xpGivenOnDeath = 10;
     private readonly float chaseTargetCooldownSeconds = 0.5f;
     private readonly float speedDeltaToPlayer = 1f;
     private readonly float OUT_OF_BOUNDS_CHECK_SECONDS = 0.5f;
@@ -26,7 +27,7 @@ public class ZombieController : MonoBehaviour
     void Awake()
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
-        healthProvider = new HealthProvider(health: 3, maxHealth: 3);
+        healthProvider = new HealthProvider(maxHealth: 3);
         StartCoroutine(SuicideOnOutOfBounds());
         StartCoroutine(ChaseNearestTargetCoroutine());
         rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
@@ -92,6 +93,7 @@ public class ZombieController : MonoBehaviour
         //animator.SetTrigger("Shot");
         animator.SetTrigger("Died");
         mainHudController.AddScore(scoreGivenOnDeath);
+        GameObject.FindWithTag("Player").GetComponent<PlayerController>().GainXp(xpGivenOnDeath);
         StartCoroutine(DelayedSuicide());
     }
 

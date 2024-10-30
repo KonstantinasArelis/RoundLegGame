@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private float spawnTimeSeconds = 3f;
     private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
     private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
-    private readonly int maxZombiesAtOneTime = 20;
+    private readonly int maxZombiesAtOneTime = 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
