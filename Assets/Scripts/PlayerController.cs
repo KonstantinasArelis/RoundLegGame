@@ -27,19 +27,14 @@ public class PlayerController : MonoBehaviour
 
     private TextMeshProUGUI levelText;
 
+    private MainHudController mainHudController;
+
     public Cooldown damageCooldown;
     Animator animator;
 
     public GameObject gunObject; 
     public GameObject uziObject; 
     public GameObject shotgunObject;
-
-    private enum GunEnum
-    {
-        Pistol,
-        Uzi,
-        Shotgun
-    }
 
     private Dictionary<GunEnum, GameObject> gunToObject;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -66,7 +61,8 @@ public class PlayerController : MonoBehaviour
         healthBar = Instantiate(healthBar, transform.position, healthBar.transform.rotation);
         healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth, 0.2f);
 
-        levelProvider = new LevelProvider(xpNeededPerLevel: new int[]{20, 20});
+        // TODO: not hardcore level progression
+        levelProvider = new LevelProvider(xpNeededPerLevel: new int[]{20, 20, 20, 20});
         xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.1f);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
@@ -74,6 +70,11 @@ public class PlayerController : MonoBehaviour
         damageCooldown = new Cooldown(0.5f);
         //default gun
         SelectGun(selectedGun);
+    }
+
+    void Awake()
+    {
+        mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
     }
 
     // Update is called once per frame
@@ -157,7 +158,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SelectGun(GunEnum gun)
+    public void SelectGun(GunEnum gun)
     {
         foreach (var g in gunToObject)
         {
@@ -186,6 +187,7 @@ public class PlayerController : MonoBehaviour
     private void OnDeath()
     {
         Destroy(healthBar);
+        Destroy(xpBar);
         Destroy(gameObject);
     }
 
@@ -212,5 +214,6 @@ public class PlayerController : MonoBehaviour
         int xpNeededForLevelUp = levelProvider.XpNeededForCurrentLevel();
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.1f);
         levelText.text = (levelProvider.level + 1).ToString();
+        mainHudController.OnLevelUp();
     }
 }
