@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private GunEnum selectedGun = GunEnum.Uzi;
-    private HealthProvider healthProvider;
+
+    [SerializeField] private GameObject healthbar;
+    public HealthProvider healthProvider;
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
@@ -50,7 +52,12 @@ public class PlayerController : MonoBehaviour
             {GunEnum.Shotgun, shotgunObject}
         };
 
+        
+
         healthProvider = new HealthProvider(health: 10, maxHealth: 10);
+
+        healthbar = Instantiate(healthbar, transform.position, healthbar.transform.rotation);
+        healthbar.GetComponent<HealthbarController>().SetupHealthbar(healthProvider.health, healthProvider.maxHealth, 0.2f);
 
         //default gun
         SelectGun(selectedGun);
@@ -59,10 +66,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MakeHealthBarKeepOffset();
         MakeCameraKeepOffset();
         Move();
         Shoot();
         ExtraControls();
+    }
+
+    private void MakeHealthBarKeepOffset()
+    {
+        // keep the same healthbar start position from the player
+        healthbar.transform.position = transform.position + new Vector3(0.3f, -1.7f, -9.5f);
     }
 
     private void MakeCameraKeepOffset()
@@ -158,12 +172,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnDeath()
     {
+        Destroy(healthbar);
         Destroy(gameObject);
     }
 
     public void TakeDamage(int damage)
     {
         if (!damageCooldown.IsReady()) return;
+        healthbar.GetComponent<HealthbarController>().OnDamage(damage);
         healthProvider.TakeDamage(damage);
         if (healthProvider.IsDead())
         {

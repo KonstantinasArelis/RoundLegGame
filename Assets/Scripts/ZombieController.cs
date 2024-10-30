@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
-    [SerializeField] private GameObject healthbar;
-
     private HealthProvider healthProvider;
     [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
 
@@ -29,8 +27,6 @@ public class ZombieController : MonoBehaviour
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
         healthProvider = new HealthProvider(health: 3, maxHealth: 3);
-        healthbar = Instantiate(healthbar, transform.position, healthbar.transform.rotation, transform);
-        healthbar.GetComponent<HealthbarController>().SetupHealthbar(healthProvider.health, healthProvider.maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
         StartCoroutine(ChaseNearestTargetCoroutine());
         rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
@@ -46,8 +42,6 @@ public class ZombieController : MonoBehaviour
             // move towards player
             transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
         }
-
-        healthbar.transform.position = transform.position + new Vector3(0, -4f, -7);
     }
 
     void ChaseNearestTarget()
@@ -81,7 +75,6 @@ public class ZombieController : MonoBehaviour
     {
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);
-        healthbar.GetComponent<HealthbarController>().OnDamage(damage);
 
         // Apply knockback
         Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
@@ -121,7 +114,6 @@ public class ZombieController : MonoBehaviour
         GetComponent<Rigidbody>().useGravity = false; 
         
         yield return new WaitForSeconds(5f);
-        Destroy(healthbar);
         Destroy(gameObject);
     }
 
