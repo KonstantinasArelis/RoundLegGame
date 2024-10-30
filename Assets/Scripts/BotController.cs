@@ -8,7 +8,7 @@ public class BotController : MonoBehaviour
     private PistolController pistolController;
     private readonly float playerDetectionRange = 8f;
     private readonly float enemyDetectionRange = 14f;
-    private readonly float initialTakeActionCooldown = 0.2f;
+    private readonly float initialTakeActionCooldown = 0.4f;
 
 
     private float takeActionCooldown;
@@ -182,6 +182,16 @@ public class BotController : MonoBehaviour
     private void LockOnEnemy(Transform enemyTransform)
     {
         optimalMoveTarget = FindOptimalMovementTarget(enemyTransform.position);
+        // move perpendiculary half the time because sometimes it's a better tactic
+        if
+        (
+            Random.Range(0f, 1f) < 0.5f
+        )
+        {
+        optimalMoveTarget -= transform.position;
+        optimalMoveTarget = new Vector3(optimalMoveTarget.z, optimalMoveTarget.y, -optimalMoveTarget.x);
+        optimalMoveTarget += transform.position;
+        }
         RotateTo(optimalMoveTarget);
         botState = BotState.Aiming;
     }
