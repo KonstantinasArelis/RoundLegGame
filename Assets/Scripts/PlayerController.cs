@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private GunEnum selectedGun = GunEnum.Uzi;
+    private HealthProvider healthProvider;
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private  UziController uziController;
     private  ShotgunController shotgunController;
     private Vector3 positionOffsetFromCamera;
+
+    public Cooldown damageCooldown;
     Animator animator;
 
     public GameObject gunObject; 
@@ -32,6 +35,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        damageCooldown = new Cooldown(0.5f);
         initalForward = transform.forward;
         initialRight = transform.right;
         camera = Camera.main.gameObject;
@@ -45,6 +49,8 @@ public class PlayerController : MonoBehaviour
             {GunEnum.Uzi, uziObject},
             {GunEnum.Shotgun, shotgunObject}
         };
+
+        healthProvider = new HealthProvider(health: 10, maxHealth: 10);
 
         //default gun
         SelectGun(selectedGun);
@@ -147,6 +153,21 @@ public class PlayerController : MonoBehaviour
             case GunEnum.Shotgun:
                 shotgunController.Fire();
                 break;
+        }
+    }
+
+    private void OnDeath()
+    {
+        Destroy(gameObject);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (!damageCooldown.IsReady()) return;
+        healthProvider.TakeDamage(damage);
+        if (healthProvider.IsDead())
+        {
+            OnDeath();
         }
     }
 }

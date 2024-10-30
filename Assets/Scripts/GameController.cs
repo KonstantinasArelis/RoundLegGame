@@ -28,10 +28,8 @@ public class GameController : MonoBehaviour
         for ( ; ; )
         {
             yield return new WaitForSeconds(spawnTimeSeconds);
-            if (transform.childCount >= maxZombiesAtOneTime)
-            {
-                continue;
-            }
+            if (player == null) break;
+            if (transform.childCount >= maxZombiesAtOneTime) continue;
             float randomX = Random.Range(-randomSpawnPositionBounds.x, randomSpawnPositionBounds.x);
             float randomZ = Random.Range(-randomSpawnPositionBounds.z, randomSpawnPositionBounds.z);
             Vector3 randomPosition = new (

@@ -53,10 +53,9 @@ public class FireLine : MonoBehaviour
 					}
 					// only target Enemy type
 					if (!hit.collider.CompareTag("Enemy")) return;
-					var healthProvider = hit.collider.GetComponentInChildren<HealthProvider>();
-					if (healthProvider != null)
+					if (hit.collider.TryGetComponent<ZombieController>(out var zombieController))
 					{
-						healthProvider.TakeDamage(1);
+						zombieController.TakeDamage(1);
 					}
 			}
     }

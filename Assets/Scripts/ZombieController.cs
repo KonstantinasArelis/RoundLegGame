@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class ZombieController : MonoBehaviour
@@ -18,9 +19,7 @@ public class ZombieController : MonoBehaviour
 
     private GameObject nearestPlayer;
     private Rigidbody rb; // Add a Rigidbody component
-	
     private bool isDying = false;
-
     private MainHudController mainHudController;
     
     Animator animator;
@@ -29,8 +28,7 @@ public class ZombieController : MonoBehaviour
     void Awake()
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
-        healthProvider = transform.Find("HealthProvider").GetComponent<HealthProvider>();
-        healthProvider.DamageTaken.AddListener(OnDamageTaken);
+        healthProvider = new HealthProvider(health: 3, maxHealth: 3);
         healthbar = Instantiate(healthbar, transform.position, healthbar.transform.rotation, transform);
         healthbar.GetComponent<HealthbarController>().SetupHealthbar(healthProvider.health, healthProvider.maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
@@ -68,37 +66,40 @@ public class ZombieController : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    // WARN: Stay preserves the contact but it could be heavy on the system
+    void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Damager"))
-        {
-            healthProvider.TakeDamage(1);
-            Destroy(collision.gameObject);
-        }
         if (collision.gameObject.CompareTag("Player"))
         {
             animator.SetTrigger("Hitting");
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(1);
         }
     }
 
 
-
-    private void OnDamageTaken(int damage)
+    public void TakeDamage(int damage)
     {
         animator.SetTrigger("Shot");
+        healthProvider.TakeDamage(damage);
         healthbar.GetComponent<HealthbarController>().OnDamage(damage);
 
         // Apply knockback
         Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
         rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
 	    //animator.ResetTrigger("Shot");
+
         if (healthProvider.IsDead())
         {
-        	//animator.SetTrigger("Shot");
-        	animator.SetTrigger("Died");
-        	mainHudController.AddScore(scoreGivenOnDeath);
-        	StartCoroutine(DelayedSuicide());
+            OnDeath();
         }
+    }
+
+    private void OnDeath()
+    {
+        //animator.SetTrigger("Shot");
+        animator.SetTrigger("Died");
+        mainHudController.AddScore(scoreGivenOnDeath);
+        StartCoroutine(DelayedSuicide());
     }
 
     private IEnumerator SuicideOnOutOfBounds()
@@ -116,7 +117,7 @@ public class ZombieController : MonoBehaviour
     private IEnumerator DelayedSuicide() 
     {
         isDying = true;
-        GetComponent<Collider>().isTrigger = true;
+        Destroy(GetComponent<Collider>());
         GetComponent<Rigidbody>().useGravity = false; 
         
         yield return new WaitForSeconds(5f);
