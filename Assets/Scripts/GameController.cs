@@ -8,13 +8,24 @@ public class GameController : MonoBehaviour
     [SerializeField] private float spawnTimeSeconds = 3f;
     private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
     private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
-    private readonly int maxZombiesAtOneTime = 10;
+    private int maxZombiesAtOneTime = 10;
+
+    private MainHudController mainHudController;
+
+    private int waveTime = 0;
+    private readonly int waveEndTime = 60 * 10;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // randomly spawn zombies
         StartCoroutine(SpawnZombiesCoroutine());
+    }
+
+    void Awake()
+    {
+        mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
+        StartCoroutine(CountdownTimeCoroutine());
     }
 
     // Update is called once per frame
@@ -43,6 +54,16 @@ public class GameController : MonoBehaviour
             );
             // attach to GameSystem so it's organised
             Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);
+        }
+    }
+
+    private IEnumerator CountdownTimeCoroutine()
+    {
+        while (waveTime < waveEndTime)
+        {
+            yield return new WaitForSeconds(1f);
+            waveTime += 1;
+            mainHudController.SetWaveTime(waveTime);
         }
     }
 }

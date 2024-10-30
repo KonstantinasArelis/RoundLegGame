@@ -13,6 +13,7 @@ public class MainHudController : MonoBehaviour
     private GameObject levelUpItemPanel;
 
     private PlayerController playerController;
+    private TextMeshProUGUI waveTimeText;
 
     [SerializeField] private GameObject[] upgradeGuns;
     private GunEnum[] upgradeGunsEnum = { GunEnum.Uzi, GunEnum.Shotgun };
@@ -24,6 +25,7 @@ public class MainHudController : MonoBehaviour
         scoreText.text = startScoreText + "0";
         levelUpPanel = transform.Find("LevelUpPanel").gameObject;
         levelUpItemPanel = levelUpPanel.transform.Find("Items").gameObject;
+        waveTimeText = transform.Find("WaveTime").GetComponent<TextMeshProUGUI>();
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         DisplayLevelUpItems();
         OnItemClickSetup();
@@ -97,5 +99,13 @@ public class MainHudController : MonoBehaviour
 
         rawImage.texture = thumbnail;
         Debug.Log("Thumbnail successfully generated.");
+    }
+
+    public void SetWaveTime(int waveTime)
+    {
+        // TODO: don't do this every 1s
+        int minutes = waveTime / 60;
+        int seconds = waveTime % 60;
+        waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 }
