@@ -51,9 +51,12 @@ public class FireLine : MonoBehaviour
 						// limit the "bullet" to the object it hit
 						lineRenderer.SetPosition(1, hit.point);
 					}
-					if (hit.collider.TryGetComponent<ZombieController>(out ZombieController zombieController))
+					// only target Enemy type
+					if (!hit.collider.CompareTag("Enemy")) return;
+					var healthProvider = hit.collider.GetComponentInChildren<HealthProvider>();
+					if (healthProvider != null)
 					{
-						zombieController.TakeDamage(1);
+						healthProvider.TakeDamage(1);
 					}
 			}
     }

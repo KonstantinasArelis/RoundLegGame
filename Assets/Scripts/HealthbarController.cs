@@ -24,7 +24,7 @@ public class HealthbarController : MonoBehaviour
         // TODO: remove clipping over other objects
     }
 
-    public void SetupHealthbar(float currentHealth, float maxHealth)
+    public void SetupHealthbar(int currentHealth, int maxHealth)
     {
         currentHealthBar.transform.localScale = new Vector3(
             currentHealth * xScaleFactor,
@@ -38,7 +38,7 @@ public class HealthbarController : MonoBehaviour
         );
     }
 
-    public void OnDamage(float damageAmount)
+    public void OnDamage(int damageAmount)
     {
         currentHealthBar.transform.localScale = new Vector3(
             currentHealthBar.transform.localScale.x - damageAmount * xScaleFactor,
@@ -47,7 +47,7 @@ public class HealthbarController : MonoBehaviour
         );
     }
 
-    public void OnHeal(float healAmount)
+    public void OnHeal(int healAmount)
     {
         currentHealthBar.transform.localScale = new Vector3(
             currentHealthBar.transform.localScale.x + healAmount * xScaleFactor,
