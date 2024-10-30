@@ -36,6 +36,10 @@ public class FireLine : MonoBehaviour
 					{
 						zombieController.TakeDamage(1);
 					}
+					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller Monster1Controller))
+					{
+						Monster1Controller.TakeDamage(1);
+					}
 			}
     }
 	
