@@ -1214,7 +1214,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   selectedGun: 1
-  healthbar: {fileID: 1549358798561699462, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
+  healthBar: {fileID: 1549358798561699462, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
+  xpBar: {fileID: 2646753383457170479, guid: 4f08539e3288eea48bbfe6a9e5b45d19, type: 3}
   gunObject: {fileID: 1035147002}
   uziObject: {fileID: 1860242743}
   shotgunObject: {fileID: 389456858}
