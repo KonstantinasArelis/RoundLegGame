@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public AudioClip[] audioClips;
+    public float minCooldownSeconds = 1f;
+    public float maxCooldownSeconds = 10f;
+
     [SerializeField] private float health = 3f;
     [SerializeField] private float maxHealth = 3f;
     [SerializeField] private GameObject healthbar;
@@ -29,6 +34,7 @@ public class ZombieController : MonoBehaviour
         healthbar.GetComponent<HealthbarController>().SetupHealthbar(health, maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
         StartCoroutine(ChaseNearestTargetCoroutine());
+        StartCoroutine(PlaySoundCoroutine());
         rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
         animator = GetComponent<Animator>();
     }
@@ -59,6 +65,23 @@ public class ZombieController : MonoBehaviour
         {
             ChaseNearestTarget();
             yield return new WaitForSeconds(chaseTargetCooldownSeconds);
+        }
+    }
+
+    private IEnumerator PlaySoundCoroutine()
+    {
+        while (true)
+        {
+            // Play a random sound from the audioClips array
+            if (audioClips.Length > 0)  // Ensure there's at least one clip in the array
+            {
+                AudioClip randomClip = audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
+                audioSource.PlayOneShot(randomClip);
+            }
+
+            // Generate a random cooldown between minCooldownSeconds and maxCooldownSeconds
+            float randomCooldown = UnityEngine.Random.Range(minCooldownSeconds, maxCooldownSeconds);
+            yield return new WaitForSeconds(randomCooldown);
         }
     }
 
