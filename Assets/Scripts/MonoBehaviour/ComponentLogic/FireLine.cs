@@ -3,39 +3,20 @@ using UnityEngine.VFX;
 
 public class FireLine : MonoBehaviour
 {
-    	private Vector3 initalForward;
-    	LineRenderer lineRenderer; 
-    	private readonly float lineDistance = 10f;
-    	[SerializeField] private float lineDuration = 0.1f;
-		[SerializeField] private float muzzleFlashDuration = 0.1f;
-    	[SerializeField] private float shotCooldownSeconds = 0.03f;
-    	private float lastShotTime = 0.0f;
-    	public VisualEffect muzzleFlash;
-		public Light muzzleFlashLight;
-
+    private Vector3 initalForward;
+    LineRenderer lineRenderer; 
+    private readonly float lineDistance = 10f;
+    [SerializeField] public float lineDuration = 0.1f;
+	
     void Start()
     {
-		muzzleFlashLight.enabled = false;
     	lineRenderer = GetComponent<LineRenderer>(); 
     	initalForward = transform.forward;
     }
     
     public void Fire()
     {
-		
-			float lastShotDifference = Time.time - lastShotTime;
-				bool gunCooledDown = lastShotDifference >= shotCooldownSeconds;
-			if (!gunCooledDown)
-			{
-				return;
-			}
-			
-			muzzleFlashLight.enabled = true;
-			Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
-
-			muzzleFlash.Play();
-					lastShotTime = Time.time;
-					Vector3 direction = transform.forward;
+			Vector3 direction = transform.forward;
 			Vector3 endPoint = transform.position + direction * lineDistance;  
 			lineRenderer.SetPosition(0, transform.position);
 			lineRenderer.SetPosition(1, endPoint); 
@@ -61,12 +42,11 @@ public class FireLine : MonoBehaviour
 					{
 						explosive.Explode();
 					}
+					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller monster1Controller))
+					{
+						monster1Controller.TakeDamage(1);
+					}
 			}
-    }
-    
-	void DisableMuzzleFlashLight()
-    {
-        muzzleFlashLight.enabled = false;
     }
 	
     void DisableLineRenderer()

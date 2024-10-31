@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameSystem : MonoBehaviour
 {
     [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private GameObject monster1Prefab;
     [SerializeField] private GameObject player;
     [SerializeField] private float spawnTimeSeconds = 3f;
     private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
@@ -54,6 +55,9 @@ public class GameSystem : MonoBehaviour
             );
             // attach to GameSystem so it's organised
             Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);
+            if (transform.childCount % 7 == 0){
+                Instantiate(monster1Prefab, randomPosition, Quaternion.identity, transform);
+            }
         }
     }
 
