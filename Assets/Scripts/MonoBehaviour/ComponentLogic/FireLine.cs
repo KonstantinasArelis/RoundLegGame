@@ -6,8 +6,8 @@ public class FireLine : MonoBehaviour
     	private Vector3 initalForward;
     	LineRenderer lineRenderer; 
     	private readonly float lineDistance = 10f;
-    	[SerializeField] public float lineDuration = 0.1f;
-		[SerializeField] public float muzzleFlashDuration = 0.1f;
+    	[SerializeField] private float lineDuration = 0.1f;
+		[SerializeField] private float muzzleFlashDuration = 0.1f;
     	[SerializeField] private float shotCooldownSeconds = 0.03f;
     	private float lastShotTime = 0.0f;
     	public VisualEffect muzzleFlash;
@@ -57,9 +57,9 @@ public class FireLine : MonoBehaviour
 					{
 						zombieController.TakeDamage(1);
 					}
-					if (hit.collider.TryGetComponent<ExplosiveBarrel>(out var explosiveBarrel))
+					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{
-						explosiveBarrel.Explode();
+						explosive.Explode();
 					}
 			}
     }

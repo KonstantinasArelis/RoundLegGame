@@ -97,10 +97,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7453549253102005150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36b2c949eaeeab14c9137599e770328c, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b2e73aa7feaef64c9403872a0ef7cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactRadius: 3
+  impactRadius: 10
   explosionFX: {fileID: 3145137281656678096, guid: 338dddefb8c6ded4b924063a6f0aaa9f, type: 3}
 --- !u!64 &2883835906471655595
 MeshCollider:

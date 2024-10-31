@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameSystem : MonoBehaviour
 {
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private GameObject player;

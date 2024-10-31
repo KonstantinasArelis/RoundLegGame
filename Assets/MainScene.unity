@@ -298,12 +298,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 100598409}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fc0646d6e7ad9b41883a71ef3c7439b, type: 3}
+  m_Script: {fileID: 11500000, guid: d62d3852a624bcd46a7b6fbb3203bd86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 2800108410043042268, guid: 923c07f6d7f9ff847b66b8692a97b08a, type: 3}
   player: {fileID: 1401095753}
-  spawnTimeSeconds: 1
+  spawnTimeSeconds: 3
 --- !u!4 &100598411
 Transform:
   m_ObjectHideFlags: 0
@@ -949,7 +949,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 389456858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 136643e7d920fa4499ec60e1dee0ad6f, type: 3}
+  m_Script: {fileID: 11500000, guid: cf719b217eb092847bb0aa79181f6ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &411562084
@@ -1347,10 +1347,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 2560, y: 1440}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -1412,7 +1412,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 628827250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e1f2f6f35a3f994490b05676a43b8ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 21e0d9a52b0512442b56cdd0a1184517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   upgradeGuns:
@@ -1499,7 +1499,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1035147002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e12665d2b154646b2fd78b377bf9f6, type: 3}
+  m_Script: {fileID: 11500000, guid: b05fd3a88b1f8584abacba57a8052dd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1218209452
@@ -2009,10 +2009,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1401095753}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21e185425824cc24c940f1714cb1d94f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a9204277cb1cc04fb523886c00305b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   selectedGun: 1
   healthBar: {fileID: 1549358798561699462, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
   xpBar: {fileID: 2646753383457170479, guid: 4f08539e3288eea48bbfe6a9e5b45d19, type: 3}
@@ -2172,7 +2172,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1539067119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 756a1e4215606b64b948a4210de31fe1, type: 3}
+  m_Script: {fileID: 11500000, guid: 610719195f366c24e9d0b82b8d0d05d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 8327822659314208593, guid: e0b91359d972aab418f60da6de33733e, type: 3}
@@ -2700,7 +2700,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1860242743}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fc1aab7fca3c9e77856ab924d3055ad, type: 3}
+  m_Script: {fileID: 11500000, guid: b415c78312e87d646a7a7bf480286e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1877539858
