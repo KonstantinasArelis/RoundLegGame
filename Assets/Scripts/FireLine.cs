@@ -52,10 +52,14 @@ public class FireLine : MonoBehaviour
 						lineRenderer.SetPosition(1, hit.point);
 					}
 					// only target Enemy type
-					if (!hit.collider.CompareTag("Enemy")) return;
+					// if (!hit.collider.CompareTag("Enemy")) return;
 					if (hit.collider.TryGetComponent<ZombieController>(out var zombieController))
 					{
 						zombieController.TakeDamage(1);
+					}
+					if (hit.collider.TryGetComponent<ExplosiveBarrel>(out var explosiveBarrel))
+					{
+						explosiveBarrel.Explode();
 					}
 			}
     }
