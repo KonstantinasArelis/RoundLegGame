@@ -34,7 +34,7 @@ public class Monster1Controller : MonoBehaviour
     {
         if (nearestPlayer != null && isDying != true) 
         {
-            transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));   
+            transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));
             // move towards player
             transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
         }
@@ -66,6 +66,8 @@ public class Monster1Controller : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             animator.SetTrigger("Hitting");
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(3);
+            
         }
     }
 
