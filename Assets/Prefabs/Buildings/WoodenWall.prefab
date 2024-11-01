@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2491655324248286499}
   - component: {fileID: -4290569505225377541}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: WoodenWall
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2c5dffe732c812409a28da0ef0c7652, type: 2}
+  - {fileID: 2100000, guid: 142b65c6c1367f34fa976f3c1e496d89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

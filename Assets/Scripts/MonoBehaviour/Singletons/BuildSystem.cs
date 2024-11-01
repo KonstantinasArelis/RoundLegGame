@@ -1,20 +1,17 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BuildSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject buildingPrefab;
+    public GameObject currentBuildingPrefab = null;
     private GameObject lastHighlightedBuilding;
     private Color defaultColor = Color.gray;
     private Color highlightedColor = Color.grey;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     void Update()
     {
+        if (currentBuildingPrefab == null) return;
         HighlightSelectedBuilding();
         Build();
         Destroy();
@@ -37,7 +34,7 @@ public class BuildSystem : MonoBehaviour
                     Mathf.RoundToInt(hit.point.y + hit.normal.y / 2),
                     Mathf.RoundToInt(hit.point.z + hit.normal.z / 2));
                 // parent under this script so it's organised
-                Instantiate(buildingPrefab, buildingPosition, Quaternion.identity, transform);
+                Instantiate(currentBuildingPrefab, buildingPosition, Quaternion.identity, transform);
             }
         } 
     }

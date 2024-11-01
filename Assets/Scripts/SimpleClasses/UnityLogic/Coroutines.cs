@@ -34,6 +34,6 @@ public static class Coroutines
       }
       rawImage.texture = thumbnail;
       // provides unchanged color
-      rawImage.color = new Color(1, 1, 1, 1);
+      rawImage.color = Color.white;
   }
 }
