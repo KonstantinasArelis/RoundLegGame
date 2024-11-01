@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private  PistolController pistolController;
     private  UziController uziController;
     private  ShotgunController shotgunController;
-    private Vector3 positionOffsetFromCamera;
+    [SerializeField] private Vector3 positionOffsetFromCamera = new (0, 8, -5);
 
     private TextMeshProUGUI levelText;
 
@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
         pistolController = gameObject.FindComponentInChildWithTag<Transform>("Pistol").GetComponent<PistolController>();
         uziController = gameObject.FindComponentInChildWithTag<Transform>("Uzi").GetComponent<UziController>();
         shotgunController = gameObject.FindComponentInChildWithTag<Transform>("Shotgun").GetComponent<ShotgunController>();
-        positionOffsetFromCamera = transform.position - camera.transform.position;
         animator = GetComponent<Animator>();
         gunToObject = new () {
             {GunEnum.Pistol, gunObject},
@@ -96,7 +95,7 @@ public class PlayerController : MonoBehaviour
     private void MakeCameraKeepOffset()
     {
         // keep the same camera start offset from the player
-        camera.transform.position = transform.position - positionOffsetFromCamera;
+        camera.transform.position = transform.position + positionOffsetFromCamera;
     }
 
     private void Move()
