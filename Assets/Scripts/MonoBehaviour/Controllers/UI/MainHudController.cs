@@ -17,6 +17,7 @@ public class MainHudController : MonoBehaviour
     private TextMeshProUGUI waveTimeText;
 
     [SerializeField] private GameObject[] upgradeGuns;
+    [SerializeField] private GameObject[] buildings;
     [SerializeField] private GameObject upgradeItemPrefab;
 
 
