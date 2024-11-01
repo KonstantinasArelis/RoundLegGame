@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -45,25 +46,31 @@ public class MainHudController : MonoBehaviour
     public void OnLevelUp()
     {
         // TODO: don't empty everytime for performance?
-        EmptyUpgradeChoices();
-        DisplayLevelUpItems();
-        OnItemClickSetup();
         levelUpPanel.SetActive(true);
+        Utility.DestroyChildren(upgradeItemsPanel);
+        DisplayLevelUpItems();
+        RenewLevelUpItems(() => {
+            OnItemClickSetup();
+        });
     }
 
     private void OnItemClickSetup()
     {
         for (int i = 0; i < upgradeGuns.Length; ++i)
         {
-            Button button = upgradeItemsPanel.transform.GetChild(i).GetComponentInChildren<Button>();
-            GameObject prefab = upgradeGuns[i];
-            GunEnum gunToSelect = upgradeGunsEnum[i];
-            button.onClick.AddListener(() =>
-            {
-                playerController.SelectGun(gunToSelect);
-                levelUpPanel.SetActive(false);
-            });
+            SetupItemClick(i);
         }
+    }
+
+    private void SetupItemClick(int i)
+    {
+        Button button = upgradeItemsPanel
+            .transform.GetChild(i).Find("ItemDisplay/ItemImage").GetComponent<Button>();
+        GunEnum upgradeGunEnum = upgradeGunsEnum[i];
+        button.onClick.AddListener(() => {
+            playerController.SelectGun(upgradeGunEnum);
+            levelUpPanel.SetActive(false);
+        });
     }
 
     private void DisplayLevelUpItems()
@@ -74,48 +81,29 @@ public class MainHudController : MonoBehaviour
             RawImage rawImage = upgradeItem.GetComponentInChildren<RawImage>();
             GameObject upgradeGun = upgradeGuns[i];
             upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = upgradeGun.name;
-            if (upgradeGun == null || rawImage == null)
-            {
-                Debug.LogError("Prefab or RawImage is not assigned.");
-                continue;
-            }
-                // Use AssetPreview.GetAssetPreview instead
-            Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
 
+            Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
             if (thumbnail != null)
             {
                 rawImage.texture = thumbnail;
+                rawImage.color = new Color(1, 1, 1, 1);
             }
             else
             {
-                Debug.Log("Generating thumbnail, please wait...");
-                StartCoroutine(WaitForThumbnail(upgradeGun, rawImage));
+                StartCoroutine(Coroutines.WaitForThumbnailCoroutine(upgradeGun, rawImage));
             }
         }
-        LayoutRebuilder.ForceRebuildLayoutImmediate(upgradeItemsPanel.GetComponent<RectTransform>());
     }
 
-    private void EmptyUpgradeChoices()
+    private void RenewLevelUpItems(Action callback)
     {
-        for (int i = 0; i < upgradeItemsPanel.transform.childCount; ++i)
-        {
-            print("Destroying " + upgradeItemsPanel.transform.GetChild(i).gameObject.name);
-            Destroy(upgradeItemsPanel.transform.GetChild(i).gameObject);
-        }
+        StartCoroutine(
+            Coroutines
+            .DelayedLayoutRebuildCoroutine(upgradeItemsPanel)
+            .WithCallback(callback));
     }
 
-    private System.Collections.IEnumerator WaitForThumbnail(Object prefab, RawImage rawImage)
-    {
-        Texture2D thumbnail;
 
-        while ((thumbnail = AssetPreview.GetAssetPreview(prefab)) == null)
-        {
-            yield return null;  // Wait until thumbnail is generated
-        }
-        rawImage.texture = thumbnail;
-        rawImage.color = new Color(1, 1, 1, 1);
-        Debug.Log("Thumbnail successfully generated.");
-    }
 
     public void SetWaveTime(int waveTime)
     {
