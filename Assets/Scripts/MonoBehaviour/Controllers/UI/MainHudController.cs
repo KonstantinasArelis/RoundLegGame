@@ -21,6 +21,8 @@ public class MainHudController : MonoBehaviour
     private BuildSystem buildSystem;
     private TextMeshProUGUI waveTimeText;
 
+    private GameObject lastSelectedBuildingItem = null;
+
     [SerializeField] private GameObject[] upgradeGuns;
     [SerializeField] private BuildingData[] buildings;
     [SerializeField] private GameObject upgradeItemUIPrefab;
@@ -44,11 +46,26 @@ public class MainHudController : MonoBehaviour
         // levelUpPanel.SetActive(false);
     }
 
+    void OnEnable()
+    {
+        buildSystem.BuildingPlacedEvent.AddListener(OnBuildingPlaced);
+    }
+
+    void OnDisable()
+    {
+        buildSystem.BuildingPlacedEvent.RemoveListener(OnBuildingPlaced);
+    }
+
     public void AddScore(int score)
     {
         string currentScoreText = scoreText.text[startScoreText.Length..];
         int currentScore = int.Parse(currentScoreText);
         scoreText.text = startScoreText + (currentScore + score).ToString();
+    }
+
+    private void OnBuildingPlaced(BuildingData buildingData)
+    {
+        AddScore(-buildingData.cost);
     }
 
     public void OnLevelUp()
@@ -65,14 +82,7 @@ public class MainHudController : MonoBehaviour
 
     public void BuildingEnabledChanged(bool isBuildingEnabled)
     {
-        if (isBuildingEnabled)
-        {
-            OnBuildingEnabled();
-        }
-        else
-        {
-            OnBuildingDisabled();
-        }
+        if (isBuildingEnabled) OnBuildingEnabled(); else OnBuildingDisabled();
     }
 
     public void OnBuildingDisabled()
@@ -144,8 +154,19 @@ public class MainHudController : MonoBehaviour
         Button button = buildingItemUI.GetComponentInChildren<Button>();
         GunEnum upgradeGunEnum = upgradeGunsEnum[i];
         button.onClick.AddListener(() => {
-            buildSystem.currentBuildingPrefab = buildings[i].prefab;
+            if (lastSelectedBuildingItem != null)
+            {
+                lastSelectedBuildingItem.GetComponent<RawImage>().color = Color.white;
+                if (buildSystem.currentBuilding.Equals(buildings[i]))
+                {
+                    buildSystem.currentBuilding = null;
+                    lastSelectedBuildingItem = null;
+                    return;
+                }
+            }
+            buildSystem.currentBuilding = buildings[i];
             buildingItemUI.GetComponent<RawImage>().color = Color.yellow;
+            lastSelectedBuildingItem = buildingItemUI;
         });
     }
 

@@ -25,6 +25,12 @@ public static class Utility
             GameObject.Destroy(child.gameObject);
         }
     }
+
+    public static int GetMaskExceptLayer(string layerName)
+    {
+        int layer = LayerMask.NameToLayer(layerName);
+        return ~(1 << layer);
+    }
 }
 
 
