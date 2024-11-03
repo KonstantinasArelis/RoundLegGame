@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private GunEnum selectedGun = GunEnum.Uzi;
+    [SerializeField] private UpgradeTypeEnum selectedGun = UpgradeTypeEnum.Uzi;
 
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject xpBar;
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     public GameObject uziObject; 
     public GameObject shotgunObject;
 
-    private Dictionary<GunEnum, GameObject> gunToObject;
+    private Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -48,9 +48,9 @@ public class PlayerController : MonoBehaviour
         shotgunController = gameObject.FindComponentInChildWithTag<Transform>("Shotgun").GetComponent<ShotgunController>();
         animator = GetComponent<Animator>();
         gunToObject = new () {
-            {GunEnum.Pistol, gunObject},
-            {GunEnum.Uzi, uziObject},
-            {GunEnum.Shotgun, shotgunObject}
+            {UpgradeTypeEnum.Pistol, gunObject},
+            {UpgradeTypeEnum.Uzi, uziObject},
+            {UpgradeTypeEnum.Shotgun, shotgunObject}
         };
 
         
@@ -137,13 +137,13 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            SelectGun(GunEnum.Pistol);
+            SelectGun(UpgradeTypeEnum.Pistol);
         } else if (Input.GetKey(KeyCode.Alpha2))
         {
-            SelectGun(GunEnum.Uzi);
+            SelectGun(UpgradeTypeEnum.Uzi);
         } else if (Input.GetKey(KeyCode.Alpha3))
         {
-            SelectGun(GunEnum.Shotgun); 
+            SelectGun(UpgradeTypeEnum.Shotgun); 
         }
     }
 
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SelectGun(GunEnum gun)
+    public void SelectGun(UpgradeTypeEnum gun)
     {
         foreach (var g in gunToObject)
         {
@@ -169,13 +169,13 @@ public class PlayerController : MonoBehaviour
     {
         switch (selectedGun)
         {
-            case GunEnum.Pistol:
+            case UpgradeTypeEnum.Pistol:
                 pistolController.Fire();
                 break;
-            case GunEnum.Uzi:
+            case UpgradeTypeEnum.Uzi:
                 uziController.Fire();
                 break;
-            case GunEnum.Shotgun:
+            case UpgradeTypeEnum.Shotgun:
                 shotgunController.Fire();
                 break;
         }

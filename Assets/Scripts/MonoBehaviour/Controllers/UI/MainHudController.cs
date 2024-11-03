@@ -24,13 +24,11 @@ public class MainHudController : MonoBehaviour
 
     private GameObject lastSelectedBuildingItem = null;
 
-    [SerializeField] private GameObject[] upgradeGuns;
+    [SerializeField] private UpgradeData[] upgrades;
     [SerializeField] private BuildingData[] buildings;
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
 
-
-    private GunEnum[] upgradeGunsEnum = { GunEnum.Uzi, GunEnum.Shotgun };
 
     void Awake()
     {
@@ -100,7 +98,7 @@ public class MainHudController : MonoBehaviour
         Utility.DestroyChildren(upgradeItemsPanel);
         DisplayLevelUpItems();
         RenewItems(upgradeItemsPanel, () => {
-            OnUpgradeClickSetup();
+            UpgradeClickSetup();
         });
     }
 
@@ -120,7 +118,7 @@ public class MainHudController : MonoBehaviour
         Utility.DestroyChildren(buildingPanel);
         DisplayBuildingItems();
         RenewItems(buildingPanel, () => {
-            OnBuildingClickSetup();
+            BuildingClickSetup();
         });
     }
 
@@ -145,9 +143,9 @@ public class MainHudController : MonoBehaviour
         }
     }
 
-    private void OnUpgradeClickSetup()
+    private void UpgradeClickSetup()
     {
-        for (int i = 0; i < upgradeGuns.Length; ++i)
+        for (int i = 0; i < upgrades.Length; ++i)
         {
             SetupUpgradeClick(i);
         }
@@ -157,14 +155,14 @@ public class MainHudController : MonoBehaviour
     {
         Button button = upgradeItemsPanel
             .transform.GetChild(i).GetComponentInChildren<Button>();
-        GunEnum upgradeGunEnum = upgradeGunsEnum[i];
+        UpgradeTypeEnum upgradeGunEnum = upgrades[i].type;
         button.onClick.AddListener(() => {
             playerController.SelectGun(upgradeGunEnum);
             levelUpPanel.SetActive(false);
         });
     }
 
-    private void OnBuildingClickSetup()
+    private void BuildingClickSetup()
     {
         for (int i = 0; i < buildings.Length; ++i)
         {
@@ -176,9 +174,8 @@ public class MainHudController : MonoBehaviour
     {
         GameObject buildingItemUI = buildingPanel.transform.GetChild(i).gameObject;
         Button button = buildingItemUI.GetComponentInChildren<Button>();
-        GunEnum upgradeGunEnum = upgradeGunsEnum[i];
         button.onClick.AddListener(() => {
-            Tweens.Pop(buildingItemUI.GetComponent<RectTransform>(), 1.2f, 0.3f);
+            Tweens.Pop(buildingItemUI.GetComponent<RectTransform>(), 1.2f, 0.2f);
             if (lastSelectedBuildingItem != null)
             {
                 // default color
@@ -198,12 +195,12 @@ public class MainHudController : MonoBehaviour
 
     private void DisplayLevelUpItems()
     {
-        for (int i = 0; i < upgradeGuns.Length; ++i)
+        for (int i = 0; i < upgrades.Length; ++i)
         {
             GameObject upgradeItem = Instantiate(upgradeItemUIPrefab, upgradeItemsPanel.GetComponent<RectTransform>());
             RawImage rawImage = upgradeItem.GetComponentInChildren<RawImage>();
-            GameObject upgradeGun = upgradeGuns[i];
-            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = upgradeGun.name;
+            GameObject upgradeGun = upgrades[i].prefab;
+            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = upgrades[i].name;
 
             Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
             if (thumbnail != null)
