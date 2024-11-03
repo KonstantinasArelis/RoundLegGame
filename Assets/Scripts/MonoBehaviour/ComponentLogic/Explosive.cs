@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Explosive : MonoBehaviour
 {
-  public float impactRadius = 10f;
+  public float impactRadius;
+  public int damage;
   [SerializeField] private GameObject explosionFX;
 
   public void Explode()
@@ -13,7 +14,7 @@ public class Explosive : MonoBehaviour
     {
       if (hitCollider.GetComponent<ZombieController>() != null)
       {
-        hitCollider.GetComponent<ZombieController>().TakeDamage(1);
+        hitCollider.GetComponent<ZombieController>().TakeDamage(damage);
       }
     }
     GameObject explosion = Instantiate(explosionFX, transform.position, transform.rotation);

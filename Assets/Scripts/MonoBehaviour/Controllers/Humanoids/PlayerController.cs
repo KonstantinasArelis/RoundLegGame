@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private GunEnum selectedGun = GunEnum.Uzi;
+    [SerializeField] private UpgradeTypeEnum selectedGun = UpgradeTypeEnum.Uzi;
 
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject xpBar;
@@ -23,20 +23,20 @@ public class PlayerController : MonoBehaviour
     private  PistolController pistolController;
     private  UziController uziController;
     private  ShotgunController shotgunController;
-    private Vector3 positionOffsetFromCamera;
+    [SerializeField] private Vector3 positionOffsetFromCamera = new (0, 8, -5);
 
     private TextMeshProUGUI levelText;
 
     private MainHudController mainHudController;
 
-    public Cooldown damageCooldown;
+    public Cooldown damageCooldown = new (1.0f);
     Animator animator;
 
     public GameObject gunObject; 
     public GameObject uziObject; 
     public GameObject shotgunObject;
 
-    private Dictionary<GunEnum, GameObject> gunToObject;
+    private Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -46,12 +46,11 @@ public class PlayerController : MonoBehaviour
         pistolController = gameObject.FindComponentInChildWithTag<Transform>("Pistol").GetComponent<PistolController>();
         uziController = gameObject.FindComponentInChildWithTag<Transform>("Uzi").GetComponent<UziController>();
         shotgunController = gameObject.FindComponentInChildWithTag<Transform>("Shotgun").GetComponent<ShotgunController>();
-        positionOffsetFromCamera = transform.position - camera.transform.position;
         animator = GetComponent<Animator>();
         gunToObject = new () {
-            {GunEnum.Pistol, gunObject},
-            {GunEnum.Uzi, uziObject},
-            {GunEnum.Shotgun, shotgunObject}
+            {UpgradeTypeEnum.Pistol, gunObject},
+            {UpgradeTypeEnum.Uzi, uziObject},
+            {UpgradeTypeEnum.Shotgun, shotgunObject}
         };
 
         
@@ -66,8 +65,6 @@ public class PlayerController : MonoBehaviour
         xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.1f);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
-
-        damageCooldown = new Cooldown(0.5f);
         //default gun
         SelectGun(selectedGun);
     }
@@ -96,7 +93,7 @@ public class PlayerController : MonoBehaviour
     private void MakeCameraKeepOffset()
     {
         // keep the same camera start offset from the player
-        camera.transform.position = transform.position - positionOffsetFromCamera;
+        camera.transform.position = transform.position + positionOffsetFromCamera;
     }
 
     private void Move()
@@ -140,13 +137,13 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Alpha1))
         {
-            SelectGun(GunEnum.Pistol);
+            SelectGun(UpgradeTypeEnum.Pistol);
         } else if (Input.GetKey(KeyCode.Alpha2))
         {
-            SelectGun(GunEnum.Uzi);
+            SelectGun(UpgradeTypeEnum.Uzi);
         } else if (Input.GetKey(KeyCode.Alpha3))
         {
-            SelectGun(GunEnum.Shotgun); 
+            SelectGun(UpgradeTypeEnum.Shotgun); 
         }
     }
 
@@ -158,7 +155,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SelectGun(GunEnum gun)
+    public void SelectGun(UpgradeTypeEnum gun)
     {
         foreach (var g in gunToObject)
         {
@@ -172,13 +169,13 @@ public class PlayerController : MonoBehaviour
     {
         switch (selectedGun)
         {
-            case GunEnum.Pistol:
+            case UpgradeTypeEnum.Pistol:
                 pistolController.Fire();
                 break;
-            case GunEnum.Uzi:
+            case UpgradeTypeEnum.Uzi:
                 uziController.Fire();
                 break;
-            case GunEnum.Shotgun:
+            case UpgradeTypeEnum.Shotgun:
                 shotgunController.Fire();
                 break;
         }

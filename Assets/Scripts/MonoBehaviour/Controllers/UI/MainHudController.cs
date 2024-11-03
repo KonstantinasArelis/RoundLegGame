@@ -1,105 +1,229 @@
+using System;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 // TODO: refactor this to their own controllers
+// Fix bug when if level up reward not selected, put the next in Queue
 public class MainHudController : MonoBehaviour
 {
     private TextMeshProUGUI scoreText;
-    private string startScoreText;
+    private int currentScore;
 
     private GameObject levelUpPanel;
-    private GameObject levelUpItemPanel;
+    private GameObject upgradeItemsPanel;
+
+    private GameObject buildingPanel;
 
     private PlayerController playerController;
+
+    private BuildSystem buildSystem;
     private TextMeshProUGUI waveTimeText;
 
-    [SerializeField] private GameObject[] upgradeGuns;
-    private GunEnum[] upgradeGunsEnum = { GunEnum.Uzi, GunEnum.Shotgun };
+    private GameObject lastSelectedBuildingItem = null;
+
+    [SerializeField] private UpgradeData[] upgrades;
+    [SerializeField] private BuildingData[] buildings;
+    [SerializeField] private GameObject upgradeItemUIPrefab;
+    [SerializeField] private GameObject buildingItemUIPrefab;
+
 
     void Awake()
     {
-        scoreText = transform.Find("Score/Text").GetComponent<TextMeshProUGUI>();
-        startScoreText = scoreText.text;
-        scoreText.text = startScoreText + "0";
+        scoreText = transform.Find("Score/Amount").GetComponent<TextMeshProUGUI>();
         levelUpPanel = transform.Find("LevelUpPanel").gameObject;
-        levelUpItemPanel = levelUpPanel.transform.Find("Items").gameObject;
+        upgradeItemsPanel = levelUpPanel.transform.Find("UpgradeItems").gameObject;
         waveTimeText = transform.Find("WaveTime").GetComponent<TextMeshProUGUI>();
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        DisplayLevelUpItems();
-        OnItemClickSetup();
-        levelUpPanel.SetActive(false);
+        buildingPanel = transform.Find("BuildingItems").gameObject;
+        buildSystem = GameObject.Find("BuildSystem").GetComponent<BuildSystem>();
+        BuildingEnabledChanged(true);
+        // levelUpPanel.SetActive(false);
+    }
+
+    void OnEnable()
+    {
+        buildSystem.BuildingPlacedEvent.AddListener(OnBuildingPlaced);
+    }
+
+    void OnDisable()
+    {
+        buildSystem.BuildingPlacedEvent.RemoveListener(OnBuildingPlaced);
     }
 
     public void AddScore(int score)
     {
-        string currentScoreText = scoreText.text[startScoreText.Length..];
-        int currentScore = int.Parse(currentScoreText);
-        scoreText.text = startScoreText + (currentScore + score).ToString();
+        currentScore += score;
+        if (score < 0)
+        {
+            AnimateSubtractScore(score.ToString());
+        }
+        else if (score > 0)
+        {
+            AnimateAddScore();
+        }
+        scoreText.text = currentScore.ToString();
+    }
+
+    private void OnBuildingPlaced(BuildingData buildingData)
+    {
+        AddScore(buildingData.cost);
+    }
+
+    private void AnimateSubtractScore(string scoreString)
+    {
+        GameObject costScore = Instantiate(scoreText.gameObject, scoreText.transform.parent);
+        costScore.GetComponent<TextMeshProUGUI>().text = scoreString;
+        CanvasGroup canvasGroup = costScore.AddComponent<CanvasGroup>();
+        var rectTransform = costScore.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(0f, -scoreText.GetComponent<RectTransform>().rect.height * 0.5f);
+        rectTransform.DOAnchorPos(new Vector2(0f, -100f), 1f).SetEase(Ease.InQuad);
+        canvasGroup.DOFade(0f, 1f);
+        Destroy(costScore, 2f);
+    }
+
+    private void AnimateAddScore()
+    {
+        var scoreElement = scoreText.gameObject.GetComponent<RectTransform>();
+        Tweens.Pop(scoreElement, 1.1f, 0.4f);
     }
 
     public void OnLevelUp()
     {
+        // TODO: don't empty everytime for performance?
+        // the panel HAS to be active first because strange things can happen
         levelUpPanel.SetActive(true);
+        Utility.DestroyChildren(upgradeItemsPanel);
+        DisplayLevelUpItems();
+        RenewItems(upgradeItemsPanel, () => {
+            UpgradeClickSetup();
+        });
     }
 
-    private void OnItemClickSetup()
+    public void BuildingEnabledChanged(bool isBuildingEnabled)
     {
-        for (int i = 0; i < levelUpItemPanel.transform.childCount; ++i)
+        if (isBuildingEnabled) OnBuildingEnabled(); else OnBuildingDisabled();
+    }
+
+    public void OnBuildingDisabled()
+    {
+        buildingPanel.SetActive(false);
+    }
+
+    public void OnBuildingEnabled()
+    {
+        buildingPanel.SetActive(true);
+        Utility.DestroyChildren(buildingPanel);
+        DisplayBuildingItems();
+        RenewItems(buildingPanel, () => {
+            BuildingClickSetup();
+        });
+    }
+
+    private void DisplayBuildingItems()
+    {
+        for (int i = 0; i < buildings.Length; ++i)
         {
-            Button button = levelUpItemPanel.transform.GetChild(i).GetComponent<Button>();
-            GameObject prefab = upgradeGuns[i];
-            // need to capture i by value for the enclosing scope
-            int index = i;
-            button.onClick.AddListener(() =>
+            GameObject buildingItem = Instantiate(buildingItemUIPrefab, buildingPanel.GetComponent<RectTransform>());
+            buildingItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = buildings[i].name;
+            buildingItem.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = buildings[i].cost.ToString();
+            RawImage rawImage = buildingItem.transform.Find("ItemDisplay/ItemImage").GetComponent<RawImage>();
+            Texture2D thumbnail = AssetPreview.GetAssetPreview(buildings[i].prefab);
+            if (thumbnail != null)
             {
-                playerController.SelectGun(upgradeGunsEnum[index]);
-                levelUpPanel.SetActive(false);
-            });
+                rawImage.texture = thumbnail;
+                rawImage.color = Color.white;
+            }
+            else
+            {
+                StartCoroutine(Coroutines.WaitForThumbnailCoroutine(buildings[i].prefab, rawImage));
+            }
         }
+    }
+
+    private void UpgradeClickSetup()
+    {
+        for (int i = 0; i < upgrades.Length; ++i)
+        {
+            SetupUpgradeClick(i);
+        }
+    }
+
+    private void SetupUpgradeClick(int i)
+    {
+        Button button = upgradeItemsPanel
+            .transform.GetChild(i).GetComponentInChildren<Button>();
+        UpgradeTypeEnum upgradeGunEnum = upgrades[i].type;
+        button.onClick.AddListener(() => {
+            playerController.SelectGun(upgradeGunEnum);
+            levelUpPanel.SetActive(false);
+        });
+    }
+
+    private void BuildingClickSetup()
+    {
+        for (int i = 0; i < buildings.Length; ++i)
+        {
+            SetupBuildingClick(i);
+        }
+    }
+
+    private void SetupBuildingClick(int i)
+    {
+        GameObject buildingItemUI = buildingPanel.transform.GetChild(i).gameObject;
+        Button button = buildingItemUI.GetComponentInChildren<Button>();
+        button.onClick.AddListener(() => {
+            Tweens.Pop(buildingItemUI.GetComponent<RectTransform>(), 1.2f, 0.2f);
+            if (lastSelectedBuildingItem != null)
+            {
+                // default color
+                lastSelectedBuildingItem.GetComponent<RawImage>().color = buildingItemUIPrefab.GetComponent<RawImage>().color;
+                if (buildSystem.currentBuilding.Equals(buildings[i]))
+                {
+                    buildSystem.currentBuilding = null;
+                    lastSelectedBuildingItem = null;
+                    return;
+                }
+            }
+            buildSystem.currentBuilding = buildings[i];
+            buildingItemUI.GetComponent<RawImage>().color = new Color(1f, 1f, 0f, 0.6f);
+            lastSelectedBuildingItem = buildingItemUI;
+        });
     }
 
     private void DisplayLevelUpItems()
     {
-        for (int i = 0; i < levelUpItemPanel.transform.childCount; ++i)
+        for (int i = 0; i < upgrades.Length; ++i)
         {
-            RawImage rawImage = levelUpItemPanel.transform.GetChild(i).gameObject.GetComponent<RawImage>();
-            GameObject prefab = upgradeGuns[i];
-            if (prefab != null && rawImage != null)
-            {
-                // Use AssetPreview.GetAssetPreview instead
-                Texture2D thumbnail = AssetPreview.GetAssetPreview(prefab);
+            GameObject upgradeItem = Instantiate(upgradeItemUIPrefab, upgradeItemsPanel.GetComponent<RectTransform>());
+            RawImage rawImage = upgradeItem.GetComponentInChildren<RawImage>();
+            GameObject upgradeGun = upgrades[i].prefab;
+            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = upgrades[i].name;
 
-                if (thumbnail != null)
-                {
-                    rawImage.texture = thumbnail;
-                }
-                else
-                {
-                    Debug.Log("Generating thumbnail, please wait...");
-                    StartCoroutine(WaitForThumbnail(prefab, rawImage));
-                }
+            Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
+            if (thumbnail != null)
+            {
+                rawImage.texture = thumbnail;
+                rawImage.color = Color.white;
             }
             else
             {
-                Debug.LogError("Prefab or RawImage is not assigned.");
+                StartCoroutine(Coroutines.WaitForThumbnailCoroutine(upgradeGun, rawImage));
             }
         }
     }
 
-    private System.Collections.IEnumerator WaitForThumbnail(Object prefab, RawImage rawImage)
+    private void RenewItems(GameObject panel, Action callback)
     {
-        Texture2D thumbnail = null;
-
-        while ((thumbnail = AssetPreview.GetAssetPreview(prefab)) == null)
-        {
-            yield return null;  // Wait until thumbnail is generated
-        }
-
-        rawImage.texture = thumbnail;
-        Debug.Log("Thumbnail successfully generated.");
+        StartCoroutine(
+            Coroutines
+            .DelayedLayoutRebuildCoroutine(panel)
+            .WithCallback(callback));
     }
+
+
 
     public void SetWaveTime(int waveTime)
     {
