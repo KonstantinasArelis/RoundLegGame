@@ -3,13 +3,14 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 // TODO: refactor this to their own controllers
 // Fix bug when if level up reward not selected, put the next in Queue
 public class MainHudController : MonoBehaviour
 {
     private TextMeshProUGUI scoreText;
-    private string startScoreText;
+    private int currentScore;
 
     private GameObject levelUpPanel;
     private GameObject upgradeItemsPanel;
@@ -33,9 +34,7 @@ public class MainHudController : MonoBehaviour
 
     void Awake()
     {
-        scoreText = transform.Find("Score/Text").GetComponent<TextMeshProUGUI>();
-        startScoreText = scoreText.text;
-        scoreText.text = startScoreText + "0";
+        scoreText = transform.Find("Score/Amount").GetComponent<TextMeshProUGUI>();
         levelUpPanel = transform.Find("LevelUpPanel").gameObject;
         upgradeItemsPanel = levelUpPanel.transform.Find("UpgradeItems").gameObject;
         waveTimeText = transform.Find("WaveTime").GetComponent<TextMeshProUGUI>();
@@ -58,14 +57,40 @@ public class MainHudController : MonoBehaviour
 
     public void AddScore(int score)
     {
-        string currentScoreText = scoreText.text[startScoreText.Length..];
-        int currentScore = int.Parse(currentScoreText);
-        scoreText.text = startScoreText + (currentScore + score).ToString();
+        currentScore += score;
+        if (score < 0)
+        {
+            AnimateSubtractScore(score.ToString());
+        }
+        else if (score > 0)
+        {
+            AnimateAddScore();
+        }
+        scoreText.text = currentScore.ToString();
     }
 
     private void OnBuildingPlaced(BuildingData buildingData)
     {
-        AddScore(-buildingData.cost);
+        AddScore(buildingData.cost);
+    }
+
+    private void AnimateSubtractScore(string scoreString)
+    {
+        GameObject costScore = Instantiate(scoreText.gameObject, scoreText.transform.parent);
+        costScore.GetComponent<TextMeshProUGUI>().text = scoreString;
+        CanvasGroup canvasGroup = costScore.AddComponent<CanvasGroup>();
+        var rectTransform = costScore.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(0f, -scoreText.GetComponent<RectTransform>().rect.height * 0.5f);
+        rectTransform.DOAnchorPos(new Vector2(0f, -100f), 1f).SetEase(Ease.InQuad);
+        canvasGroup.DOFade(0f, 1f);
+        Destroy(costScore, 2f);
+    }
+
+    private void AnimateAddScore()
+    {
+        var scoreElement = scoreText.gameObject.GetComponent<RectTransform>();
+        scoreElement.DOScale(1.2f, 0.2f)  // Scale up to target size 
+            .OnComplete(() => scoreElement.DOScale(1f, 0.2f));
     }
 
     public void OnLevelUp()
@@ -106,7 +131,7 @@ public class MainHudController : MonoBehaviour
         {
             GameObject buildingItem = Instantiate(buildingItemUIPrefab, buildingPanel.GetComponent<RectTransform>());
             buildingItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = buildings[i].name;
-            buildingItem.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = buildings[i].GetCostString();
+            buildingItem.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = buildings[i].cost.ToString();
             RawImage rawImage = buildingItem.transform.Find("ItemDisplay/ItemImage").GetComponent<RawImage>();
             Texture2D thumbnail = AssetPreview.GetAssetPreview(buildings[i].prefab);
             if (thumbnail != null)
@@ -156,7 +181,7 @@ public class MainHudController : MonoBehaviour
         button.onClick.AddListener(() => {
             if (lastSelectedBuildingItem != null)
             {
-                lastSelectedBuildingItem.GetComponent<RawImage>().color = Color.white;
+                lastSelectedBuildingItem.GetComponent<RawImage>().color = buildingItemUIPrefab.GetComponent<RawImage>().color;
                 if (buildSystem.currentBuilding.Equals(buildings[i]))
                 {
                     buildSystem.currentBuilding = null;

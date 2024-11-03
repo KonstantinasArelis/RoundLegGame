@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 7453549253102005150, guid: 51b0dc2901eea514a9d46077bb9a097e, type: 3}
   name: Explosive barrel
-  cost: 100
+  cost: -100
