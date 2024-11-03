@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8966860364317346379}
   - component: {fileID: 8686335161741750622}
   - component: {fileID: 2883835906471655595}
+  - component: {fileID: 3097496177132929848}
   m_Layer: 0
   m_Name: ExplosiveBarrel
   m_TagString: Untagged
@@ -28,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7453549253102005150}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -5.7143164, y: 0.9799987, z: 1.6318297}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 50, y: 50, z: 70}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6598996900357783169
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -100,7 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2e73aa7feaef64c9403872a0ef7cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactRadius: 10
+  impactRadius: 5
+  damage: 1
   explosionFX: {fileID: 3145137281656678096, guid: 338dddefb8c6ded4b924063a6f0aaa9f, type: 3}
 --- !u!64 &2883835906471655595
 MeshCollider:
@@ -117,10 +119,23 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: b465634aa802dbcd8bde2e774eef4b78, type: 3}
+--- !u!114 &3097496177132929848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453549253102005150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6b98bf9ed7e443a807684de778055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotation: {x: 90, y: 0, z: 0}

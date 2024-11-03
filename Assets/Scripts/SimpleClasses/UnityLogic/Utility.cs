@@ -1,4 +1,8 @@
+using System;
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utility
 {
@@ -12,6 +16,20 @@ public static class Utility
             }
         }
         return null;
+    }
+
+    public static void DestroyChildren(GameObject parent)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
+
+    public static int GetMaskExceptLayer(string layerName)
+    {
+        int layer = LayerMask.NameToLayer(layerName);
+        return ~(1 << layer);
     }
 }
 

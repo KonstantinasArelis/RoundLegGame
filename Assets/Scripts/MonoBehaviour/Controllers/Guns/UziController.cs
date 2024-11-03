@@ -5,7 +5,7 @@ using UnityEngine.VFX;
 public class UziController : MonoBehaviour
 {
     private FireLine fireLine;
-    
+    public AudioSource audioSource;
     private Vector3 initalForward;
 	[SerializeField] public float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
@@ -35,6 +35,7 @@ public class UziController : MonoBehaviour
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
+        audioSource.Play();
 		lastShotTime = Time.time;
 
         fireLine.Fire();

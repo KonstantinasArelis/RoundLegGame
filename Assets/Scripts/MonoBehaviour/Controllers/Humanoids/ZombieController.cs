@@ -39,7 +39,7 @@ public class ZombieController : MonoBehaviour
     {
         if (nearestPlayer != null && isDying != true) 
         {
-            transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));   
+            transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));
             // move towards player
             transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
         }
@@ -64,10 +64,21 @@ public class ZombieController : MonoBehaviour
     // WARN: Stay preserves the contact but it could be heavy on the system
     void OnCollisionStay(Collision collision)
     {
+        Attack(collision);
+    }
+
+    private void Attack(Collision collision)
+    {
         if (collision.gameObject.CompareTag("Player"))
         {
             animator.SetTrigger("Hitting");
             collision.gameObject.GetComponent<PlayerController>().TakeDamage(1);
+        }
+
+        if (collision.gameObject.TryGetComponent<IDamagable>(out IDamagable damagable))
+        {
+            animator.SetTrigger("Hitting");
+            damagable.TakeDamage(1);
         }
     }
 

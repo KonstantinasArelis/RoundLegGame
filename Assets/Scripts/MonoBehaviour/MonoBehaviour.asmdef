@@ -4,7 +4,8 @@
     "references": [
         "SimpleClasses",
         "Unity.TextMeshPro",
-        "External"
+        "External",
+        "ScriptableObjects"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
