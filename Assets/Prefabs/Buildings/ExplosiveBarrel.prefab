@@ -101,7 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2e73aa7feaef64c9403872a0ef7cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impactRadius: 10
+  impactRadius: 5
+  damage: 1
   explosionFX: {fileID: 3145137281656678096, guid: 338dddefb8c6ded4b924063a6f0aaa9f, type: 3}
 --- !u!64 &2883835906471655595
 MeshCollider:
@@ -118,7 +119,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5

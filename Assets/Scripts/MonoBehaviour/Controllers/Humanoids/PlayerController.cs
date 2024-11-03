@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     private MainHudController mainHudController;
 
-    public Cooldown damageCooldown;
+    public Cooldown damageCooldown = new (1.0f);
     Animator animator;
 
     public GameObject gunObject; 
@@ -65,8 +65,6 @@ public class PlayerController : MonoBehaviour
         xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.1f);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
-
-        damageCooldown = new Cooldown(0.5f);
         //default gun
         SelectGun(selectedGun);
     }

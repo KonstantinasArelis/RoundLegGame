@@ -89,8 +89,7 @@ public class MainHudController : MonoBehaviour
     private void AnimateAddScore()
     {
         var scoreElement = scoreText.gameObject.GetComponent<RectTransform>();
-        scoreElement.DOScale(1.2f, 0.2f)  // Scale up to target size 
-            .OnComplete(() => scoreElement.DOScale(1f, 0.2f));
+        Tweens.Pop(scoreElement, 1.1f, 0.4f);
     }
 
     public void OnLevelUp()
@@ -179,8 +178,10 @@ public class MainHudController : MonoBehaviour
         Button button = buildingItemUI.GetComponentInChildren<Button>();
         GunEnum upgradeGunEnum = upgradeGunsEnum[i];
         button.onClick.AddListener(() => {
+            Tweens.Pop(buildingItemUI.GetComponent<RectTransform>(), 1.2f, 0.3f);
             if (lastSelectedBuildingItem != null)
             {
+                // default color
                 lastSelectedBuildingItem.GetComponent<RawImage>().color = buildingItemUIPrefab.GetComponent<RawImage>().color;
                 if (buildSystem.currentBuilding.Equals(buildings[i]))
                 {
@@ -190,7 +191,7 @@ public class MainHudController : MonoBehaviour
                 }
             }
             buildSystem.currentBuilding = buildings[i];
-            buildingItemUI.GetComponent<RawImage>().color = Color.yellow;
+            buildingItemUI.GetComponent<RawImage>().color = new Color(1f, 1f, 0f, 0.6f);
             lastSelectedBuildingItem = buildingItemUI;
         });
     }
