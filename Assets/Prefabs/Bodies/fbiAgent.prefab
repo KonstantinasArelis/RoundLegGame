@@ -332,6 +332,7 @@ MonoBehaviour:
   selectedGun: 1
   healthBar: {fileID: 1549358798561699462, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
   xpBar: {fileID: 2646753383457170479, guid: 4f08539e3288eea48bbfe6a9e5b45d19, type: 3}
+  positionOffsetFromCamera: {x: 0, y: 8, z: -5}
   gunObject: {fileID: 1786187274623435711}
   uziObject: {fileID: 4731448355195064952}
   shotgunObject: {fileID: 1290603070059899379}
