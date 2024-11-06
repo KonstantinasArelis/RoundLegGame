@@ -15,5 +15,6 @@ MonoBehaviour:
   name: Shotgun
   prefab: {fileID: 919132149155446097, guid: 515926c32b15bbfe99be91a934d8ff2c, type: 3}
   type: 2
-  previousUpgradeType: 0
-  tier: 1
+  nextUpgrades:
+  - {fileID: 11400000, guid: d76a6ae1e0a65ca49bb46d20c1cbed8f, type: 2}
+  nextUpgradeLevel: 3

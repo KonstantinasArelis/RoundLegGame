@@ -9,7 +9,16 @@ public class UpgradeData : ScriptableObject
 
   public UpgradeTypeEnum type;
 
-  public UpgradeTypeEnum previousUpgradeType;
+  public UpgradeData[] nextUpgrades;
 
-  public UpgradeTierEnum tier;
+  public int nextUpgradeLevel;
+
+    // Ensures the nextUpgradeLevel is positive
+  private void OnValidate()
+  {
+    if (nextUpgradeLevel < 0)
+    {
+      nextUpgradeLevel = Mathf.Abs(nextUpgradeLevel);
+    }
+  }
 }

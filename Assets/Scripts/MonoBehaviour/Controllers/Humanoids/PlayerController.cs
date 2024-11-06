@@ -52,7 +52,6 @@ public class PlayerController : MonoBehaviour
             {UpgradeTypeEnum.Uzi, uziObject},
             {UpgradeTypeEnum.Shotgun, shotgunObject}
         };
-
         
 
         healthProvider = new HealthProvider(maxHealth: 10);
@@ -213,8 +212,8 @@ public class PlayerController : MonoBehaviour
     private void OnLevelUp()
     {
         int xpNeededForLevelUp = levelProvider.XpNeededForCurrentLevel();
-        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.1f);
-        levelText.text = (levelProvider.level + 1).ToString();
+        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.2f);
+        levelText.text = levelProvider.GetCurrentLevel().ToString();
         mainHudController.OnLevelUp();
     }
 }

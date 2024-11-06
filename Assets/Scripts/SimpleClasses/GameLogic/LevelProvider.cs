@@ -1,6 +1,6 @@
 public class LevelProvider
 {
-  public int level;
+  private int level;
   private int xp;
   public int[] xpNeededPerLevel;
 
@@ -45,5 +45,10 @@ public class LevelProvider
   public bool IsMaxLevelReached()
   {
     return level == xpNeededPerLevel.Length - 1;
+  }
+
+  public int GetCurrentLevel()
+  {
+    return level + 1;
   }
 }

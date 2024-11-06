@@ -7,12 +7,12 @@ public class BuildingData : ScriptableObject
   public new string name;
   public int cost;
 
-  // Ensures the value is always negative
+  // Ensures cost is always negative
   private void OnValidate()
   {
-      if (cost > 0)
-      {
-          cost = -Mathf.Abs(cost); // Force negative
-      }
+    if (cost > 0)
+    {
+        cost = -Mathf.Abs(cost);
+    }
   }
 }
