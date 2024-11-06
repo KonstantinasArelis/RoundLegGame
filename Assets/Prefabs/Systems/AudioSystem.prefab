@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7896070327586048476}
   - component: {fileID: 1687652257811647343}
+  - component: {fileID: 6574367163839256155}
+  - component: {fileID: 4537749407282460957}
   m_Layer: 0
-  m_Name: Moosic
+  m_Name: AudioSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,3 +131,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6574367163839256155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6462494289976370956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf7d0f8e63ae7343bbae3d5863020f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+--- !u!81 &4537749407282460957
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6462494289976370956}
+  m_Enabled: 1

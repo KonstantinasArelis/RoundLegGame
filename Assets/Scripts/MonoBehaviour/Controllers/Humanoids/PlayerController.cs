@@ -13,8 +13,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject xpBar;
 
-    private Vector3 healthBarOffset = new (0.27f, 0.06f, -10.9f);
-    private Vector3 xpBarOffset = new (0.27f, 0f, -10.7f);
+    Vector3 healthBarOffset = new (-0.3f, 2f, 0f);
+    Vector3 xpBarOffset = new (-0.3f, 2.15f, 0f);
     public HealthProvider healthProvider;
     public LevelProvider levelProvider;
     private new GameObject camera;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         // TODO: not hardcore level progression
         levelProvider = new LevelProvider(xpNeededPerLevel: new int[]{20, 20, 20, 20});
         xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
-        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.1f);
+        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.2f);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
         //default gun
         SelectGun(selectedGun);
@@ -79,9 +79,13 @@ public class PlayerController : MonoBehaviour
     {
         MakeStatBarsKeepOffset();
         MakeCameraKeepOffset();
-        Move();
         Shoot();
         ExtraControls();
+    }
+
+    void FixedUpdate()
+    {
+        Move();
     }
 
     private void MakeStatBarsKeepOffset()

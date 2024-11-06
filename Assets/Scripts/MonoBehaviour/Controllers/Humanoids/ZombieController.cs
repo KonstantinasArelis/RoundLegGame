@@ -4,9 +4,11 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class ZombieController : MonoBehaviour
+public class ZombieController : MonoBehaviour, IDamagable
 {
     private HealthProvider healthProvider;
+
+    [SerializeField] private float maxHealth = 3;
     [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
 
     [SerializeField] private int scoreGivenOnDeath = 10;
@@ -17,7 +19,7 @@ public class ZombieController : MonoBehaviour
     private readonly float SUICIDE_Y = -10f;
 
     private GameObject nearestPlayer;
-    private Rigidbody rb; // Add a Rigidbody component
+    private Rigidbody rb;
     private bool isDying = false;
     private MainHudController mainHudController;
     
@@ -27,15 +29,15 @@ public class ZombieController : MonoBehaviour
     void Awake()
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
-        healthProvider = new HealthProvider(maxHealth: 3);
+        healthProvider = new (maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
         StartCoroutine(ChaseNearestTargetCoroutine());
-        rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
+        rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (nearestPlayer != null && isDying != true) 
         {
@@ -83,7 +85,7 @@ public class ZombieController : MonoBehaviour
     }
 
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);

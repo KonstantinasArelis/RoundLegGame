@@ -48,7 +48,7 @@ public class BuildSystem : MonoBehaviour
                 Mathf.RoundToInt(hit.point.y + hit.normal.y / 2),
                 Mathf.RoundToInt(hit.point.z + hit.normal.z / 2));
             // parent under this script so it's organised
-            GameObject building = Instantiate(currentBuilding.prefab, buildingPosition, Quaternion.identity, transform);
+            GameObject building = Instantiate(currentBuilding.prefab, buildingPosition, currentBuilding.prefab.transform.rotation, transform);
             building.tag = "Building";
             var outline = building.AddComponent<Outline>();
             outline.enabled = false;

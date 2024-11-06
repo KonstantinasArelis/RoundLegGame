@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d02a372c636370483bfceda3e6c91f67, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.273
+      value: 1.24
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d02a372c636370483bfceda3e6c91f67, type: 3}
       propertyPath: m_LocalPosition.z
@@ -282,7 +282,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -331,13 +331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6629868102ee4664484024078323f556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 6046018346960256403}
-  audioClips:
-  - {fileID: 8300000, guid: 6d8e7bef8ceeeee49977a03f8adfc657, type: 3}
-  - {fileID: 8300000, guid: e086887d17304d2498748bca259c26f7, type: 3}
-  - {fileID: 8300000, guid: 1b74e9489f47e74468fae69024f5edf8, type: 3}
-  minCooldownSeconds: 10
-  maxCooldownSeconds: 20
   knockbackForce: 200
   scoreGivenOnDeath: 10
   xpGivenOnDeath: 10
