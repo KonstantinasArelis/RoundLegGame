@@ -4,7 +4,7 @@ public class QuantityBarController : MonoBehaviour
 {
     private GameObject maxBar;
     private GameObject currentBar;
-    private int max;
+    private float max;
     private new Camera camera;
     // magic number that makes the healthbar decent width
     private float scale;
@@ -26,7 +26,7 @@ public class QuantityBarController : MonoBehaviour
     }
 
     // MUST call before use for instantiating properties
-    public void SetupQuantityBar(int current, int max, float scale)
+    public void SetupQuantityBar(float current, float max, float scale)
     {
         this.scale = scale;
         this.max = max;
@@ -43,7 +43,7 @@ public class QuantityBarController : MonoBehaviour
         );
     }
 
-    public void Subtract(int amount)
+    public void Subtract(float amount)
     {
         currentBar.transform.localScale = new Vector3(
             currentBar.transform.localScale.x - maxBar.transform.localScale.x * amount / max,
@@ -52,7 +52,7 @@ public class QuantityBarController : MonoBehaviour
         );
     }
 
-    public void Add(int amount)
+    public void Add(float amount)
     {
         currentBar.transform.localScale = new Vector3(
             currentBar.transform.localScale.x + maxBar.transform.localScale.x * amount / max,

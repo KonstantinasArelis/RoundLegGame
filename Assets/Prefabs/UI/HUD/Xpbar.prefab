@@ -26,17 +26,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2369105333117591682}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1553281433169831586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.189, y: 9.565}
-  m_SizeDelta: {x: 2, y: 2}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.149}
+  m_SizeDelta: {x: 3, y: 0.2886}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &1685675948850772486
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -94,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.1
-  m_fontSizeBase: 0.1
+  m_fontSize: 0.3
+  m_fontSizeBase: 0.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.06601632, y: 0.8047232, z: 1.3395798, w: 1.0824159}
+  m_margin: {x: 0.0005457401, y: 0.006036163, z: 0.0051475763, w: -0.0021745127}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -212,11 +212,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2645047329898259467, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1280
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2645047329898259467, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -720
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2645047329898259467, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -232,7 +232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3495565477561698927, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3803933211481731804, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
       propertyPath: m_IsActive

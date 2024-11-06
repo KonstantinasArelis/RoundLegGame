@@ -8,6 +8,7 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private float spawnTimeSeconds = 3f;
     private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
+    private Transform floorTransform;
     private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
     private int maxZombiesAtOneTime = 10;
 
@@ -29,12 +30,6 @@ public class GameSystem : MonoBehaviour
         StartCoroutine(CountdownTimeCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private IEnumerator SpawnZombiesCoroutine()
     {
         for ( ; ; )
@@ -50,8 +45,8 @@ public class GameSystem : MonoBehaviour
                     : player.transform.position.x + randomX + worldViewFromPlayerBounds.x,
                 randomSpawnPositionBounds.y,
                 randomZ < 0
-                    ? player.transform.position.z + randomX - worldViewFromPlayerBounds.z
-                    : player.transform.position.z + randomX + worldViewFromPlayerBounds.z
+                    ? player.transform.position.z + randomZ - worldViewFromPlayerBounds.z
+                    : player.transform.position.z + randomZ + worldViewFromPlayerBounds.z
             );
             // attach to GameSystem so it's organised
             Instantiate(zombiePrefab, randomPosition, Quaternion.identity, transform);

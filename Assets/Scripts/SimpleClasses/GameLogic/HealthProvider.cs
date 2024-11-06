@@ -1,26 +1,26 @@
 public class HealthProvider
 {
-  public int health;
-  public int maxHealth;
+  public float health;
+  public float maxHealth;
 
-  public HealthProvider(int health, int maxHealth)
+  public HealthProvider(float health, float maxHealth)
   {
       this.health = health;
       this.maxHealth = maxHealth;
   }
-  public HealthProvider(int maxHealth)
+  public HealthProvider(float maxHealth)
   {
       this.maxHealth = maxHealth;
       health = maxHealth;
   }
 
-  public void Heal(int healAmount)
+  public void Heal(float healAmount)
   {
       health += healAmount;
       EnsureMaxHealthCap();
   }
 
-  public void TakeDamage(int damage)
+  public void TakeDamage(float damage)
   {
       health -= damage;
   }

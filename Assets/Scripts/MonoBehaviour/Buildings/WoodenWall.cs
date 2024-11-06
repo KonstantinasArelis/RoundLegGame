@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class WoodenWall : MonoBehaviour, IDamagable
 {
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float damageCooldownTime;
+    private Cooldown damageCooldown;
     private HealthProvider healthProvider;
-    private Cooldown damageCooldown = new (0.5f);
 
     void Start()
     {
-        healthProvider = new HealthProvider(maxHealth: 3);
-
+        healthProvider = new (maxHealth);
+        damageCooldown = new (damageCooldownTime);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (!damageCooldown.IsReady()) return;
         healthProvider.TakeDamage(damage);
