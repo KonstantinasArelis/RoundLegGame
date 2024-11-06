@@ -24,7 +24,7 @@ public class MainHudController : MonoBehaviour
 
     private GameObject lastSelectedBuildingItem = null;
 
-    [SerializeField] private UpgradeData[] upgrades;
+    [SerializeField] private UpgradeData currentUpgrade;
     [SerializeField] private BuildingData[] buildings;
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
@@ -94,6 +94,8 @@ public class MainHudController : MonoBehaviour
     {
         // TODO: don't empty everytime for performance?
         // the panel HAS to be active first because strange things can happen
+        // upgrade only when the level is right
+        if (currentUpgrade.nextUpgradeLevel != playerController.levelProvider.GetCurrentLevel()) return;
         levelUpPanel.SetActive(true);
         Utility.DestroyChildren(upgradeItemsPanel);
         DisplayLevelUpItems();
@@ -145,7 +147,7 @@ public class MainHudController : MonoBehaviour
 
     private void UpgradeClickSetup()
     {
-        for (int i = 0; i < upgrades.Length; ++i)
+        for (int i = 0; i < currentUpgrade.nextUpgrades.Length; ++i)
         {
             SetupUpgradeClick(i);
         }
@@ -155,9 +157,10 @@ public class MainHudController : MonoBehaviour
     {
         Button button = upgradeItemsPanel
             .transform.GetChild(i).GetComponentInChildren<Button>();
-        UpgradeTypeEnum upgradeGunEnum = upgrades[i].type;
+        UpgradeTypeEnum upgradeGunEnum = currentUpgrade.nextUpgrades[i].type;
         button.onClick.AddListener(() => {
             playerController.SelectGun(upgradeGunEnum);
+            currentUpgrade = currentUpgrade.nextUpgrades[i];
             levelUpPanel.SetActive(false);
         });
     }
@@ -195,12 +198,12 @@ public class MainHudController : MonoBehaviour
 
     private void DisplayLevelUpItems()
     {
-        for (int i = 0; i < upgrades.Length; ++i)
+        for (int i = 0; i < currentUpgrade.nextUpgrades.Length; ++i)
         {
             GameObject upgradeItem = Instantiate(upgradeItemUIPrefab, upgradeItemsPanel.GetComponent<RectTransform>());
             RawImage rawImage = upgradeItem.GetComponentInChildren<RawImage>();
-            GameObject upgradeGun = upgrades[i].prefab;
-            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = upgrades[i].name;
+            GameObject upgradeGun = currentUpgrade.nextUpgrades[i].prefab;
+            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = currentUpgrade.nextUpgrades[i].name;
 
             Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
             if (thumbnail != null)

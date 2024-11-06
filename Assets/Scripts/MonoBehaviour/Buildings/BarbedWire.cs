@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DegradableTouchDamager : MonoBehaviour
+public class BarbedWire : MonoBehaviour
 {
   [SerializeField] private float damage;
   [SerializeField] private float cooldownTime;
@@ -17,8 +17,11 @@ public class DegradableTouchDamager : MonoBehaviour
     if (!cooldown.IsReady()) return;
     if (other.CompareTag("Enemy"))
     {
-      other.GetComponent<IDamagable>().TakeDamage(damage);
-      OnDamage();
+      if (other.TryGetComponent<IDamagable>(out IDamagable damagable))
+      {
+        damagable.TakeDamage(damage);
+        OnDamage();
+      }
     }
   }
 
