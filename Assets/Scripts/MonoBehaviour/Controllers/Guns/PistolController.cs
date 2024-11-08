@@ -10,6 +10,8 @@ public class PistolController : MonoBehaviour
 	[SerializeField] public float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
     [SerializeField] private int penetration = 3;
+    [SerializeField] private float knockbackForce = 30f;
+
     private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
@@ -38,7 +40,7 @@ public class PistolController : MonoBehaviour
 		muzzleFlash.Play();
 		lastShotTime = Time.time;
 
-        fireLine.Fire(penetration);
+        fireLine.Fire(penetration, knockbackForce);
     }
 
     void DisableMuzzleFlashLight()

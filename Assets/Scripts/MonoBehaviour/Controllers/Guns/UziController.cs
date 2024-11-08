@@ -10,6 +10,7 @@ public class UziController : MonoBehaviour
 	[SerializeField] public float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
     [SerializeField] private int penetration = 2;
+    [SerializeField] private float knockbackForce = 50f;
 
     private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
@@ -41,7 +42,7 @@ public class UziController : MonoBehaviour
         audioSource.Play();
 		lastShotTime = Time.time;
 
-        fireLine.Fire(penetration);
+        fireLine.Fire(penetration, knockbackForce);
     }
 
     void DisableMuzzleFlashLight()

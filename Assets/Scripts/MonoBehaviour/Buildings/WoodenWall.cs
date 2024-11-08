@@ -13,7 +13,7 @@ public class WoodenWall : MonoBehaviour, IDamagable
         damageCooldown = new (damageCooldownTime);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, float knockbackForce)
     {
         if (!damageCooldown.IsReady()) return;
         healthProvider.TakeDamage(damage);

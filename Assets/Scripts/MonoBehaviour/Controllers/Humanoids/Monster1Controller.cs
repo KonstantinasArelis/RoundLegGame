@@ -11,7 +11,7 @@ public class Monster1Controller : MonoBehaviour
     public float maxCooldownSeconds = 10f;
 
     [SerializeField] private float health = 10f;
-    [SerializeField] private float knockbackForce = 2f; // Add a knockback force variable
+    //[SerializeField] private float knockbackForce = 2f; // Add a knockback force variable
 
     private LayerMask targetLayerMask;
     private readonly float chaseTargetCooldownSeconds = 0.5f;
@@ -83,7 +83,7 @@ public class Monster1Controller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Damager"))
         {
-            TakeDamage(1);
+            TakeDamage(1, 3f);
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.CompareTag("Player"))
@@ -99,7 +99,7 @@ public class Monster1Controller : MonoBehaviour
         return health <= 0;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, float knockbackForce)
     {
         animator.SetTrigger("Shot");
         health -= damage;

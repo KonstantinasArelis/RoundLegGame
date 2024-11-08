@@ -10,7 +10,7 @@ public class ZombieController : MonoBehaviour, IDamagable
     Collider myCollider;
 
     [SerializeField] private float maxHealth = 3;
-    [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
+    //[SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
 
     [SerializeField] private int scoreGivenOnDeath = 10;
     [SerializeField] private int xpGivenOnDeath = 10;
@@ -82,14 +82,15 @@ public class ZombieController : MonoBehaviour, IDamagable
         if (collision.gameObject.TryGetComponent<IDamagable>(out IDamagable damagable))
         {
             animator.SetTrigger("Hitting");
-            damagable.TakeDamage(1);
+            damagable.TakeDamage(1, 2f);
         }
     }
 
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, float knockbackForce)
     {
-        StartCoroutine(temporaryInvulnerability());
+        Debug.Log("Knockback is: " + knockbackForce);
+        //StartCoroutine(temporaryInvulnerability());
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);
 
