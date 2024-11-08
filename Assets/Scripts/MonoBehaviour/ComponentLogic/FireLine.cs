@@ -14,7 +14,7 @@ public class FireLine : MonoBehaviour
     	initalForward = transform.forward;
     }
     
-    public void Fire()
+    public void Fire(int penetration)
     {
 			Vector3 direction = transform.forward;
 			Vector3 endPoint = transform.position + direction * lineDistance;  
@@ -46,6 +46,10 @@ public class FireLine : MonoBehaviour
 					{
 						monster1Controller.TakeDamage(1);
 					}
+					penetration--;
+				if(penetration>0){
+					this.Fire(penetration);
+				}
 			}
     }
 	

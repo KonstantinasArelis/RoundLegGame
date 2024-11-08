@@ -10,6 +10,7 @@ public class ShotgunController : MonoBehaviour
     private Vector3 initalForward;
 	[SerializeField] public float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
+    [SerializeField] private int penetration = 1;
     private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
@@ -43,7 +44,7 @@ public class ShotgunController : MonoBehaviour
 
         foreach (FireLine fireLine in fireLines)
         {
-            fireLine.Fire();
+            fireLine.Fire(penetration);
         }
     }
 

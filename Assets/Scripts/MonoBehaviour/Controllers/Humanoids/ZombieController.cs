@@ -7,6 +7,7 @@ using UnityEngine;
 public class ZombieController : MonoBehaviour, IDamagable
 {
     private HealthProvider healthProvider;
+    Collider myCollider;
 
     [SerializeField] private float maxHealth = 3;
     [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
@@ -28,6 +29,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     void Awake()
     {
+        myCollider = GetComponent<Collider>();
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
         healthProvider = new (maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
@@ -87,6 +89,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     public void TakeDamage(float damage)
     {
+        StartCoroutine(temporaryInvulnerability());
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);
 
@@ -99,6 +102,12 @@ public class ZombieController : MonoBehaviour, IDamagable
         {
             OnDeath();
         }
+    }
+
+    public IEnumerator temporaryInvulnerability(){
+        myCollider.enabled = false;
+        yield return new WaitForSeconds(0.01f);
+        myCollider.enabled = true;
     }
 
     private void OnDeath()
