@@ -118,10 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e0d9a52b0512442b56cdd0a1184517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgrades:
-  - {fileID: 11400000, guid: 3f69a5f7b4a63b745ab7bdd9a6183ca0, type: 2}
-  - {fileID: 11400000, guid: aaa6bc79eac67144b9a420ca6fc7a33c, type: 2}
-  - {fileID: 11400000, guid: d76a6ae1e0a65ca49bb46d20c1cbed8f, type: 2}
+  currentUpgrade: {fileID: 0}
   buildings:
   - {fileID: 11400000, guid: abb43646ab43c1c48811eff01f9de244, type: 2}
   - {fileID: 11400000, guid: 6f076be28ee28534ca3d8a844309aa7d, type: 2}
