@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class ZombieController : MonoBehaviour, IDamagable
+public class ZombieController : MonoBehaviour, IDamagable, IKnockable
 {
     private HealthProvider healthProvider;
     Collider myCollider;
@@ -82,27 +82,27 @@ public class ZombieController : MonoBehaviour, IDamagable
         if (collision.gameObject.TryGetComponent<IDamagable>(out IDamagable damagable))
         {
             animator.SetTrigger("Hitting");
-            damagable.TakeDamage(1, 2f);
+            damagable.TakeDamage(1);
         }
     }
 
-
-    public void TakeDamage(float damage, float knockbackForce)
+    public void TakeDamage(float damage)
     {
-        Debug.Log("Knockback is: " + knockbackForce);
-        //StartCoroutine(temporaryInvulnerability());
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);
-
-        // Apply knockback
-        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
-        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
 	    //animator.ResetTrigger("Shot");
-
+        StartCoroutine(temporaryInvulnerability());
         if (healthProvider.IsDead())
         {
             OnDeath();
         }
+    }
+
+    public void TakeKnockback(float knockbackForce)
+    {
+        // Apply knockback
+        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
     }
 
     public IEnumerator temporaryInvulnerability(){
@@ -141,5 +141,4 @@ public class ZombieController : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
-
 }

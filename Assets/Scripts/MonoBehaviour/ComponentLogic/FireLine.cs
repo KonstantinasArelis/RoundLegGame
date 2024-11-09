@@ -36,7 +36,8 @@ public class FireLine : MonoBehaviour
 					// if (!hit.collider.CompareTag("Enemy")) return;
 					if (hit.collider.TryGetComponent<ZombieController>(out var zombieController))
 					{
-						zombieController.TakeDamage(1, knockbackForce);
+						zombieController.TakeDamage(1);
+						zombieController.TakeKnockback(knockbackForce);
 					}
 					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{
@@ -44,7 +45,9 @@ public class FireLine : MonoBehaviour
 					}
 					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller monster1Controller))
 					{
-						monster1Controller.TakeDamage(1, knockbackForce);
+						monster1Controller.TakeDamage(1);
+						monster1Controller.TakeKnockback(knockbackForce);
+						//StartCoroutine(zombieController.temporaryInvulnerability());
 					}
 					penetration--;
 				if(penetration>0){

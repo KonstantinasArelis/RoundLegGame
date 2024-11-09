@@ -15,7 +15,8 @@ public class Explosive : MonoBehaviour
     {
       if (hitCollider.GetComponent<ZombieController>() != null)
       {
-        hitCollider.GetComponent<ZombieController>().TakeDamage(damage, knockbackForce);
+        hitCollider.GetComponent<ZombieController>().TakeDamage(damage);
+        hitCollider.GetComponent<ZombieController>().TakeKnockback(knockbackForce);
       }
     }
     GameObject explosion = Instantiate(explosionFX, transform.position, transform.rotation);

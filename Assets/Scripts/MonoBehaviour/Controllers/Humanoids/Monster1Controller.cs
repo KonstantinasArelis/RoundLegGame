@@ -3,13 +3,13 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class Monster1Controller : MonoBehaviour
+public class Monster1Controller : MonoBehaviour, IDamagable, IKnockable
 {
     public AudioSource audioSource;
     public AudioClip[] audioClips;
     public float minCooldownSeconds = 1f;
     public float maxCooldownSeconds = 10f;
-
+    
     [SerializeField] private float health = 10f;
     //[SerializeField] private float knockbackForce = 2f; // Add a knockback force variable
 
@@ -21,7 +21,8 @@ public class Monster1Controller : MonoBehaviour
 
     private GameObject nearestPlayer;
     private Rigidbody rb; // Add a Rigidbody component
-	
+	Collider myCollider;
+
     private bool isDying = false;
     
     Animator animator;
@@ -33,6 +34,7 @@ public class Monster1Controller : MonoBehaviour
         StartCoroutine(PlaySoundCoroutine());
         rb = GetComponent<Rigidbody>(); // Get the Rigidbody component
         animator = GetComponent<Animator>();
+        myCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -83,7 +85,7 @@ public class Monster1Controller : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Damager"))
         {
-            TakeDamage(1, 3f);
+            TakeDamage(1);
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.CompareTag("Player"))
@@ -99,21 +101,32 @@ public class Monster1Controller : MonoBehaviour
         return health <= 0;
     }
 
-    public void TakeDamage(float damage, float knockbackForce)
+    public void TakeDamage(float damage)
     {
         animator.SetTrigger("Shot");
         health -= damage;
-
-        // Apply knockback
-        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
-        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
-	//animator.ResetTrigger("Shot");
+        
+        StartCoroutine(temporaryInvulnerability());
+	    //animator.ResetTrigger("Shot");
         if (IsDead())
         {
         	//animator.SetTrigger("Shot");
         	animator.SetTrigger("Died");
         	StartCoroutine(DelayedSuicide()); // Start the coroutine
         }
+    }
+
+    public IEnumerator temporaryInvulnerability(){
+        myCollider.enabled = false;
+        yield return new WaitForSeconds(0.01f);
+        myCollider.enabled = true;
+    }
+
+    public void TakeKnockback(float knockbackForce)
+    {
+        // Apply knockback
+        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
     }
 
     private IEnumerator SuicideOnOutOfBounds()

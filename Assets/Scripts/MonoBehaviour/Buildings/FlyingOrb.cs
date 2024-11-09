@@ -19,7 +19,8 @@ public class FlyingOrb : MonoBehaviour
   {
     if (other.CompareTag("Enemy"))
     {
-      other.GetComponent<IDamagable>().TakeDamage(damage, knockbackForce);
+      other.GetComponent<IDamagable>().TakeDamage(damage);
+      other.GetComponent<IKnockable>().TakeKnockback(knockbackForce);
     }
   }
 }

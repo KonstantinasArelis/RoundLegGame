@@ -20,7 +20,7 @@ public class BarbedWire : MonoBehaviour
     {
       if (other.TryGetComponent<IDamagable>(out IDamagable damagable))
       {
-        damagable.TakeDamage(damage, knockbackForce);
+        damagable.TakeDamage(damage);
         OnDamage();
       }
     }
