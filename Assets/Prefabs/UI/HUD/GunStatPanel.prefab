@@ -400,7 +400,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2782971797078229754}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+        m_TargetAssemblyTypeName: MainHudController, MonoBehaviour
+        m_MethodName: UpgradeSelectedGun
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: knockbackForce
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2085159728944918299
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4474126915059451485
 RectTransform:
   m_ObjectHideFlags: 0
@@ -602,16 +614,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -1841608899829163501, guid: 39b1c4d8f32e27dc1b5da24e788a2ba5, type: 3}
+      - m_Target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
         m_TargetAssemblyTypeName: MainHudController, MonoBehaviour
-        m_MethodName: IncreaseStat
-        m_Mode: 3
+        m_MethodName: UpgradeSelectedGun
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: baseDamage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3103228594967183998
@@ -734,7 +746,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2541511050219455951}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+        m_TargetAssemblyTypeName: MainHudController, MonoBehaviour
+        m_MethodName: UpgradeSelectedGun
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: shotCooldownSeconds
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7772252481586155525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,4 +1287,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6812872990124760587}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+        m_TargetAssemblyTypeName: MainHudController, MonoBehaviour
+        m_MethodName: UpgradeSelectedGun
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: penetration
+          m_BoolArgument: 0
+        m_CallState: 2

@@ -3,16 +3,21 @@ using UnityEngine.VFX;
 using System.Collections;
 
 
-public class ShotgunController : MonoBehaviour
+public class ShotgunController : MonoBehaviour, IGunStatUpgradeable
 {
     private FireLine[] fireLines;
 
     private Vector3 initalForward;
 	[SerializeField] public float muzzleFlashDuration = 0.1f;
-    [SerializeField] private float shotCooldownSeconds = 0.03f;
-    [SerializeField] private int penetration = 1;
-    [SerializeField] private float knockbackForce = 100f;
-    [SerializeField] private float baseDamage = 1f;
+
+    [SerializeField] public float startingShotCooldownSeconds = 0.8f;
+    [SerializeField] public float startingPenetration = 1f;
+    [SerializeField] public float startingKnockbackForce = 5f;
+    [SerializeField] public float startingBaseDamage = 1f;
+    public float shotCooldownSeconds {get; set;}
+    public float penetration {get; set;}
+    public float knockbackForce {get; set;}
+    public float baseDamage {get; set;}
 
     private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
@@ -22,6 +27,11 @@ public class ShotgunController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        this.shotCooldownSeconds = startingShotCooldownSeconds;
+        this.penetration = startingPenetration;
+        this.knockbackForce = startingKnockbackForce;
+        this.baseDamage = startingBaseDamage;
+
         fireLines = GetComponentsInChildren<FireLine>();
 
         muzzlePointFlashLight.enabled = false;

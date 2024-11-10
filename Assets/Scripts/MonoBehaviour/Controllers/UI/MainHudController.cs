@@ -42,6 +42,7 @@ public class MainHudController : MonoBehaviour
         buildSystem = GameObject.Find("BuildSystem").GetComponent<BuildSystem>();
         BuildingEnabledChanged(true);
         // levelUpPanel.SetActive(false);
+
     }
 
     void OnEnable()
@@ -236,10 +237,10 @@ public class MainHudController : MonoBehaviour
         int seconds = waveTime % 60;
         waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
-    
-    public void IncreaseStat(string stat)
+
+    public void UpgradeSelectedGun(string statName) // cannot pass more than 1 value, or a enum value, in unity button onClick
     {
-        Debug.Log("button pressed");
-        gunStatPanel.SetActive(false);
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
+        playerController.UpgradeSelectedGun(statName);
     }
 }

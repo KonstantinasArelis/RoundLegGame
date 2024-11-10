@@ -14,7 +14,7 @@ public class FireLine : MonoBehaviour
     	initalForward = transform.forward;
     }
     
-    public void Fire(int penetration, float knockbackForce, float Damage)
+    public void Fire(float penetration, float knockbackForce, float Damage)
     {
 			Vector3 direction = transform.forward;
 			Vector3 endPoint = transform.position + direction * lineDistance;  

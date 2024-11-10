@@ -548,6 +548,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3867693105041312214, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3867693105041312214, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+    - target: {fileID: 3867693105041312214, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3867693105041312214, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseStat
+      objectReference: {fileID: 0}
+    - target: {fileID: 3867693105041312214, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainHudController, MonoBehaviour
+      objectReference: {fileID: 0}
     - target: {fileID: 4163802890915623955, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -689,9 +709,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: uziController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: currentUpgrade
       value: 
       objectReference: {fileID: 11400000, guid: 3f69a5f7b4a63b745ab7bdd9a6183ca0, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: pistolController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: shotgunController
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: upgrades.Array.size
       value: 3

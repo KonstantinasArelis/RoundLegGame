@@ -36,7 +36,7 @@ RectTransform:
   - {fileID: 4256411418932371462}
   - {fileID: 5070819713120150436}
   - {fileID: 3529318908040859956}
-  - {fileID: 6314305935309118195}
+  - {fileID: 6403673789545827682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -126,6 +126,9 @@ MonoBehaviour:
   upgradeItemUIPrefab: {fileID: 2229875143866525215, guid: 0a63a0c97a818a241b55e04298eafdd9, type: 3}
   buildingItemUIPrefab: {fileID: 2229875143866525215, guid: 7445a4638a203cc4d9b5cefad541ffb0, type: 3}
   gunStatPanel: {fileID: 2085159728944918299, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
+  pistolController: {fileID: 0}
+  uziController: {fileID: 0}
+  shotgunController: {fileID: 0}
 --- !u!1001 &3442765378918743522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -509,7 +512,7 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7405073394939096763, guid: 4b331d3f3b434614ebb8ab932e164391, type: 3}
   m_PrefabInstance: {fileID: 6214602301308551055}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7617734806945635502
+--- !u!1001 &7406488287868209983
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -520,10 +523,6 @@ PrefabInstance:
     - target: {fileID: 2085159728944918299, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
       propertyPath: m_Name
       value: GunStatPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2085159728944918299, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4474126915059451485, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
       propertyPath: m_Pivot.x
@@ -606,42 +605,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8893243202585230722}
-    - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: IncreaseStat
-      objectReference: {fileID: 0}
-    - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: MainHudController, MonoBehaviour
-      objectReference: {fileID: 0}
-    - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: hello
-      objectReference: {fileID: 0}
-    - target: {fileID: 6009472852914258665, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
---- !u!224 &6314305935309118195 stripped
+--- !u!224 &6403673789545827682 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4474126915059451485, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
-  m_PrefabInstance: {fileID: 7617734806945635502}
+  m_PrefabInstance: {fileID: 7406488287868209983}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8792335186698759307
 PrefabInstance:
