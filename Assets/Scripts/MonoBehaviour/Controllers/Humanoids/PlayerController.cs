@@ -31,6 +31,14 @@ public class PlayerController : MonoBehaviour, IDamagable
     // for testing
     private  UpgradeData[] availableUpgrades;
     Animator animator;
+
+    public GameObject gunObject; 
+    public GameObject uziObject; 
+    public GameObject shotgunObject;
+    public IGunStatUpgradeable selectedGunController;
+
+    private Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -216,5 +224,26 @@ public class PlayerController : MonoBehaviour, IDamagable
         Tweens.Pop(levelText.transform, 1.2f, 0.2f);
         levelText.text = levelProvider.GetCurrentLevel().ToString();
         mainHudController.OnLevelUp();
+    }
+
+    public void UpgradeSelectedGun(string statName)
+    {
+        switch (statName)
+        {
+            case "shotCooldownSeconds":
+                selectedGunController.shotCooldownSeconds = selectedGunController.shotCooldownSeconds / 2f;
+                break;
+            case "penetration":
+                selectedGunController.penetration = selectedGunController.penetration + 1f;
+                break;
+            case "knockbackForce":
+                selectedGunController.knockbackForce = selectedGunController.knockbackForce + 5f;
+                break;
+            case "baseDamage":
+                selectedGunController.baseDamage = selectedGunController.baseDamage + 1f;
+                break;
+        }
+
+        Debug.Log("Upgraded: " + statName);
     }
 }

@@ -29,9 +29,28 @@ public class MainHudController : MonoBehaviour
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
 
+    public GameObject[] DamageProgressBar;
+    public GameObject[] FireRateProgressBar;
+    public GameObject[] PenetrationProgressBar;
+    public GameObject[] KnockBackProgressBar;
+
+    public int DamageProgress;
+    public int FireRateProgress;
+    public int PenetrationProgress;
+    public int KnockBackProgress;
+
+    public GameObject gunStatPanel;
 
     void Awake()
     {
+        DamageProgressBar[0].SetActive(false);
+        DamageProgressBar[1].SetActive(false);
+        DamageProgressBar[2].SetActive(false);
+        DamageProgress=0;
+        FireRateProgress=0;
+        PenetrationProgress=0;
+        KnockBackProgress=0;
+
         scoreText = transform.Find("Score/Amount").GetComponent<TextMeshProUGUI>();
         levelUpPanel = transform.Find("LevelUpPanel").gameObject;
         upgradeItemsPanel = levelUpPanel.transform.Find("UpgradeItems").gameObject;
@@ -252,5 +271,31 @@ public class MainHudController : MonoBehaviour
         int minutes = waveTime / 60;
         int seconds = waveTime % 60;
         waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
+    }
+
+    public void UpgradeSelectedGun(string statName) // cannot pass more than 1 value, or a enum value, in unity button onClick
+    {
+        
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
+        playerController.UpgradeSelectedGun(statName);
+
+        switch (statName)
+        {
+            case "shotCooldownSeconds":
+                DamageProgressBar[DamageProgress].SetActive(true);
+                DamageProgress++;
+                break;
+            case "penetration":
+                
+                break;
+            case "knockbackForce":
+                
+                break;
+            case "baseDamage":
+                
+                break;
+        }
+        Canvas.ForceUpdateCanvases();
+
     }
 }

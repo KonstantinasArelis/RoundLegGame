@@ -5,6 +5,7 @@ public class BarbedWire : MonoBehaviour
   [SerializeField] private float damage;
   [SerializeField] private float cooldownTime;
   [SerializeField] private int damageTimes;
+  [SerializeField] private float knockbackForce = 2f;
   private Cooldown cooldown;
 
   void Start()
