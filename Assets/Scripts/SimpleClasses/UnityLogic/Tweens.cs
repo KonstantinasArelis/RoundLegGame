@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using System;
 
 public static class Tweens
 {

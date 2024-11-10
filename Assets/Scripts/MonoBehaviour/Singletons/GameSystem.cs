@@ -12,22 +12,26 @@ public class GameSystem : MonoBehaviour
     private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
     private int maxZombiesAtOneTime = 20;
 
+    private SceneFadeController sceneFadeController;
+
     private MainHudController mainHudController;
 
     private int waveTime = 0;
     private readonly int waveEndTime = 60 * 10;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        // randomly spawn zombies
-        StartCoroutine(SpawnZombiesCoroutine());
-    }
-
     void Awake()
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
+        sceneFadeController = GameObject.Find("SceneFade").GetComponent<SceneFadeController>();
         StartCoroutine(CountdownTimeCoroutine());
+    }
+
+    void Start()
+    {
+        sceneFadeController.FadeIn(() =>
+        {
+            StartCoroutine(SpawnZombiesCoroutine());
+        });  
     }
 
     private IEnumerator SpawnZombiesCoroutine()

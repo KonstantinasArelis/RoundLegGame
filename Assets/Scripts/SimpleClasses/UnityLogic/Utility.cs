@@ -31,6 +31,12 @@ public static class Utility
         int layer = LayerMask.NameToLayer(layerName);
         return ~(1 << layer);
     }
+
+    public static float Max(this Vector3 vector)
+        => Mathf.Max(vector.x, vector.y, vector.z);
+
+    public static Color WithTweakedAlpha(this Color color, float alpha)
+        => new (color.r, color.g, color.b, alpha);
 }
 
 

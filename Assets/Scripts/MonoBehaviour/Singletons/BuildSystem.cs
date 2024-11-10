@@ -7,10 +7,17 @@ public class BuildSystem : MonoBehaviour
 {
     public BuildingData currentBuilding = null;
     private GameObject lastHighlightedBuilding;
-    private Color defaultColor = Color.gray;
-    private Color highlightedColor = Color.grey;
+    private Color highlightedColor = Color.white;
+
+    private float groundY;
 
     public UnityEvent<BuildingData> BuildingPlacedEvent;
+
+    void Awake()
+    {
+        var ground = GameObject.Find("Plane").transform;
+        groundY = ground.GetComponent<Collider>().bounds.max.y;
+    }
 
     // Update is called once per frame
     void Update()
@@ -38,19 +45,21 @@ public class BuildSystem : MonoBehaviour
             if (
             hit.collider.gameObject.CompareTag("Player")
             || hit.collider.gameObject.CompareTag("Enemy")
+            || hit.point.y > groundY
             )
             {
-                // don't allow to build on these
+                // don't allow to build
                 return;
             }
             Vector3Int buildingPosition = new (
                 Mathf.RoundToInt(hit.point.x + hit.normal.x / 2),
-                Mathf.RoundToInt(hit.point.y + hit.normal.y / 2),
+                Mathf.RoundToInt(groundY + hit.normal.y / 2),
                 Mathf.RoundToInt(hit.point.z + hit.normal.z / 2));
             // parent under this script so it's organised
             GameObject building = Instantiate(currentBuilding.prefab, buildingPosition, currentBuilding.prefab.transform.rotation, transform);
             building.tag = "Building";
             var outline = building.AddComponent<Outline>();
+            outline.OutlineColor = highlightedColor;
             outline.enabled = false;
             BuildingPlacedEvent?.Invoke(currentBuilding);
         }

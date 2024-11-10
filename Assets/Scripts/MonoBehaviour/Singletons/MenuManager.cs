@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +15,15 @@ public class MenuManager : MonoBehaviour
 
     private RectTransform menuTransform;
 
+    private SceneFadeController sceneFadeController;
+
+    private readonly float dropY = 1000f;
+
+    void Awake()
+    {
+        sceneFadeController = GameObject.Find("SceneFade").GetComponent<SceneFadeController>();
+    }
+
     void Start()
     {
         menuTransform = transform.Find("MenuPanel").GetComponent<RectTransform>();
@@ -23,12 +33,16 @@ public class MenuManager : MonoBehaviour
         subTitleText = subTitle.text;
         title.text = "";
         subTitle.text = "";
-        StartCoroutine(AnimateEntranceCoroutine());
+        menuTransform.position = new (menuTransform.position.x, menuTransform.position.y + dropY, menuTransform.position.z);
+        StartCoroutine(OnStartCoroutine());
     }
 
     public void StartGame()
     {
-        SceneManager.LoadScene("MainScene"); // Replace "GameScene" with the name of your game scene
+        sceneFadeController.FadeOut(() =>
+        {
+            SceneManager.LoadScene("MainScene"); // Replace "GameScene" with the name of your game scene
+        });
     }
 
     public void OpenSettings()
@@ -41,14 +55,29 @@ public class MenuManager : MonoBehaviour
         Application.Quit(); // Quits the game (works only in the built version)
     }
 
-    private IEnumerator AnimateEntranceCoroutine()
+    private IEnumerator OnStartCoroutine()
     {
-        float dropY = 1000f;
-        menuTransform.position = new (menuTransform.position.x, menuTransform.position.y + dropY, menuTransform.position.z);
-        menuTransform.DOMoveY(menuTransform.position.y - dropY, 1f).SetEase(Ease.OutBounce);
+        sceneFadeController.FadeIn();
         yield return new WaitForSeconds(1f);
-        title.DOText(titleText, 0.5f).SetEase(Ease.Linear);
-        yield return new WaitForSeconds(0.5f);
-        subTitle.DOText(subTitleText, 0.5f).SetEase(Ease.Linear);
+        AnimateEntrance();
+        MakeButtonsInteractible(true);
+    }
+
+    private void AnimateEntrance()
+    {
+        MakeButtonsInteractible(false);
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(         
+            menuTransform.DOMoveY(menuTransform.position.y - dropY, 1f).SetEase(Ease.OutBounce)
+        );
+        sequence.Append(title.DOText(titleText, 0.5f).SetEase(Ease.Linear));
+        sequence.Append(subTitle.DOText(subTitleText, 0.5f).SetEase(Ease.Linear));
+        sequence.Play().OnComplete(() => MakeButtonsInteractible(true));
+    }
+
+    private void MakeButtonsInteractible(bool state)
+    {
+        GetComponentsInChildren<Button>().ToList().ForEach(button => button.interactable = state);
+        GetComponentsInChildren<ButtonHoverController>().ToList().ForEach(button => button.enabled = state);
     }
 }
