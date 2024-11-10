@@ -40,7 +40,7 @@ public class MainHudController : MonoBehaviour
         buildingPanel = transform.Find("BuildingItems").gameObject;
         buildSystem = GameObject.Find("BuildSystem").GetComponent<BuildSystem>();
         BuildingEnabledChanged(true);
-        // levelUpPanel.SetActive(false);
+        levelUpPanel.SetActive(false);
     }
 
     void OnEnable()
