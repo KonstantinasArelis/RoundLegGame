@@ -39,18 +39,26 @@ public class MainHudController : MonoBehaviour
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         buildingPanel = transform.Find("BuildingItems").gameObject;
         buildSystem = GameObject.Find("BuildSystem").GetComponent<BuildSystem>();
+        waveTimeText.text = "00:00";
         BuildingEnabledChanged(true);
         levelUpPanel.SetActive(false);
+    }
+
+    void Start()
+    {
+        playerController.SelectGun(currentUpgrade);
     }
 
     void OnEnable()
     {
         buildSystem.BuildingPlacedEvent.AddListener(OnBuildingPlaced);
+        buildSystem.BuildingDestroyedEvent.AddListener(OnBuildingDestroyed);
     }
 
     void OnDisable()
     {
         buildSystem.BuildingPlacedEvent.RemoveListener(OnBuildingPlaced);
+        buildSystem.BuildingDestroyedEvent.RemoveListener(OnBuildingDestroyed);
     }
 
     public void AddScore(int score)
@@ -70,6 +78,11 @@ public class MainHudController : MonoBehaviour
     private void OnBuildingPlaced(BuildingData buildingData)
     {
         AddScore(buildingData.cost);
+    }
+
+    private void OnBuildingDestroyed(int cost)
+    {
+        AddScore(-cost);
     }
 
     private void AnimateSubtractScore(string scoreString)
@@ -161,9 +174,8 @@ public class MainHudController : MonoBehaviour
     {
         Button button = upgradeItemsPanel
             .transform.GetChild(i).GetComponentInChildren<Button>();
-        UpgradeTypeEnum upgradeGunEnum = currentUpgrade.nextUpgrades[i].type;
         button.onClick.AddListener(() => {
-            playerController.SelectGun(upgradeGunEnum);
+            playerController.SelectGun(currentUpgrade.nextUpgrades[i]);
             currentUpgrade = currentUpgrade.nextUpgrades[i];
             levelUpPanel.SetActive(false);
             // it will level up if it has to - prevents unclicked upgrades

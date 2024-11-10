@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class FlyingOrb : MonoBehaviour
 {
+  public Transform orbitTarget;
   [SerializeField] private int radius;
-  [SerializeField] Transform orbitTarget;
   [SerializeField] private float damage;
   [SerializeField] private float speed;
 

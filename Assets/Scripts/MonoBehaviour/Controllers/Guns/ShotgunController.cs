@@ -6,6 +6,8 @@ public class ShotgunController : MonoBehaviour, IFireable
     private FireLine[] fireLines;
 
     private Vector3 initalForward;
+
+    private AudioSource audioSource;
 	[SerializeField] private float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
     public VisualEffect muzzleFlash;
@@ -16,7 +18,7 @@ public class ShotgunController : MonoBehaviour, IFireable
     void Start()
     {
         fireLines = GetComponentsInChildren<FireLine>();
-
+        audioSource = GetComponent<AudioSource>();
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;
@@ -31,6 +33,7 @@ public class ShotgunController : MonoBehaviour, IFireable
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
+        audioSource.Play();
 
         foreach (FireLine fireLine in fireLines)
         {

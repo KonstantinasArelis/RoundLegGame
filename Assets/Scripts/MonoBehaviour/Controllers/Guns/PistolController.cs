@@ -5,6 +5,7 @@ public class PistolController : MonoBehaviour, IFireable
 {
     private FireLine fireLine;
     private Vector3 initalForward;
+    private AudioSource audioSource;
 	[SerializeField] private float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
     public VisualEffect muzzleFlash;
@@ -15,7 +16,7 @@ public class PistolController : MonoBehaviour, IFireable
     void Start()
     {
         fireLine = GetComponentInChildren<FireLine>();
-
+        audioSource = GetComponent<AudioSource>();
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;
@@ -30,6 +31,7 @@ public class PistolController : MonoBehaviour, IFireable
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
+        audioSource.Play();
 
         fireLine.Fire();
     }

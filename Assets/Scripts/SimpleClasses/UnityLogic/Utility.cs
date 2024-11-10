@@ -37,6 +37,15 @@ public static class Utility
 
     public static Color WithTweakedAlpha(this Color color, float alpha)
         => new (color.r, color.g, color.b, alpha);
+
+    public static T[] LoadResourcesToArray<T>(string filepath) where T : ScriptableObject
+    {
+        UnityEngine.Object[] objects = Resources.LoadAll(filepath);
+        T[] resources = new T[objects.Length];
+        objects.CopyTo(resources, 0);
+        return resources;
+    }
+
 }
 
 

@@ -2,5 +2,6 @@ public enum UpgradeTypeEnum
 {
     Pistol,
     Uzi,
-    Shotgun
+    Shotgun,
+    KillerOrb
 }

@@ -16,7 +16,7 @@ public class UziController : MonoBehaviour, IFireable
     void Start()
     {
         fireLine = GetComponentInChildren<FireLine>();
-
+        audioSource = GetComponent<AudioSource>();
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;

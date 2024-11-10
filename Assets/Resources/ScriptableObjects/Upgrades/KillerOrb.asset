@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9b41127fe4db95498d143d1220bed67, type: 3}
-  m_Name: Uzi
+  m_Name: KillerOrb
   m_EditorClassIdentifier: 
-  name: Uzi
-  prefab: {fileID: 919132149155446097, guid: 5e3b3bfff9ff3f6f6b8b03dc2f06e722, type: 3}
-  type: 1
+  name: Killer Orb
+  prefab: {fileID: 6271509002931686649, guid: 8494d6c8bf729f540b6c3edd424c59d5, type: 3}
+  type: 3
   nextUpgrades: []
-  nextUpgradeLevel: 5
+  nextUpgradeLevel: 7
