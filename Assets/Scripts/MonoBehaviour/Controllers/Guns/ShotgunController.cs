@@ -1,21 +1,18 @@
 using UnityEngine;
 using UnityEngine.VFX;
-using System.Collections;
 
-
-public class ShotgunController : MonoBehaviour
+public class ShotgunController : MonoBehaviour, IFireable
 {
     private FireLine[] fireLines;
 
     private Vector3 initalForward;
-	[SerializeField] public float muzzleFlashDuration = 0.1f;
+	[SerializeField] private float muzzleFlashDuration = 0.1f;
     [SerializeField] private float shotCooldownSeconds = 0.03f;
-    private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
     public Light muzzleDirectionalFlashLight;
+    private Cooldown cooldown;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         fireLines = GetComponentsInChildren<FireLine>();
@@ -23,23 +20,17 @@ public class ShotgunController : MonoBehaviour
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;
+        cooldown = new (shotCooldownSeconds);
     }
 
-    // Update is called once per frame
     public void Fire()
     {
-        float lastShotDifference = Time.time - lastShotTime;
-		bool gunCooledDown = lastShotDifference >= shotCooldownSeconds;
-		if (!gunCooledDown)
-		{
-			return;
-		}
+        if (!cooldown.IsReady()) return;
 		
 		muzzlePointFlashLight.enabled = true;
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
-		lastShotTime = Time.time;
 
         foreach (FireLine fireLine in fireLines)
         {

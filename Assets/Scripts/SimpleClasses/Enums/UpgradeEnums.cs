@@ -4,11 +4,3 @@ public enum UpgradeTypeEnum
     Uzi,
     Shotgun
 }
-
-public enum UpgradeTierEnum
-{
-    Starting,
-    First,
-    Second,
-    Third
-}

@@ -1,17 +1,18 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private float speed;
     [SerializeField] private UpgradeTypeEnum selectedGun = UpgradeTypeEnum.Uzi;
 
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject xpBar;
+
+    [SerializeField] private int[] xpNeededPerLevel;
+
+    [SerializeField] private int maxHealth;
 
     Vector3 healthBarOffset = new (-0.3f, 2f, 0f);
     Vector3 xpBarOffset = new (-0.3f, 2.15f, 0f);
@@ -54,13 +55,13 @@ public class PlayerController : MonoBehaviour
         };
         
 
-        healthProvider = new HealthProvider(maxHealth: 10);
+        healthProvider = new HealthProvider(maxHealth);
 
         healthBar = Instantiate(healthBar, transform.position, healthBar.transform.rotation);
         healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth, 0.2f);
 
         // TODO: not hardcore level progression
-        levelProvider = new LevelProvider(xpNeededPerLevel: new int[]{20, 20, 20, 20});
+        levelProvider = new LevelProvider(xpNeededPerLevel);
         xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.2f);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
@@ -204,15 +205,18 @@ public class PlayerController : MonoBehaviour
 
     public void GainXp(int xp)
     {
+        int xpNeededForPreviousLevel = levelProvider.XpNeededForCurrentLevel();
+        int xpToBeGained = xp;
         bool didLevelUp = levelProvider.GainXp(xp);
-        if (didLevelUp) OnLevelUp();
+        if (didLevelUp) OnLevelUp(xpNeededForPreviousLevel, xpToBeGained);
         else if (!levelProvider.IsMaxLevelReached()) xpBar.GetComponent<QuantityBarController>().Add(xp);
     }
 
-    private void OnLevelUp()
+    private void OnLevelUp(int xpNeededForPreviousLevel, int xpToBeGained)
     {
         int xpNeededForLevelUp = levelProvider.XpNeededForCurrentLevel();
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.2f);
+        Tweens.Pop(levelText.transform, 1.2f, 0.2f);
         levelText.text = levelProvider.GetCurrentLevel().ToString();
         mainHudController.OnLevelUp();
     }

@@ -6,11 +6,11 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private GameObject monster1Prefab;
     [SerializeField] private GameObject player;
-    [SerializeField] private float spawnTimeSeconds = 3f;
+    [SerializeField] private float spawnTimeSeconds = 1f;
     private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
     private Transform floorTransform;
     private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
-    private int maxZombiesAtOneTime = 10;
+    private int maxZombiesAtOneTime = 20;
 
     private MainHudController mainHudController;
 

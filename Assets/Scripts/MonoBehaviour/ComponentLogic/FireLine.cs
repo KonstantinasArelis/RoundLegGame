@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
-public class FireLine : MonoBehaviour
+public class FireLine : MonoBehaviour, IFireable
 {
     private Vector3 initalForward;
     LineRenderer lineRenderer; 
     private readonly float lineDistance = 10f;
-    [SerializeField] public float lineDuration = 0.1f;
+    [SerializeField] private float lineDuration = 0.1f;
 	
     void Start()
     {
@@ -34,17 +33,13 @@ public class FireLine : MonoBehaviour
 					}
 					// only target Enemy type
 					// if (!hit.collider.CompareTag("Enemy")) return;
-					if (hit.collider.TryGetComponent<ZombieController>(out var zombieController))
+					if (hit.collider.TryGetComponent<IDamagable>(out var damagable))
 					{
-						zombieController.TakeDamage(1);
+						damagable.TakeDamage(1);
 					}
 					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{
 						explosive.Explode();
-					}
-					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller monster1Controller))
-					{
-						monster1Controller.TakeDamage(1);
 					}
 			}
     }

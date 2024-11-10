@@ -3,11 +3,12 @@ using DG.Tweening;
 
 public static class Tweens
 {
-  public static void Pop(Transform transform, float targetScale, float duration)
+  public static void Pop(Transform transform, float targetScale=1.2f, float duration=0.2f)
   {
     // scale up and down
-    // watch out if current scale is not 1
+    // suppose the scale is uniform in x, y, z
+    float previousScale = transform.localScale.x;
     transform.DOScale(targetScale, duration/2)
-      .OnComplete(() => transform.DOScale(1f, duration/2));
+      .OnComplete(() => transform.DOScale(previousScale, duration/2));
   }
 }

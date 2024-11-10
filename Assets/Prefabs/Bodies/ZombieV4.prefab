@@ -259,6 +259,9 @@ PrefabInstance:
       addedObject: {fileID: 2046829604842270379}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02a372c636370483bfceda3e6c91f67, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4339101233244044847}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02a372c636370483bfceda3e6c91f67, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6398210259523314580}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02a372c636370483bfceda3e6c91f67, type: 3}
       insertIndex: -1
@@ -331,9 +334,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6629868102ee4664484024078323f556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 3
   knockbackForce: 200
   scoreGivenOnDeath: 10
   xpGivenOnDeath: 10
+--- !u!114 &4339101233244044847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2800108410043042268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bfe2cfcd795ee449e6165091ad8385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: 6d8e7bef8ceeeee49977a03f8adfc657, type: 3}
+  - {fileID: 8300000, guid: e086887d17304d2498748bca259c26f7, type: 3}
+  - {fileID: 8300000, guid: 1b74e9489f47e74468fae69024f5edf8, type: 3}
+  minCooldownSeconds: 1
+  maxCooldownSeconds: 3
 --- !u!95 &6398210259523314580
 Animator:
   serializedVersion: 7

@@ -94,14 +94,18 @@ public class MainHudController : MonoBehaviour
     {
         // TODO: don't empty everytime for performance?
         // the panel HAS to be active first because strange things can happen
-        // upgrade only when the level is right
-        if (currentUpgrade.nextUpgradeLevel != playerController.levelProvider.GetCurrentLevel()) return;
+        // upgrade only when the level is right or when the upgrade is the last
+        if (
+            currentUpgrade.nextUpgradeLevel > playerController.levelProvider.GetCurrentLevel()
+            || currentUpgrade.nextUpgrades.Length == 0)
+        {
+            return;
+        }
+        // if the level is right look if the current upgrade was accepted
         levelUpPanel.SetActive(true);
         Utility.DestroyChildren(upgradeItemsPanel);
         DisplayLevelUpItems();
-        RenewItems(upgradeItemsPanel, () => {
-            UpgradeClickSetup();
-        });
+        RenewItems(upgradeItemsPanel, () => {UpgradeClickSetup();});
     }
 
     public void BuildingEnabledChanged(bool isBuildingEnabled)
@@ -162,6 +166,8 @@ public class MainHudController : MonoBehaviour
             playerController.SelectGun(upgradeGunEnum);
             currentUpgrade = currentUpgrade.nextUpgrades[i];
             levelUpPanel.SetActive(false);
+            // it will level up if it has to - prevents unclicked upgrades
+            OnLevelUp();
         });
     }
 

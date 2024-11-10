@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class QuantityBarController : MonoBehaviour
@@ -30,34 +31,34 @@ public class QuantityBarController : MonoBehaviour
     {
         this.scale = scale;
         this.max = max;
-        currentBar.transform.localScale = new Vector3(
+        currentBar.transform.DOScale(new Vector3(
             scale * current / max,
             // TODO: fix the magic number
             scale / 6,
             currentBar.transform.localScale.z
-        );
-        maxBar.transform.localScale = new Vector3(
+        ), 0.1f);
+        maxBar.transform.DOScale(new Vector3(
             scale,
             scale / 6,
             maxBar.transform.localScale.z
-        );
+        ), 0.1f);
     }
 
     public void Subtract(float amount)
     {
-        currentBar.transform.localScale = new Vector3(
+        currentBar.transform.DOScale(new Vector3(
             currentBar.transform.localScale.x - maxBar.transform.localScale.x * amount / max,
             currentBar.transform.localScale.y,
             currentBar.transform.localScale.z
-        );
+        ), 0.1f);
     }
 
     public void Add(float amount)
     {
-        currentBar.transform.localScale = new Vector3(
+        currentBar.transform.DOScale(new Vector3(
             currentBar.transform.localScale.x + maxBar.transform.localScale.x * amount / max,
             currentBar.transform.localScale.y,
             currentBar.transform.localScale.z
-        );
+        ), 0.1f);
     }
 }
