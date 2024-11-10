@@ -4,12 +4,13 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class ZombieController : MonoBehaviour, IDamagable
+public class ZombieController : MonoBehaviour, IDamagable, IKnockable
 {
     private HealthProvider healthProvider;
+    Collider myCollider;
 
     [SerializeField] private float maxHealth = 3;
-    [SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
+    //[SerializeField] private float knockbackForce = 5f; // Add a knockback force variable
 
     [SerializeField] private int scoreGivenOnDeath = 10;
     [SerializeField] private int xpGivenOnDeath = 10;
@@ -28,6 +29,7 @@ public class ZombieController : MonoBehaviour, IDamagable
 
     void Awake()
     {
+        myCollider = GetComponent<Collider>();
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
         healthProvider = new (maxHealth);
         StartCoroutine(SuicideOnOutOfBounds());
@@ -84,21 +86,29 @@ public class ZombieController : MonoBehaviour, IDamagable
         }
     }
 
-
     public void TakeDamage(float damage)
     {
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);
-
-        // Apply knockback
-        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
-        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
 	    //animator.ResetTrigger("Shot");
-
+        StartCoroutine(temporaryInvulnerability());
         if (healthProvider.IsDead())
         {
             OnDeath();
         }
+    }
+
+    public void TakeKnockback(float knockbackForce)
+    {
+        // Apply knockback
+        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+    }
+
+    public IEnumerator temporaryInvulnerability(){
+        myCollider.enabled = false;
+        yield return new WaitForSeconds(0.01f);
+        myCollider.enabled = true;
     }
 
     private void OnDeath()
@@ -131,5 +141,4 @@ public class ZombieController : MonoBehaviour, IDamagable
         yield return new WaitForSeconds(5f);
         Destroy(gameObject);
     }
-
 }

@@ -4,6 +4,7 @@ public class Explosive : MonoBehaviour
 {
   public float impactRadius;
   public int damage;
+  [SerializeField] public float knockbackForce = 10;
   [SerializeField] private GameObject explosionFX;
 
   public void Explode()
@@ -15,6 +16,7 @@ public class Explosive : MonoBehaviour
       if (hitCollider.GetComponent<ZombieController>() != null)
       {
         hitCollider.GetComponent<ZombieController>().TakeDamage(damage);
+        hitCollider.GetComponent<ZombieController>().TakeKnockback(knockbackForce);
       }
     }
     GameObject explosion = Instantiate(explosionFX, transform.position, transform.rotation);

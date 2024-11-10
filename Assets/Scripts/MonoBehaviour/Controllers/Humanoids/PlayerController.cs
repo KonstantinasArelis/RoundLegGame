@@ -8,7 +8,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed = 5.0f;
-    [SerializeField] private UpgradeTypeEnum selectedGun = UpgradeTypeEnum.Uzi;
+    [SerializeField] public UpgradeTypeEnum selectedGun = UpgradeTypeEnum.Uzi;
 
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject xpBar;
@@ -35,8 +35,10 @@ public class PlayerController : MonoBehaviour
     public GameObject gunObject; 
     public GameObject uziObject; 
     public GameObject shotgunObject;
+    public IGunStatUpgradeable selectedGunController;
 
     private Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -166,6 +168,20 @@ public class PlayerController : MonoBehaviour
         }
         gunToObject[gun].SetActive(true);
         selectedGun = gun;
+
+        switch (selectedGun)
+        {
+            case UpgradeTypeEnum.Pistol:
+                selectedGunController = pistolController;
+                break;
+            case UpgradeTypeEnum.Uzi:
+                selectedGunController = uziController;
+                break;
+            case UpgradeTypeEnum.Shotgun:
+                selectedGunController = shotgunController;
+                break;
+        }
+
     }
 
     private void FireSelectedGun()
@@ -215,5 +231,26 @@ public class PlayerController : MonoBehaviour
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.2f);
         levelText.text = levelProvider.GetCurrentLevel().ToString();
         mainHudController.OnLevelUp();
+    }
+
+    public void UpgradeSelectedGun(string statName)
+    {
+        switch (statName)
+        {
+            case "shotCooldownSeconds":
+                selectedGunController.shotCooldownSeconds = selectedGunController.shotCooldownSeconds / 2f;
+                break;
+            case "penetration":
+                selectedGunController.penetration = selectedGunController.penetration + 1f;
+                break;
+            case "knockbackForce":
+                selectedGunController.knockbackForce = selectedGunController.knockbackForce + 5f;
+                break;
+            case "baseDamage":
+                selectedGunController.baseDamage = selectedGunController.baseDamage + 1f;
+                break;
+        }
+
+        Debug.Log("Upgraded: " + statName);
     }
 }

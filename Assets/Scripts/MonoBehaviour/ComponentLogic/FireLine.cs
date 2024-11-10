@@ -14,7 +14,7 @@ public class FireLine : MonoBehaviour
     	initalForward = transform.forward;
     }
     
-    public void Fire()
+    public void Fire(float penetration, float knockbackForce, float Damage)
     {
 			Vector3 direction = transform.forward;
 			Vector3 endPoint = transform.position + direction * lineDistance;  
@@ -36,7 +36,8 @@ public class FireLine : MonoBehaviour
 					// if (!hit.collider.CompareTag("Enemy")) return;
 					if (hit.collider.TryGetComponent<ZombieController>(out var zombieController))
 					{
-						zombieController.TakeDamage(1);
+						zombieController.TakeDamage(Damage);
+						zombieController.TakeKnockback(knockbackForce);
 					}
 					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{
@@ -44,8 +45,14 @@ public class FireLine : MonoBehaviour
 					}
 					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller monster1Controller))
 					{
-						monster1Controller.TakeDamage(1);
+						monster1Controller.TakeDamage(Damage);
+						monster1Controller.TakeKnockback(knockbackForce);
+						//StartCoroutine(zombieController.temporaryInvulnerability());
 					}
+					penetration--;
+				if(penetration>0){
+					this.Fire(penetration, knockbackForce, Damage);
+				}
 			}
     }
 	

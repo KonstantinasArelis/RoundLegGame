@@ -6,7 +6,7 @@ public class FlyingOrb : MonoBehaviour
   [SerializeField] Transform orbitTarget;
   [SerializeField] private float damage;
   [SerializeField] private float speed;
-
+  [SerializeField] private float knockbackForce = 2f;
   void FixedUpdate()
   {
     // Orbit around target keeping radius
@@ -20,6 +20,7 @@ public class FlyingOrb : MonoBehaviour
     if (other.CompareTag("Enemy"))
     {
       other.GetComponent<IDamagable>().TakeDamage(damage);
+      other.GetComponent<IKnockable>().TakeKnockback(knockbackForce);
     }
   }
 }
