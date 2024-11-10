@@ -28,6 +28,10 @@ public class GameSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        sceneFadeController.FadeIn(() =>
+        {
+            StartCoroutine(SpawnZombiesCoroutine());
+        });  
         // randomly spawn zombies
         StartCoroutine(SpawnZombiesCoroutine());
         StartCoroutine(SpawnMonster1Coroutine());
@@ -38,14 +42,6 @@ public class GameSystem : MonoBehaviour
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
         sceneFadeController = GameObject.Find("SceneFade").GetComponent<SceneFadeController>();
         StartCoroutine(CountdownTimeCoroutine());
-    }
-
-    void Start()
-    {
-        sceneFadeController.FadeIn(() =>
-        {
-            StartCoroutine(SpawnZombiesCoroutine());
-        });  
     }
 
     private IEnumerator SpawnZombiesCoroutine()

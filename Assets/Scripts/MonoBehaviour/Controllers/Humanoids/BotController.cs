@@ -218,7 +218,7 @@ public class BotController : MonoBehaviour
 
     private void Shoot()
     {
-        pistolController.Fire();
+        pistolController.Fire(1, 2, 3);
     }
 
     private Vector3 FindOptimalMovementTarget(Vector3 target)

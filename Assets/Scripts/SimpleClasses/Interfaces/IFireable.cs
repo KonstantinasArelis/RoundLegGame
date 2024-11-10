@@ -1,4 +1,4 @@
 public interface IFireable
 {
-  void Fire();
+  void Fire(float penetration, float knockbackForce, float Damage);
 }

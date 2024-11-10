@@ -21,12 +21,3 @@ public enum GunStatPanelTypeEnum
     Penetration,
     Knockback
 }
-
-[Serializable]
-public enum GunStatPanelTypeEnum
-{
-    BaseDamage,
-    ShotCooldownSeconds,
-    Penetration,
-    Knockback
-}

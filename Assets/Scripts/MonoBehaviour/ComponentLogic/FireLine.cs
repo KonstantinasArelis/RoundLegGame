@@ -36,7 +36,7 @@ public class FireLine : MonoBehaviour, IFireable
 					if (hit.collider.TryGetComponent<IDamagable>(out var damagable))
 					{
 						damagable.TakeDamage(Damage);
-						zombieController.TakeKnockback(knockbackForce);
+						// zombieController.TakeKnockback(knockbackForce);
 					}
 					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{

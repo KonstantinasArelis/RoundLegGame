@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            GetFireable(currentGun)?.Fire();
+            GetFireable(currentGun)?.Fire(1, 2, 3);
         }
     }
 

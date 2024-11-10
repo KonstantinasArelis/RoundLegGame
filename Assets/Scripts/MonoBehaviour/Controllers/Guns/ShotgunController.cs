@@ -39,7 +39,7 @@ public class ShotgunController : MonoBehaviour, IFireable, IGunStatUpgradeable
         cooldown = new (shotCooldownSeconds);
     }
 
-    public void Fire()
+    public void Fire(float penetration, float knockbackForce, float Damage)
     {
         if (!cooldown.IsReady()) return;
 		
