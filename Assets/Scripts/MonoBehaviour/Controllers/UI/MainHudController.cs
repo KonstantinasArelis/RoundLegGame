@@ -29,6 +29,7 @@ public class MainHudController : MonoBehaviour
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
 
+    public GameObject gunStatPanel;
 
     void Awake()
     {
@@ -234,5 +235,11 @@ public class MainHudController : MonoBehaviour
         int minutes = waveTime / 60;
         int seconds = waveTime % 60;
         waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
+    }
+    
+    public void IncreaseStat(string stat)
+    {
+        Debug.Log("button pressed");
+        gunStatPanel.SetActive(false);
     }
 }
