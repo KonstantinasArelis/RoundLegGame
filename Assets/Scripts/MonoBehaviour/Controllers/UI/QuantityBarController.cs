@@ -7,8 +7,6 @@ public class QuantityBarController : MonoBehaviour
     private GameObject currentBar;
     private float max;
     private new Camera camera;
-    // magic number that makes the healthbar decent width
-    private float scale;
 
     void Awake()
     {
@@ -27,21 +25,21 @@ public class QuantityBarController : MonoBehaviour
     }
 
     // MUST call before use for instantiating properties
-    public void SetupQuantityBar(float current, float max, float scale)
+    // scale is a magic value
+    public void SetupQuantityBar(float current, float max, float scale=0.2f)
     {
-        this.scale = scale;
         this.max = max;
-        currentBar.transform.DOScale(new Vector3(
+        currentBar.transform.localScale = new Vector3(
             scale * current / max,
             // TODO: fix the magic number
             scale / 6,
             currentBar.transform.localScale.z
-        ), 0.1f);
-        maxBar.transform.DOScale(new Vector3(
+        );
+        maxBar.transform.localScale = new Vector3(
             scale,
             scale / 6,
             maxBar.transform.localScale.z
-        ), 0.1f);
+        );
     }
 
     public void Subtract(float amount)

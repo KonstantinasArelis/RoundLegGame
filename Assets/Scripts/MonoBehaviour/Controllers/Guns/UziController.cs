@@ -40,7 +40,7 @@ public class UziController : MonoBehaviour, IFireable, IGunStatUpgradeable
         cooldown = new (shotCooldownSeconds);
     }
 
-    public void Fire(float penetration, float knockbackForce, float Damage)
+    public void Fire()
     {
         if (!cooldown.IsReady()) return;
 		

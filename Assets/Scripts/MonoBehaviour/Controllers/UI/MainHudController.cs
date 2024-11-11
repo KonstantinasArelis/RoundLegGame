@@ -65,7 +65,7 @@ public class MainHudController : MonoBehaviour
 
     void Start()
     {
-        playerController.SelectGun(currentUpgrade);
+        playerController.SelectUpgrade(currentUpgrade);
     }
 
     void OnEnable()
@@ -194,7 +194,7 @@ public class MainHudController : MonoBehaviour
         Button button = upgradeItemsPanel
             .transform.GetChild(i).GetComponentInChildren<Button>();
         button.onClick.AddListener(() => {
-            playerController.SelectGun(currentUpgrade.nextUpgrades[i]);
+            playerController.SelectUpgrade(currentUpgrade.nextUpgrades[i]);
             currentUpgrade = currentUpgrade.nextUpgrades[i];
             levelUpPanel.SetActive(false);
             // it will level up if it has to - prevents unclicked upgrades

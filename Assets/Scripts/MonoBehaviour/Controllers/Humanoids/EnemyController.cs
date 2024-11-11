@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 // A lot of logic will be shared among enemies, so override this class if needed
-public class EnemyController : MonoBehaviour, IDamagable
+public class EnemyController : MonoBehaviour, IDamagable, IKnockable
 {
     private HealthProvider healthProvider;
 
@@ -12,6 +12,8 @@ public class EnemyController : MonoBehaviour, IDamagable
 
     [SerializeField] private int scoreGivenOnDeath = 10;
     [SerializeField] private int xpGivenOnDeath = 10;
+
+    [SerializeField] private float damageGivenOnHit = 1f;
     private readonly float chaseTargetCooldownSeconds = 0.5f;
     private readonly float speedDeltaToPlayer = 1f;
     private readonly float OUT_OF_BOUNDS_CHECK_SECONDS = 0.5f;
@@ -21,6 +23,8 @@ public class EnemyController : MonoBehaviour, IDamagable
     private Rigidbody rb;
     private bool isDying = false;
     private MainHudController mainHudController;
+
+    private Collider myCollider;
     
     Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,6 +37,7 @@ public class EnemyController : MonoBehaviour, IDamagable
         StartCoroutine(ChaseNearestTargetCoroutine());
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        myCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -73,13 +78,13 @@ public class EnemyController : MonoBehaviour, IDamagable
         if (collision.gameObject.CompareTag("Player"))
         {
             animator.SetTrigger("Hitting");
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(1);
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(damageGivenOnHit);
         }
 
         if (collision.gameObject.TryGetComponent<IDamagable>(out IDamagable damagable))
         {
             animator.SetTrigger("Hitting");
-            damagable.TakeDamage(1);
+            damagable.TakeDamage(damageGivenOnHit);
         }
     }
 
@@ -89,20 +94,32 @@ public class EnemyController : MonoBehaviour, IDamagable
         animator.SetTrigger("Shot");
         healthProvider.TakeDamage(damage);
 
-        // Apply knockback
-        Vector3 knockbackDirection = (transform.position - nearestPlayer.transform.position).normalized; 
-        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
-	    //animator.ResetTrigger("Shot");
-
         if (healthProvider.IsDead())
         {
             OnDeath();
+            return;
         }
+
+        StartCoroutine(TemporaryInvulnerabilityCoroutine());
+    }
+
+    public void TakeKnockback(float knockbackForce, Vector3 position)
+    {
+        // scale it by some factor otherwise you can't really notice it
+        knockbackForce *= 50f;
+        Vector3 knockbackDirection = (transform.position - position).normalized; 
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+    }
+
+    public IEnumerator TemporaryInvulnerabilityCoroutine()
+    {
+        myCollider.enabled = false;
+        yield return new WaitForSeconds(0.01f);
+        myCollider.enabled = true;
     }
 
     private void OnDeath()
     {
-        //animator.SetTrigger("Shot");
         animator.SetTrigger("Died");
         mainHudController.AddScore(scoreGivenOnDeath);
         GameObject.FindWithTag("Player").GetComponent<PlayerController>().GainXp(xpGivenOnDeath);

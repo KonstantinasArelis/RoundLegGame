@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Dissapearer))]
 public class Explosive : MonoBehaviour
 {
   public float impactRadius;
@@ -13,10 +14,13 @@ public class Explosive : MonoBehaviour
     Collider[] hitColliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemy"));
     foreach (var hitCollider in hitColliders)
     {
-      if (hitCollider.GetComponent<ZombieController>() != null)
+      if (hitCollider.TryGetComponent<IKnockable>(out IKnockable knockable))
       {
-        hitCollider.GetComponent<ZombieController>().TakeDamage(damage);
-        hitCollider.GetComponent<ZombieController>().TakeKnockback(knockbackForce);
+        knockable.TakeKnockback(knockbackForce, transform.position);
+      }
+      if (hitCollider.TryGetComponent<IDamagable>(out IDamagable damagable))
+      {
+        damagable.TakeDamage(damage);
       }
     }
     GameObject explosion = Instantiate(explosionFX, transform.position, transform.rotation);

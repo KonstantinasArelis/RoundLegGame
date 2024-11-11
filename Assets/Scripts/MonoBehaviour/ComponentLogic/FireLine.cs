@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FireLine : MonoBehaviour, IFireable
+public class FireLine : MonoBehaviour
 {
     private Vector3 initalForward;
     LineRenderer lineRenderer; 
@@ -13,7 +13,7 @@ public class FireLine : MonoBehaviour, IFireable
     	initalForward = transform.forward;
     }
     
-    public void Fire(float penetration, float knockbackForce, float Damage)
+    public void Fire(float penetration, float knockbackForce, float damage)
     {
 			Vector3 direction = transform.forward;
 			Vector3 endPoint = transform.position + direction * lineDistance;  
@@ -35,16 +35,15 @@ public class FireLine : MonoBehaviour, IFireable
 					// if (!hit.collider.CompareTag("Enemy")) return;
 					if (hit.collider.TryGetComponent<IDamagable>(out var damagable))
 					{
-						damagable.TakeDamage(Damage);
-						// zombieController.TakeKnockback(knockbackForce);
+						damagable.TakeDamage(damage);
+					}
+					if (hit.collider.TryGetComponent<IKnockable>(out var knockable))
+					{
+						knockable.TakeKnockback(knockbackForce, transform.position);
 					}
 					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{
 						explosive.Explode();
-					}
-					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller monster1Controller))
-					{
-						monster1Controller.TakeDamage(1);
 					}
 			}
     }
