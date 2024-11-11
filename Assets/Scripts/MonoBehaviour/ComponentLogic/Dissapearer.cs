@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Dissapearer : MonoBehaviour
 {
-  [SerializeField] float dissapearTime = 1f;
+  public float dissapearTime = 1f;
   public void Dissapear()
   {
     Invoke(nameof(Destroy), dissapearTime);

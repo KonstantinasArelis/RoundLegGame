@@ -25,6 +25,10 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
     private MainHudController mainHudController;
 
     private Collider myCollider;
+
+    private GameObject bloodSplatterPrefab;
+
+    private float colliderExtentY;
     
     Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -38,6 +42,8 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         myCollider = GetComponent<Collider>();
+        bloodSplatterPrefab = (GameObject) Resources.Load("Prefabs/FX/BloodSplatter");
+        colliderExtentY = myCollider.bounds.extents.y;
     }
 
     // Update is called once per frame
@@ -139,6 +145,13 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
             }
             yield return new WaitForSeconds(OUT_OF_BOUNDS_CHECK_SECONDS);
         }
+    }
+
+    public void OnDiedAnimationFinished()
+    {
+        var deathMiddlePosition = transform.Find("DeathMiddlePosition").position;
+        var splatter = Instantiate(bloodSplatterPrefab, deathMiddlePosition, bloodSplatterPrefab.transform.rotation);
+        splatter.GetComponent<BloodSplatter>().splatterScale = colliderExtentY;
     }
 
     private IEnumerator DelayedSuicide() 
