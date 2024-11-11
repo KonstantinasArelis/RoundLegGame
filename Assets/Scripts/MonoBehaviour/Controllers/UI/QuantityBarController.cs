@@ -6,6 +6,7 @@ public class QuantityBarController : MonoBehaviour
     private GameObject maxBar;
     private GameObject currentBar;
     private float max;
+    private float scale;
     private new Camera camera;
 
     void Awake()
@@ -29,6 +30,7 @@ public class QuantityBarController : MonoBehaviour
     public void SetupQuantityBar(float current, float max, float scale=0.2f)
     {
         this.max = max;
+        this.scale = scale;
         currentBar.transform.localScale = new Vector3(
             scale * current / max,
             // TODO: fix the magic number
@@ -42,19 +44,10 @@ public class QuantityBarController : MonoBehaviour
         );
     }
 
-    public void Subtract(float amount)
+    public void SetCurrent(float current)
     {
         currentBar.transform.DOScale(new Vector3(
-            currentBar.transform.localScale.x - maxBar.transform.localScale.x * amount / max,
-            currentBar.transform.localScale.y,
-            currentBar.transform.localScale.z
-        ), 0.1f);
-    }
-
-    public void Add(float amount)
-    {
-        currentBar.transform.DOScale(new Vector3(
-            currentBar.transform.localScale.x + maxBar.transform.localScale.x * amount / max,
+            scale * current / max,
             currentBar.transform.localScale.y,
             currentBar.transform.localScale.z
         ), 0.1f);

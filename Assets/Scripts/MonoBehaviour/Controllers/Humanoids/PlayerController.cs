@@ -204,8 +204,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         if (!damageCooldown.IsReady()) return;
-        healthBar.GetComponent<QuantityBarController>().Subtract(damage);
         healthProvider.TakeDamage(damage);
+        healthBar.GetComponent<QuantityBarController>().SetCurrent(healthProvider.health);
         if (healthProvider.IsDead())
         {
             OnDeath();
@@ -216,7 +216,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         bool didLevelUp = levelProvider.GainXp(xp);
         if (didLevelUp) OnLevelUp();
-        else if (!levelProvider.IsMaxLevelReached()) xpBar.GetComponent<QuantityBarController>().Add(xp);
+        else if (!levelProvider.IsMaxLevelReached())
+            xpBar.GetComponent<QuantityBarController>().SetCurrent(levelProvider.GetCurrentXp());
     }
 
     private void OnLevelUp()

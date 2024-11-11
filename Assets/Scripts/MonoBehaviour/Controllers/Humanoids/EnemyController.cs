@@ -107,7 +107,10 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
     {
         // scale it by some factor otherwise you can't really notice it
         knockbackForce *= 50f;
-        Vector3 knockbackDirection = (transform.position - position).normalized; 
+        // don't include y position
+        position = new Vector3(position.x, transform.position.y, position.z);
+        // make it knockback to back of where the enemy is facing
+        Vector3 knockbackDirection = (transform.position - position - transform.forward).normalized;
         rb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
     }
 
