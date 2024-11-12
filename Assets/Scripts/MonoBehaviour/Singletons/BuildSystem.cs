@@ -112,6 +112,7 @@ public class BuildSystem : MonoBehaviour
         // parent under this script so it's organised
         GameObject building = Instantiate(currentBuilding.prefab, buildingPosition, currentBuilding.prefab.transform.rotation, transform);
         building.tag = "Building";
+        building.layer = LayerMask.NameToLayer("Building");
         var outline = building.AddComponent<Outline>();
         outline.OutlineColor = highlightedColor;
         outline.enabled = false;

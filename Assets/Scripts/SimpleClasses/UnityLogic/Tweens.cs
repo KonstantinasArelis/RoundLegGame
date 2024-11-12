@@ -1,16 +1,15 @@
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
-using System;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 public static class Tweens
 {
-  public static void Pop(Transform transform, float targetScale=1.2f, float duration=0.2f)
+  public static TweenerCore<Vector3, Vector3, VectorOptions> Pop(Transform transform, float scaleFactor=1.2f, float duration=0.2f)
   {
     // scale up and down
-    // suppose the scale is uniform in x, y, z
-    float previousScale = transform.localScale.x;
-    transform.DOScale(targetScale, duration/2)
+    Vector3 previousScale = transform.localScale;
+    return transform.DOScale(previousScale * scaleFactor, duration/2)
       .OnComplete(() => transform.DOScale(previousScale, duration/2));
   }
 }

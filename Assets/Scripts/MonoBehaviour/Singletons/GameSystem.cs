@@ -35,13 +35,13 @@ public class GameSystem : MonoBehaviour
         // randomly spawn zombies
         StartCoroutine(SpawnZombiesCoroutine());
         StartCoroutine(SpawnMonster1Coroutine());
+        StartCoroutine(CountdownTimeCoroutine());
     }
 
     void Awake()
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
         sceneFadeController = GameObject.Find("SceneFade").GetComponent<SceneFadeController>();
-        StartCoroutine(CountdownTimeCoroutine());
     }
 
     private IEnumerator SpawnZombiesCoroutine()

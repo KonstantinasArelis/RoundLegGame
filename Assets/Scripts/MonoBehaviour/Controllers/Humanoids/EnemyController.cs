@@ -132,7 +132,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
         animator.SetTrigger("Died");
         mainHudController.AddScore(scoreGivenOnDeath);
         GameObject.FindWithTag("Player").GetComponent<PlayerController>().GainXp(xpGivenOnDeath);
-        StartCoroutine(DelayedSuicide());
+        DelayedSuicide();
     }
 
     private IEnumerator SuicideOnOutOfBounds()
@@ -141,7 +141,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
         {
             if (transform.position.y < SUICIDE_Y)
             {
-                StartCoroutine(DelayedSuicide()); // Start the coroutine
+                DelayedSuicide(); // Start the coroutine
             }
             yield return new WaitForSeconds(OUT_OF_BOUNDS_CHECK_SECONDS);
         }
@@ -154,14 +154,12 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
         splatter.GetComponent<BloodSplatter>().splatterScale = colliderExtentY;
     }
 
-    private IEnumerator DelayedSuicide() 
+    private void DelayedSuicide() 
     {
         isDying = true;
         Destroy(GetComponent<Collider>());
-        GetComponent<Rigidbody>().useGravity = false; 
-        
-        yield return new WaitForSeconds(5f);
-        Destroy(gameObject);
+        GetComponent<Rigidbody>().useGravity = false;
+        gameObject.AddComponent<Dissapearer>().Dissapear();
     }
 
 }

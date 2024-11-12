@@ -1,6 +1,7 @@
+using Codice.Client.Common.GameUI;
 using UnityEngine;
 
-[RequireComponent(typeof(Dissapearer))]
+
 public class Explosive : MonoBehaviour
 {
   public float impactRadius;
@@ -8,10 +9,23 @@ public class Explosive : MonoBehaviour
   [SerializeField] public float knockbackForce = 10;
   [SerializeField] private GameObject explosionFX;
 
+  public void ExplodeWithDelay(float delay=0.1f)
+  {
+    Invoke(nameof(Explode), delay);
+  }
+
   public void Explode()
   {
-    // sphere raycast
-    Collider[] hitColliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemy"));
+    AffectTargets();
+    Dissapearer dissapear = Instantiate(explosionFX, transform.position, transform.rotation).AddComponent<Dissapearer>();
+    dissapear.dissapearTime = 0.4f;
+    dissapear.Dissapear();
+    Destroy(gameObject);
+  }
+
+  private void AffectTargets()
+  {
+    Collider[] hitColliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemy", "Building"));
     foreach (var hitCollider in hitColliders)
     {
       if (hitCollider.TryGetComponent<IKnockable>(out IKnockable knockable))
@@ -22,9 +36,11 @@ public class Explosive : MonoBehaviour
       {
         damagable.TakeDamage(damage);
       }
+      if (hitCollider.TryGetComponent<Explosive>(out Explosive explosive))
+      {
+        // chain explosions on other explosive buildings
+        explosive.ExplodeWithDelay();
+      }
     }
-    GameObject explosion = Instantiate(explosionFX, transform.position, transform.rotation);
-    explosion.GetComponent<Dissapearer>().Dissapear();
-    Destroy(gameObject);
   }
 }

@@ -78,6 +78,6 @@ public class MenuManager : MonoBehaviour
     private void MakeButtonsInteractible(bool state)
     {
         GetComponentsInChildren<Button>().ToList().ForEach(button => button.interactable = state);
-        GetComponentsInChildren<ButtonHoverController>().ToList().ForEach(button => button.enabled = state);
+        GetComponentsInChildren<HoverExpandController>().ToList().ForEach(button => button.enabled = state);
     }
 }

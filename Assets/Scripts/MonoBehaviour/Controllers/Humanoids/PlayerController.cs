@@ -201,23 +201,23 @@ public class PlayerController : MonoBehaviour, IDamagable
         Destroy(gameObject);
     }
 
-    public void TakeDamage(float damage)
+    public async void TakeDamage(float damage)
     {
         if (!damageCooldown.IsReady()) return;
         healthProvider.TakeDamage(damage);
-        healthBar.GetComponent<QuantityBarController>().SetCurrent(healthProvider.health);
+        await healthBar.GetComponent<QuantityBarController>().SetCurrent(healthProvider.health);
         if (healthProvider.IsDead())
         {
             OnDeath();
         }
     }
 
-    public void GainXp(int xp)
+    public async void GainXp(int xp)
     {
         bool didLevelUp = levelProvider.GainXp(xp);
         if (didLevelUp) OnLevelUp();
         else if (!levelProvider.IsMaxLevelReached())
-            xpBar.GetComponent<QuantityBarController>().SetCurrent(levelProvider.GetCurrentXp());
+            await xpBar.GetComponent<QuantityBarController>().SetCurrent(levelProvider.GetCurrentXp());
     }
 
     private void OnLevelUp()

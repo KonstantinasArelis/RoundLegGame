@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -44,12 +45,12 @@ public class QuantityBarController : MonoBehaviour
         );
     }
 
-    public void SetCurrent(float current)
+    public Task SetCurrent(float current)
     {
-        currentBar.transform.DOScale(new Vector3(
+        return currentBar.transform.DOScale(new Vector3(
             scale * current / max,
             currentBar.transform.localScale.y,
             currentBar.transform.localScale.z
-        ), 0.1f);
+        ), 0.1f).AsyncWaitForCompletion();
     }
 }
