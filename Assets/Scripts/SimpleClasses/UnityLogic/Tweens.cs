@@ -1,13 +1,16 @@
 using UnityEngine;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 public static class Tweens
 {
-  public static void Pop(Transform transform, float targetScale, float duration)
+  public static TweenerCore<Vector3, Vector3, VectorOptions> Pop(Transform transform, float scaleFactor=1.2f, float duration=0.2f)
   {
-    // scale up and down
-    // watch out if current scale is not 1
-    transform.DOScale(targetScale, duration/2)
-      .OnComplete(() => transform.DOScale(1f, duration/2));
+    // watch out for this being invalid when when the object is in process of tweening already
+    Vector3 previousScale = Vector3.one;
+    return transform.DOScale(previousScale * scaleFactor, duration/2)
+      .OnComplete(() => transform.DOScale(previousScale, duration/2));
+    
   }
 }

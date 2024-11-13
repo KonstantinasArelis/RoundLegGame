@@ -12,6 +12,7 @@ TagManager:
   - Pistol
   - misc
   - Shotgun
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - UI
   - Player
   - Bot
-  - 
+  - Building
   - 
   - 
   - 

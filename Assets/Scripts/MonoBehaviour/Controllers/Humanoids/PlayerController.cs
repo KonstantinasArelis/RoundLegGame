@@ -1,17 +1,15 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
-    [SerializeField] private float speed = 5.0f;
-    [SerializeField] public UpgradeTypeEnum selectedGun = UpgradeTypeEnum.Uzi;
-
+    [SerializeField] private float speed;
     [SerializeField] private GameObject healthBar;
     [SerializeField] private GameObject xpBar;
+
+    [SerializeField] private int maxHealth;
 
     Vector3 healthBarOffset = new (-0.3f, 2f, 0f);
     Vector3 xpBarOffset = new (-0.3f, 2.15f, 0f);
@@ -20,24 +18,24 @@ public class PlayerController : MonoBehaviour
     private new GameObject camera;
     private Vector3 initalForward;
     private Vector3 initialRight;
-    private  PistolController pistolController;
-    private  UziController uziController;
-    private  ShotgunController shotgunController;
     [SerializeField] private Vector3 positionOffsetFromCamera = new (0, 8, -5);
 
     private TextMeshProUGUI levelText;
 
     private MainHudController mainHudController;
 
+    private GameObject currentGun;
+
     public Cooldown damageCooldown = new (1.0f);
+
+    // for testing
+    private  UpgradeData[] availableUpgrades;
     Animator animator;
 
     public GameObject gunObject; 
     public GameObject uziObject; 
     public GameObject shotgunObject;
-    public IGunStatUpgradeable selectedGunController;
-
-    private Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
+    public IGunStatUpgradeable currentGunStatUpgradable;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,29 +43,22 @@ public class PlayerController : MonoBehaviour
         initalForward = transform.forward;
         initialRight = transform.right;
         camera = Camera.main.gameObject;
-        pistolController = gameObject.FindComponentInChildWithTag<Transform>("Pistol").GetComponent<PistolController>();
-        uziController = gameObject.FindComponentInChildWithTag<Transform>("Uzi").GetComponent<UziController>();
-        shotgunController = gameObject.FindComponentInChildWithTag<Transform>("Shotgun").GetComponent<ShotgunController>();
         animator = GetComponent<Animator>();
-        gunToObject = new () {
-            {UpgradeTypeEnum.Pistol, gunObject},
-            {UpgradeTypeEnum.Uzi, uziObject},
-            {UpgradeTypeEnum.Shotgun, shotgunObject}
-        };
         
 
-        healthProvider = new HealthProvider(maxHealth: 10);
+        healthProvider = new HealthProvider(maxHealth);
 
         healthBar = Instantiate(healthBar, transform.position, healthBar.transform.rotation);
-        healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth, 0.2f);
+        healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth);
 
         // TODO: not hardcore level progression
-        levelProvider = new LevelProvider(xpNeededPerLevel: new int[]{20, 20, 20, 20});
+        levelProvider = new LevelProvider(Maps.xpNeededPerLevel);
         xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
-        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel(), 0.2f);
+        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel());
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
-        //default gun
-        SelectGun(selectedGun);
+
+        // for testing
+        availableUpgrades = Utility.LoadResourcesToArray<UpgradeData>("ScriptableObjects/Upgrades");
     }
 
     void Awake()
@@ -138,65 +129,72 @@ public class PlayerController : MonoBehaviour
         transform.position += moveDirection;
     }
 
-    private void ExtraControls()
+    private GameObject GetGun(UpgradeTypeEnum upgradeType)
     {
-        if (Input.GetKey(KeyCode.Alpha1))
+        // try to get the gun else it is an upgrade
+        if (Maps.gunToTag.TryGetValue(upgradeType, out string gunName))
         {
-            SelectGun(UpgradeTypeEnum.Pistol);
-        } else if (Input.GetKey(KeyCode.Alpha2))
-        {
-            SelectGun(UpgradeTypeEnum.Uzi);
-        } else if (Input.GetKey(KeyCode.Alpha3))
-        {
-            SelectGun(UpgradeTypeEnum.Shotgun); 
+            return gameObject.FindComponentInChildWithTag<Transform>(gunName).gameObject;
         }
+        return null;
     }
+
+    private IFireable GetFireable(GameObject gun) => gun.GetComponent<IFireable>();
 
     private void Shoot()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            FireSelectedGun();
+            GetFireable(currentGun)?.Fire();
         }
     }
 
-    public void SelectGun(UpgradeTypeEnum gun)
+    public void SelectUpgrade(UpgradeData upgrade)
     {
-        foreach (var g in gunToObject)
+        GameObject gunObject = GetGun(upgrade.type);
+        if (gunObject == null)
         {
-            g.Value.SetActive(false);
+            SelectPassiveUpgrade(upgrade);
+            return;
         }
-        gunToObject[gun].SetActive(true);
-        selectedGun = gun;
-
-        switch (selectedGun)
-        {
-            case UpgradeTypeEnum.Pistol:
-                selectedGunController = pistolController;
-                break;
-            case UpgradeTypeEnum.Uzi:
-                selectedGunController = uziController;
-                break;
-            case UpgradeTypeEnum.Shotgun:
-                selectedGunController = shotgunController;
-                break;
-        }
-
+        SelectGun(gunObject);
     }
 
-    private void FireSelectedGun()
+    private void SelectGun(GameObject gunObject)
     {
-        switch (selectedGun)
+        if (currentGun != null) currentGun.SetActive(false);
+        currentGun = gunObject;
+        currentGunStatUpgradable = currentGun.GetComponent<IGunStatUpgradeable>();
+        currentGun.SetActive(true);
+    }
+
+    private void SelectPassiveUpgrade(UpgradeData upgrade)
+    {
+        switch (upgrade.type)
         {
-            case UpgradeTypeEnum.Pistol:
-                pistolController.Fire();
-                break;
-            case UpgradeTypeEnum.Uzi:
-                uziController.Fire();
-                break;
-            case UpgradeTypeEnum.Shotgun:
-                shotgunController.Fire();
-                break;
+            case UpgradeTypeEnum.KillerOrb:
+                var orb = Instantiate(upgrade.prefab, transform.position, transform.rotation);
+                orb.GetComponent<FlyingOrb>().orbitTarget = transform;
+            break;
+            case UpgradeTypeEnum.AxeThrower:
+                var axeThrower = Instantiate(upgrade.prefab, transform.position, transform.rotation);
+                axeThrower.GetComponent<AxeThrower>().spawnTransform = transform;
+            break;
+        }
+    }
+
+
+    private void ExtraControls()
+    {
+        if (Input.GetKey(KeyCode.Alpha1))
+        {
+            SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.Pistol).First());
+        } else if (Input.GetKey(KeyCode.Alpha2))
+        {
+            SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.Uzi).First());
+        } else if (Input.GetKey(KeyCode.Alpha3))
+        {
+            SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.Shotgun).First()); 
         }
     }
 
@@ -207,28 +205,30 @@ public class PlayerController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void TakeDamage(int damage)
+    public async void TakeDamage(float damage)
     {
         if (!damageCooldown.IsReady()) return;
-        healthBar.GetComponent<QuantityBarController>().Subtract(damage);
         healthProvider.TakeDamage(damage);
+        await healthBar.GetComponent<QuantityBarController>().SetCurrent(healthProvider.health);
         if (healthProvider.IsDead())
         {
             OnDeath();
         }
     }
 
-    public void GainXp(int xp)
+    public async void GainXp(int xp)
     {
         bool didLevelUp = levelProvider.GainXp(xp);
         if (didLevelUp) OnLevelUp();
-        else if (!levelProvider.IsMaxLevelReached()) xpBar.GetComponent<QuantityBarController>().Add(xp);
+        else if (!levelProvider.IsMaxLevelReached())
+            await xpBar.GetComponent<QuantityBarController>().SetCurrent(levelProvider.GetCurrentXp());
     }
 
     private void OnLevelUp()
     {
         int xpNeededForLevelUp = levelProvider.XpNeededForCurrentLevel();
-        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp, 0.2f);
+        xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, xpNeededForLevelUp);
+        Tweens.Pop(levelText.transform, 1.2f, 0.2f);
         levelText.text = levelProvider.GetCurrentLevel().ToString();
         mainHudController.OnLevelUp();
     }
@@ -238,16 +238,16 @@ public class PlayerController : MonoBehaviour
         switch (statName)
         {
             case "shotCooldownSeconds":
-                selectedGunController.shotCooldownSeconds = selectedGunController.shotCooldownSeconds / 2f;
+                currentGunStatUpgradable.shotCooldownSeconds /= 2f;
                 break;
             case "penetration":
-                selectedGunController.penetration = selectedGunController.penetration + 1f;
+                currentGunStatUpgradable.penetration += 1f;
                 break;
             case "knockbackForce":
-                selectedGunController.knockbackForce = selectedGunController.knockbackForce + 5f;
+                currentGunStatUpgradable.knockbackForce += 5f;
                 break;
             case "baseDamage":
-                selectedGunController.baseDamage = selectedGunController.baseDamage + 1f;
+                currentGunStatUpgradable.baseDamage += 1f;
                 break;
         }
 

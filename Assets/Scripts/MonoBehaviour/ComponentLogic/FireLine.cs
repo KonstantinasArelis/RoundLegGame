@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class FireLine : MonoBehaviour
 {
     private Vector3 initalForward;
     LineRenderer lineRenderer; 
     private readonly float lineDistance = 10f;
-    [SerializeField] public float lineDuration = 0.1f;
+    [SerializeField] private float lineDuration = 0.1f;
 	
     void Start()
     {
@@ -14,7 +13,7 @@ public class FireLine : MonoBehaviour
     	initalForward = transform.forward;
     }
     
-    public void Fire(float penetration, float knockbackForce, float Damage)
+    public void Fire(float penetration, float knockbackForce, float damage)
     {
 			Vector3 direction = transform.forward;
 			Vector3 endPoint = transform.position + direction * lineDistance;  
@@ -34,25 +33,18 @@ public class FireLine : MonoBehaviour
 					}
 					// only target Enemy type
 					// if (!hit.collider.CompareTag("Enemy")) return;
-					if (hit.collider.TryGetComponent<ZombieController>(out var zombieController))
+					if (hit.collider.TryGetComponent<IDamagable>(out var damagable))
 					{
-						zombieController.TakeDamage(Damage);
-						zombieController.TakeKnockback(knockbackForce);
+						damagable.TakeDamage(damage);
+					}
+					if (hit.collider.TryGetComponent<IKnockable>(out var knockable))
+					{
+						knockable.TakeKnockback(knockbackForce, transform.position);
 					}
 					if (hit.collider.TryGetComponent<Explosive>(out var explosive))
 					{
 						explosive.Explode();
 					}
-					if (hit.collider.TryGetComponent<Monster1Controller>(out Monster1Controller monster1Controller))
-					{
-						monster1Controller.TakeDamage(Damage);
-						monster1Controller.TakeKnockback(knockbackForce);
-						//StartCoroutine(zombieController.temporaryInvulnerability());
-					}
-					penetration--;
-				if(penetration>0){
-					this.Fire(penetration, knockbackForce, Damage);
-				}
 			}
     }
 	

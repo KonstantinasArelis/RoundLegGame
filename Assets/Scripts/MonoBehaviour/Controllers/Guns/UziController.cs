@@ -1,8 +1,7 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class UziController : MonoBehaviour, IGunStatUpgradeable
+public class UziController : MonoBehaviour, IFireable, IGunStatUpgradeable
 {
     private FireLine fireLine;
     public AudioSource audioSource;
@@ -24,6 +23,7 @@ public class UziController : MonoBehaviour, IGunStatUpgradeable
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
     public Light muzzleDirectionalFlashLight;
+    private Cooldown cooldown;
 
     void Start()
     {
@@ -33,27 +33,22 @@ public class UziController : MonoBehaviour, IGunStatUpgradeable
         this.baseDamage = startingBaseDamage;
 
         fireLine = GetComponentInChildren<FireLine>();
-
+        audioSource = GetComponent<AudioSource>();
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;
+        cooldown = new (shotCooldownSeconds);
     }
 
     public void Fire()
     {
-        float lastShotDifference = Time.time - lastShotTime;
-		bool gunCooledDown = lastShotDifference >= shotCooldownSeconds;
-		if (!gunCooledDown)
-		{
-			return;
-		}
+        if (!cooldown.IsReady()) return;
 		
 		muzzlePointFlashLight.enabled = true;
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
         audioSource.Play();
-		lastShotTime = Time.time;
 
         fireLine.Fire(penetration, knockbackForce, baseDamage);
     }

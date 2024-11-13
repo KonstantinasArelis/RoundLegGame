@@ -1,7 +1,7 @@
 public class LevelProvider
 {
-  private int level;
   private int xp;
+  private int level;
   public int[] xpNeededPerLevel;
 
   public LevelProvider(int level, int xp, int[] xpNeededPerLevel)
@@ -50,5 +50,10 @@ public class LevelProvider
   public int GetCurrentLevel()
   {
     return level + 1;
+  }
+
+  public int GetCurrentXp()
+  {
+    return xp;
   }
 }
