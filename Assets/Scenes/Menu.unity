@@ -386,17 +386,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!114 &1285091871 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2252676093237746180, guid: 64541d58842d25f468f8e4dd4cbe41ce, type: 3}
-  m_PrefabInstance: {fileID: 909055044}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa47c5b46c9490047a3023ef685006da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1390099357
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,37 +730,9 @@ PrefabInstance:
       value: MenuCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1024493590}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 1285091871}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: FadeOut
-      objectReference: {fileID: 0}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: SceneFadeController, MonoBehaviour
-      objectReference: {fileID: 0}
-    - target: {fileID: 7239694046856257714, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7324942412040825106, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 

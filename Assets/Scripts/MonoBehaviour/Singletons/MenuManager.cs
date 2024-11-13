@@ -69,6 +69,8 @@ public class MenuManager : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.Append(         
             menuTransform.DOMoveY(menuTransform.position.y - dropY, 1f).SetEase(Ease.OutBounce)
+                .OnComplete(() => GetComponentsInChildren<Button>().ToList()
+                    .ForEach(button => button.gameObject.AddComponent<HoverExpandController>()))
         );
         sequence.Append(title.DOText(titleText, 0.5f).SetEase(Ease.Linear));
         sequence.Append(subTitle.DOText(subTitleText, 0.5f).SetEase(Ease.Linear));
@@ -78,6 +80,5 @@ public class MenuManager : MonoBehaviour
     private void MakeButtonsInteractible(bool state)
     {
         GetComponentsInChildren<Button>().ToList().ForEach(button => button.interactable = state);
-        GetComponentsInChildren<HoverExpandController>().ToList().ForEach(button => button.enabled = state);
     }
 }

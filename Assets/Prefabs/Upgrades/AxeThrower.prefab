@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7044276880414781942}
   - component: {fileID: 6961792171448891556}
-  - component: {fileID: 5836326877073440464}
+  - component: {fileID: 8092150165456571635}
+  - component: {fileID: 8143839572329251770}
   m_Layer: 0
   m_Name: Axe
   m_TagString: Untagged
@@ -55,7 +56,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.05711455, y: 1.2883427, z: 1.7213615}
   m_Center: {x: 0.004266827, y: 1.0198432, z: -0.003646463}
---- !u!54 &5836326877073440464
+--- !u!54 &8092150165456571635
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,6 +83,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8143839572329251770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2556153556391515226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50c746303903d154fa330f869900f20c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &5021807844928751087
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,8 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66256038f7dbc504f98309875a7964b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTransfrom: {fileID: 0}
+  spawnTransform: {fileID: 0}
   throwSpeed: 10
+  throwsPerSecond: 1
 --- !u!1 &5606467892735840959
 GameObject:
   m_ObjectHideFlags: 0

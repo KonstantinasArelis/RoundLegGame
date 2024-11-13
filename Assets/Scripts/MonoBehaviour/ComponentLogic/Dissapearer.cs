@@ -40,9 +40,22 @@ public class Dissapearer : MonoBehaviour
   {
     foreach (var mat in materials)
     {
-      Color color = mat.color;
-      DOTween.To(() => color.a, x => color.a = x, 0, fadeOutAnimationTime)
-        .OnUpdate(() => mat.color = color);
+      if (mat.HasProperty("_Color")) // Check if the material has a '_Color' property
+      {
+        Color color = mat.color;
+        DOTween.To(() => color.a, x => color.a = x, 0, fadeOutAnimationTime)
+          .OnUpdate(() => mat.color = color);
+      }
+      else if (mat.HasProperty("_TintColor")) // Check for other possible color properties
+      {
+        Color color = mat.GetColor("_TintColor");
+        DOTween.To(() => color.a, x => color.a = x, 0, fadeOutAnimationTime)
+          .OnUpdate(() => mat.SetColor("_TintColor", color));
+      }
+      else
+      {
+        Debug.LogWarning($"Material '{mat.name}' does not have a suitable color property for fading (this can be ignored).");
+      }
     }
   }
 
