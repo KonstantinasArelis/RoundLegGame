@@ -29,27 +29,26 @@ public class MainHudController : MonoBehaviour
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
 
-    public GameObject[] DamageProgressBar;
-    public GameObject[] FireRateProgressBar;
-    public GameObject[] PenetrationProgressBar;
-    public GameObject[] KnockBackProgressBar;
-
     public int DamageProgress;
     public int FireRateProgress;
     public int PenetrationProgress;
     public int KnockBackProgress;
 
-    public GameObject gunStatPanel;
+    [SerializeField] private Transform[] DamageProgressBits;
+    [SerializeField] private Transform[] FireRateProgressBits;
+    [SerializeField] private Transform[] PenetrationProgressBits;
+    [SerializeField] private Transform[] KnockBackProgressBits;
 
+    public GameObject gunStatPanel;
+    private Vector3 activatedBitSize;
     void Awake()
     {
-        DamageProgressBar[0].SetActive(false);
-        DamageProgressBar[1].SetActive(false);
-        DamageProgressBar[2].SetActive(false);
         DamageProgress=0;
         FireRateProgress=0;
         PenetrationProgress=0;
         KnockBackProgress=0;
+
+        activatedBitSize = new Vector3(0.6866899f, 0.3495518f, 1f);
 
         scoreText = transform.Find("Score/Amount").GetComponent<TextMeshProUGUI>();
         levelUpPanel = transform.Find("LevelUpPanel").gameObject;
@@ -60,6 +59,8 @@ public class MainHudController : MonoBehaviour
         buildSystem = GameObject.Find("BuildSystem").GetComponent<BuildSystem>();
         BuildingEnabledChanged(true);
         // levelUpPanel.SetActive(false);
+        InitiateGunStatPanel();
+
     }
 
     void OnEnable()
@@ -255,29 +256,57 @@ public class MainHudController : MonoBehaviour
         waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 
+    void InitiateGunStatPanel()
+    {
+        foreach(Transform bit in DamageProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+        foreach(Transform bit in FireRateProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+        foreach(Transform bit in PenetrationProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+        foreach(Transform bit in KnockBackProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+    }
+
     public void UpgradeSelectedGun(string statName) // cannot pass more than 1 value, or a enum value, in unity button onClick
     {
         
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
         playerController.UpgradeSelectedGun(statName);
+        AnimateStatIncrease(statName);
 
-        switch (statName)
+    }
+
+    public void AnimateStatIncrease(string statName)
+    {
+        float currentStat;
+        switch(statName)
         {
+            case "baseDamage":
+                currentStat = playerController.selectedGunController.baseDamage;
+                DamageProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
+                break;
             case "shotCooldownSeconds":
-                DamageProgressBar[DamageProgress].SetActive(true);
-                DamageProgress++;
+                currentStat = playerController.selectedGunController.shotCooldownSeconds;
+                FireRateProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "penetration":
-                
+                currentStat = playerController.selectedGunController.penetration;
+                PenetrationProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "knockbackForce":
-                
-                break;
-            case "baseDamage":
-                
+                currentStat = playerController.selectedGunController.knockbackForce;
+                KnockBackProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
         }
-        Canvas.ForceUpdateCanvases();
-
+        
     }
 }
