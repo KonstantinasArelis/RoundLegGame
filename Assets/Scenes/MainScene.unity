@@ -235,6 +235,22 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: playerBar
+      value: 
+      objectReference: {fileID: 1549358798561699462, guid: 932feba92542b4b43b871a746c6c41dd, type: 3}
+    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: cameraBoundaryFromGround.left
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: cameraBoundaryFromGround.front
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: cameraBoundaryFromGround.right
+      value: -12
+      objectReference: {fileID: 0}
     - target: {fileID: 4731448355195064952, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
       propertyPath: m_IsActive
       value: 0

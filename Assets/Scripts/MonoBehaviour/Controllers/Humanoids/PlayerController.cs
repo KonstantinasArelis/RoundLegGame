@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -5,14 +6,35 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
+    [Serializable]
+    private struct Directions
+    {
+        public float front, right, back, left;
+
+        public static Directions operator +(Directions a, Directions b) => new()
+        {
+            front = a.front + b.front,
+            right = a.right + b.right,
+            back = a.back + b.back,
+            left = a.left + b.left
+        };
+    }
+
     [SerializeField] private float speed;
-    [SerializeField] private GameObject healthBar;
-    [SerializeField] private GameObject xpBar;
+    [SerializeField] private GameObject playerBar;
+    private GameObject healthBar, xpBar;
+
+    // picked values from observation
+    private Directions cameraBoundaryFromGround = new() {
+        front = -16f,
+        right = -12f,
+        back = 0,
+        left = 12f
+    };
 
     [SerializeField] private int maxHealth;
 
-    Vector3 healthBarOffset = new (-0.3f, 2f, 0f);
-    Vector3 xpBarOffset = new (-0.3f, 2.15f, 0f);
+    Vector3 playerBarOffset = new (-0.3f, 2f, 0f);
     public HealthProvider healthProvider;
     public LevelProvider levelProvider;
     private new GameObject camera;
@@ -30,6 +52,10 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     // for testing
     private  UpgradeData[] availableUpgrades;
+
+    private GameObject ground;
+    private Directions groundBoundary;
+
     Animator animator;
 
     public GameObject gunObject; 
@@ -47,15 +73,23 @@ public class PlayerController : MonoBehaviour, IDamagable
         
 
         healthProvider = new HealthProvider(maxHealth);
-
-        healthBar = Instantiate(healthBar, transform.position, healthBar.transform.rotation);
-        healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth);
-
-        // TODO: not hardcore level progression
         levelProvider = new LevelProvider(Maps.xpNeededPerLevel);
-        xpBar = Instantiate(xpBar, transform.position, xpBar.transform.rotation);
+
+        playerBar = Instantiate(playerBar, transform.position, playerBar.transform.rotation);
+        xpBar = playerBar.transform.Find("Xpbar").gameObject;
+        healthBar = playerBar.transform.Find("Healthbar").gameObject;
         xpBar.GetComponent<QuantityBarController>().SetupQuantityBar(0, levelProvider.XpNeededForCurrentLevel());
+        healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
+        
+        ground = GameObject.Find("Plane");
+        groundBoundary = new Directions{
+            front = ground.transform.position.z + ground.GetComponent<Collider>().bounds.extents.z,
+            right = ground.transform.position.x + ground.GetComponent<Collider>().bounds.extents.x,
+            back = ground.transform.position.z - ground.GetComponent<Collider>().bounds.extents.z,
+            left = ground.transform.position.x - ground.GetComponent<Collider>().bounds.extents.x
+        };
+
 
         // for testing
         availableUpgrades = Utility.LoadResourcesToArray<UpgradeData>("ScriptableObjects/Upgrades");
@@ -82,14 +116,19 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void MakeStatBarsKeepOffset()
     {
-        healthBar.transform.position = transform.position + healthBarOffset;
-        xpBar.transform.position = transform.position + xpBarOffset;
+        playerBar.transform.position = transform.position + playerBarOffset;
     }
 
     private void MakeCameraKeepOffset()
     {
         // keep the same camera start offset from the player
         camera.transform.position = transform.position + positionOffsetFromCamera;
+        Directions clampedCameraPosition = groundBoundary + cameraBoundaryFromGround;
+        camera.transform.position = new Vector3(
+            Mathf.Clamp(camera.transform.position.x, clampedCameraPosition.left, clampedCameraPosition.right),
+            camera.transform.position.y,
+            Mathf.Clamp(camera.transform.position.z, clampedCameraPosition.back, clampedCameraPosition.front)
+        );
     }
 
     private void Move()
