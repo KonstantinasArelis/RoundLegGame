@@ -2,10 +2,10 @@ using DG.Tweening;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Dissapearer))]
-public class BloodSplatter : MonoBehaviour
+public class GroundSpill : MonoBehaviour
 {
-  public float splatterScale = 1f;
+  public float spillScale = 1f;
+  public float activeTime = 5f;
 
   void Start()
   {
@@ -15,9 +15,8 @@ public class BloodSplatter : MonoBehaviour
     transform.position = new Vector3(transform.position.x, groundY + 0.01f, transform.position.z);
     Vector3 previousScale = transform.localScale;
     transform.localScale = new Vector3(0, transform.localScale.y, 0);
-    transform.DOScale(previousScale * splatterScale, 0.3f).OnComplete(
-      () => GetComponent<Dissapearer>().Dissapear());
-
+    transform.DOScale(previousScale * spillScale, 0.3f).OnComplete(
+      () => gameObject.AddComponent<Dissapearer>().Dissapear(activeTime));
   }
 
 

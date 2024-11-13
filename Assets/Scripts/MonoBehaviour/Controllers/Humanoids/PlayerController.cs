@@ -178,7 +178,11 @@ public class PlayerController : MonoBehaviour, IDamagable
             break;
             case UpgradeTypeEnum.AxeThrower:
                 var axeThrower = Instantiate(upgrade.prefab, transform.position, transform.rotation);
-                axeThrower.GetComponent<AxeThrower>().spawnTransform = transform;
+                axeThrower.GetComponent<AbstractThrower>().spawnTransform = transform;
+            break;
+            case UpgradeTypeEnum.MolotovThrower:
+                var molotovThrower = Instantiate(upgrade.prefab, transform.position, transform.rotation);
+                molotovThrower.GetComponent<AbstractThrower>().spawnTransform = transform;
             break;
         }
     }

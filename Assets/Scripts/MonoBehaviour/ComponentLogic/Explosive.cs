@@ -7,7 +7,6 @@ public class Explosive : MonoBehaviour
   public float impactRadius;
   public int damage;
   public float knockbackForce = 10;
-  [SerializeField] private GameObject explosionFX;
 
 
   public void ExplodeWithDelay(float delay=0.1f)
@@ -18,8 +17,8 @@ public class Explosive : MonoBehaviour
   public void Explode()
   {
     AffectTargets();
-    Instantiate(explosionFX, transform.position, transform.rotation).AddComponent<Dissapearer>()
-      .Dissapear(4f);
+    var explosionFx = Resources.Load("Prefabs/FX/Explosion") as GameObject;
+    Instantiate(explosionFx, transform.position, transform.rotation).AddComponent<SelfDestroy>().Destroy(2f);
     Destroy(gameObject);
   }
 

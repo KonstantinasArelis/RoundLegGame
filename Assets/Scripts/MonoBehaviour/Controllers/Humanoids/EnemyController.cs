@@ -151,7 +151,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
     {
         var deathMiddlePosition = transform.Find("DeathMiddlePosition").position;
         var splatter = Instantiate(bloodSplatterPrefab, deathMiddlePosition, bloodSplatterPrefab.transform.rotation);
-        splatter.GetComponent<BloodSplatter>().splatterScale = colliderExtentY;
+        splatter.GetComponent<GroundSpill>().spillScale = colliderExtentY;
     }
 
     private void DelayedSuicide() 

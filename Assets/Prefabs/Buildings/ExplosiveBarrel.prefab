@@ -135,7 +135,7 @@ MonoBehaviour:
   impactRadius: 5
   damage: 1
   knockbackForce: 10
-  explosionFX: {fileID: 100010, guid: 14d59fd63a842674992eb9579f7b50c7, type: 3}
+  explosionFX: {fileID: 100010, guid: d93c393454266594b982252415506984, type: 3}
 --- !u!64 &2883835906471655595
 MeshCollider:
   m_ObjectHideFlags: 0
