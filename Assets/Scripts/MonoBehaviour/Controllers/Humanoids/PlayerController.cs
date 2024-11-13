@@ -176,6 +176,10 @@ public class PlayerController : MonoBehaviour, IDamagable
                 var orb = Instantiate(upgrade.prefab, transform.position, transform.rotation);
                 orb.GetComponent<FlyingOrb>().orbitTarget = transform;
             break;
+            case UpgradeTypeEnum.AxeThrower:
+                var axeThrower = Instantiate(upgrade.prefab, transform.position, transform.rotation);
+                axeThrower.GetComponent<AxeThrower>().spawnTransform = transform;
+            break;
         }
     }
 

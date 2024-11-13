@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 8966860364317346379}
   - component: {fileID: 8686335161741750622}
   - component: {fileID: 2883835906471655595}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ExplosiveBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactRadius: 5
   damage: 1
-  explosionFX: {fileID: 3145137281656678096, guid: 338dddefb8c6ded4b924063a6f0aaa9f, type: 3}
+  knockbackForce: 10
+  explosionFX: {fileID: 100010, guid: 14d59fd63a842674992eb9579f7b50c7, type: 3}
 --- !u!64 &2883835906471655595
 MeshCollider:
   m_ObjectHideFlags: 0

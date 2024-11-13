@@ -12,6 +12,7 @@ TagManager:
   - Pistol
   - misc
   - Shotgun
+  - Ground
   layers:
   - Default
   - TransparentFX

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Dissapearer : MonoBehaviour
 {
-  public float dissapearTime = 5f;
-  public float fadeOutAnimationTime = 0.2f;
+  private float dissapearTime = 5f;
+  private float fadeOutAnimationTime = 0.4f;
   private Material[] materials;
 
   private void Start()
@@ -26,10 +26,6 @@ public class Dissapearer : MonoBehaviour
       }
     }
   }
-  public void Dissapear()
-  {
-    StartCoroutine(DestroyCoroutine());
-  }
 
   private IEnumerator DestroyCoroutine()
   {
@@ -48,5 +44,23 @@ public class Dissapearer : MonoBehaviour
       DOTween.To(() => color.a, x => color.a = x, 0, fadeOutAnimationTime)
         .OnUpdate(() => mat.color = color);
     }
+  }
+
+  public void Dissapear(float time)
+  {
+    dissapearTime = time;
+    Dissapear();
+  }
+
+  public void Dissapear(float time, float fadeOutAnimationTime)
+  {
+    dissapearTime = time;
+    this.fadeOutAnimationTime = fadeOutAnimationTime;
+    Dissapear();
+  }
+
+  public void Dissapear()
+  {
+    StartCoroutine(DestroyCoroutine());
   }
 }

@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c9b41127fe4db95498d143d1220bed67, type: 3}
-  m_Name: Pistol
+  m_Name: AxeThrower
   m_EditorClassIdentifier: 
-  name: Pistol
-  prefab: {fileID: 919132149155446097, guid: 59ed955f69aad14e691127ba2807524c, type: 3}
-  type: 0
-  nextUpgrades:
-  - {fileID: 11400000, guid: aaa6bc79eac67144b9a420ca6fc7a33c, type: 2}
-  - {fileID: 11400000, guid: a728acec8c4aacc47b09a0908fb15f87, type: 2}
-  nextUpgradeLevel: 2
+  name: Axe Thrower
+  prefab: {fileID: 5021807844928751087, guid: b1805bf7582266e469d5c6a681d25c96, type: 3}
+  type: 4
+  nextUpgrades: []
+  nextUpgradeLevel: 6

@@ -17,4 +17,4 @@ MonoBehaviour:
   type: 1
   nextUpgrades:
   - {fileID: 11400000, guid: 43bc776dc53d8b74dbc34a31c3742c46, type: 2}
-  nextUpgradeLevel: 5
+  nextUpgradeLevel: 4
