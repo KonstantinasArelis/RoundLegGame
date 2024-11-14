@@ -20,6 +20,11 @@ public class UziController : MonoBehaviour, IGunStatUpgradeable
     public float knockbackForce {get; set;}
     public float baseDamage {get; set;}
 
+    public int shotCooldownSecondsUpgradeCount {get; set;}
+    public int penetrationUpgradeCount {get; set;}
+    public int knockbackForceUpgradeCount {get; set;}
+    public int baseDamageUpgradeCount {get; set;}
+    
     private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
@@ -31,6 +36,12 @@ public class UziController : MonoBehaviour, IGunStatUpgradeable
         this.penetration = startingPenetration;
         this.knockbackForce = startingKnockbackForce;
         this.baseDamage = startingBaseDamage;
+
+        this.shotCooldownSecondsUpgradeCount = 0;
+        this.penetrationUpgradeCount = 0;
+        this.knockbackForceUpgradeCount = 0;
+        this.baseDamageUpgradeCount = 0;
+        
 
         fireLine = GetComponentInChildren<FireLine>();
 
@@ -62,5 +73,29 @@ public class UziController : MonoBehaviour, IGunStatUpgradeable
     {
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
+    }
+
+    public void IncreaseStat(GunStatPanelTypeEnum stat){
+
+        switch(stat)
+        {
+            case GunStatPanelTypeEnum.BaseDamage:
+                baseDamageUpgradeCount++;
+                baseDamage = startingBaseDamage + baseDamageUpgradeCount*2;
+            break;
+            case GunStatPanelTypeEnum.ShotCooldownSeconds:
+                shotCooldownSecondsUpgradeCount++;
+                baseDamage = startingShotCooldownSeconds + shotCooldownSecondsUpgradeCount*2;
+            break;
+            case GunStatPanelTypeEnum.Penetration:
+                penetrationUpgradeCount++;
+                baseDamage = startingPenetration + penetrationUpgradeCount;
+            break;
+            case GunStatPanelTypeEnum.Knockback:
+                knockbackForceUpgradeCount++;
+                baseDamage = startingKnockbackForce + knockbackForceUpgradeCount*2;
+            break;
+        }
+        Debug.Log("upgraded: " + stat);
     }
 }

@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
     private Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
 
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -54,7 +56,6 @@ public class PlayerController : MonoBehaviour
             {UpgradeTypeEnum.Uzi, uziObject},
             {UpgradeTypeEnum.Shotgun, shotgunObject}
         };
-        
 
         healthProvider = new HealthProvider(maxHealth: 10);
 
@@ -233,24 +234,25 @@ public class PlayerController : MonoBehaviour
         mainHudController.OnLevelUp();
     }
 
-    public void UpgradeSelectedGun(string statName)
+    public void UpgradeSelectedGun(GunStatPanelTypeEnum statName)
     {
+        selectedGunController.IncreaseStat(statName);
+        /*
         switch (statName)
         {
             case "shotCooldownSeconds":
-                selectedGunController.shotCooldownSeconds = selectedGunController.shotCooldownSeconds / 2f;
+                selectedGunController.shotCooldownSecondsUpgradeCount++;
                 break;
             case "penetration":
-                selectedGunController.penetration = selectedGunController.penetration + 1f;
+                selectedGunController.penetrationUpgradeCount++;
                 break;
             case "knockbackForce":
-                selectedGunController.knockbackForce = selectedGunController.knockbackForce + 5f;
+                selectedGunController.knockbackForceUpgradeCount++;
                 break;
             case "baseDamage":
-                selectedGunController.baseDamage = selectedGunController.baseDamage + 1f;
+                selectedGunController.baseDamageUpgradeCount++;
                 break;
         }
-
-        Debug.Log("Upgraded: " + statName);
+        */
     }
 }

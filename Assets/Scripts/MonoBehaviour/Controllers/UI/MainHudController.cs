@@ -4,6 +4,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 
 // TODO: refactor this to their own controllers
 // Fix bug when if level up reward not selected, put the next in Queue
@@ -41,12 +45,22 @@ public class MainHudController : MonoBehaviour
 
     public GameObject gunStatPanel;
     private Vector3 activatedBitSize;
+
+    private Dictionary<string, GunStatPanelTypeEnum> statNameToEnum;
+
     void Awake()
     {
         DamageProgress=0;
         FireRateProgress=0;
         PenetrationProgress=0;
         KnockBackProgress=0;
+
+        statNameToEnum = new () {
+            {"shotCooldownSeconds", GunStatPanelTypeEnum.ShotCooldownSeconds},
+            {"penetration", GunStatPanelTypeEnum.Penetration},
+            {"knockbackForce", GunStatPanelTypeEnum.Knockback},
+            {"baseDamage", GunStatPanelTypeEnum.BaseDamage}
+        };
 
         activatedBitSize = new Vector3(0.6866899f, 0.3495518f, 1f);
 
@@ -278,35 +292,37 @@ public class MainHudController : MonoBehaviour
 
     public void UpgradeSelectedGun(string statName) // cannot pass more than 1 value, or a enum value, in unity button onClick
     {
-        
+        GunStatPanelTypeEnum stat = statNameToEnum[statName];
+
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
-        playerController.UpgradeSelectedGun(statName);
         AnimateStatIncrease(statName);
+        playerController.UpgradeSelectedGun(stat);
+        
 
     }
 
     public void AnimateStatIncrease(string statName)
     {
+
         float currentStat;
         switch(statName)
         {
             case "baseDamage":
-                currentStat = playerController.selectedGunController.baseDamage;
+                currentStat = playerController.selectedGunController.baseDamageUpgradeCount;
                 DamageProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "shotCooldownSeconds":
-                currentStat = playerController.selectedGunController.shotCooldownSeconds;
+                currentStat = playerController.selectedGunController.shotCooldownSecondsUpgradeCount;
                 FireRateProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "penetration":
-                currentStat = playerController.selectedGunController.penetration;
+                currentStat = playerController.selectedGunController.penetrationUpgradeCount;
                 PenetrationProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "knockbackForce":
-                currentStat = playerController.selectedGunController.knockbackForce;
+                currentStat = playerController.selectedGunController.knockbackForceUpgradeCount;
                 KnockBackProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
         }
-        
     }
 }
