@@ -46,6 +46,12 @@ public class FireLine : MonoBehaviour
 						explosive.Explode();
 					}
 			}
+			if(penetration>1)
+			{
+				penetration = penetration-1;
+				this.Fire(penetration, knockbackForce, damage);
+			}
+			
     }
 	
     void DisableLineRenderer()
