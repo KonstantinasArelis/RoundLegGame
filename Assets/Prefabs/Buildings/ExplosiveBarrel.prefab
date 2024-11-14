@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3964336970943492268
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8416810479992093768}
+  m_Layer: 0
+  m_Name: Placement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8416810479992093768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3964336970943492268}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00971}
+  m_LocalScale: {x: 0.02, y: 0.014285711, z: 0.019999994}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7798971363950440740}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7453549253102005150
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,7 +44,7 @@ GameObject:
   - component: {fileID: 8966860364317346379}
   - component: {fileID: 8686335161741750622}
   - component: {fileID: 2883835906471655595}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ExplosiveBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +63,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 50, y: 50, z: 70}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8416810479992093768}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &6598996900357783169
@@ -102,7 +134,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   impactRadius: 5
   damage: 1
-  explosionFX: {fileID: 3145137281656678096, guid: 338dddefb8c6ded4b924063a6f0aaa9f, type: 3}
+  knockbackForce: 10
+  explosionFX: {fileID: 100010, guid: d93c393454266594b982252415506984, type: 3}
 --- !u!64 &2883835906471655595
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -122,6 +155,6 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: b465634aa802dbcd8bde2e774eef4b78, type: 3}

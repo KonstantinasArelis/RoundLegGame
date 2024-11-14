@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.VFX;
-using System.Collections;
 
-
-public class ShotgunController : MonoBehaviour, IGunStatUpgradeable
+public class ShotgunController : MonoBehaviour, IFireable, IGunStatUpgradeable
 {
     private FireLine[] fireLines;
 
     private Vector3 initalForward;
-	[SerializeField] public float muzzleFlashDuration = 0.1f;
+
+    private AudioSource audioSource;
+	[SerializeField] private float muzzleFlashDuration = 0.1f;
 
     [SerializeField] public float startingShotCooldownSeconds = 0.8f;
     [SerializeField] public float startingPenetration = 1f;
@@ -25,12 +25,11 @@ public class ShotgunController : MonoBehaviour, IGunStatUpgradeable
     public int knockbackForceUpgradeCount {get; set;}
     public int baseDamageUpgradeCount {get; set;}
 
-    private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
     public Light muzzleDirectionalFlashLight;
+    private Cooldown cooldown;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         this.shotCooldownSeconds = startingShotCooldownSeconds;
@@ -45,27 +44,22 @@ public class ShotgunController : MonoBehaviour, IGunStatUpgradeable
         
 
         fireLines = GetComponentsInChildren<FireLine>();
-
+        audioSource = GetComponent<AudioSource>();
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;
+        cooldown = new (shotCooldownSeconds);
     }
 
-    // Update is called once per frame
     public void Fire()
     {
-        float lastShotDifference = Time.time - lastShotTime;
-		bool gunCooledDown = lastShotDifference >= shotCooldownSeconds;
-		if (!gunCooledDown)
-		{
-			return;
-		}
+        if (!cooldown.IsReady()) return;
 		
 		muzzlePointFlashLight.enabled = true;
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
-		lastShotTime = Time.time;
+        audioSource.Play();
 
         foreach (FireLine fireLine in fireLines)
         {

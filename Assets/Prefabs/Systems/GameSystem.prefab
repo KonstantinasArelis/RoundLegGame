@@ -45,5 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 2800108410043042268, guid: 923c07f6d7f9ff847b66b8692a97b08a, type: 3}
+  monster1Prefab: {fileID: 109976633089143569, guid: 50e02b00d6e196112a45e486ff5023a1, type: 3}
   player: {fileID: 0}
   spawnTimeSeconds: 0.1

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class QuantityBarController : MonoBehaviour
@@ -5,9 +7,8 @@ public class QuantityBarController : MonoBehaviour
     private GameObject maxBar;
     private GameObject currentBar;
     private float max;
-    private new Camera camera;
-    // magic number that makes the healthbar decent width
     private float scale;
+    private new Camera camera;
 
     void Awake()
     {
@@ -26,10 +27,11 @@ public class QuantityBarController : MonoBehaviour
     }
 
     // MUST call before use for instantiating properties
-    public void SetupQuantityBar(float current, float max, float scale)
+    // scale is a magic value
+    public void SetupQuantityBar(float current, float max, float scale=0.2f)
     {
-        this.scale = scale;
         this.max = max;
+        this.scale = scale;
         currentBar.transform.localScale = new Vector3(
             scale * current / max,
             // TODO: fix the magic number
@@ -43,21 +45,12 @@ public class QuantityBarController : MonoBehaviour
         );
     }
 
-    public void Subtract(float amount)
+    public Task SetCurrent(float current)
     {
-        currentBar.transform.localScale = new Vector3(
-            currentBar.transform.localScale.x - maxBar.transform.localScale.x * amount / max,
+        return currentBar.transform.DOScale(new Vector3(
+            scale * current / max,
             currentBar.transform.localScale.y,
             currentBar.transform.localScale.z
-        );
-    }
-
-    public void Add(float amount)
-    {
-        currentBar.transform.localScale = new Vector3(
-            currentBar.transform.localScale.x + maxBar.transform.localScale.x * amount / max,
-            currentBar.transform.localScale.y,
-            currentBar.transform.localScale.z
-        );
+        ), 0.1f).AsyncWaitForCompletion();
     }
 }

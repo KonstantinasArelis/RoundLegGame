@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.VFX;
 using System;
@@ -8,12 +7,12 @@ using System.Data;
 using TMPro;
 using UnityEngine;
 
-public class PistolController : MonoBehaviour, IGunStatUpgradeable
+public class PistolController : MonoBehaviour, IFireable, IGunStatUpgradeable
 {
     private FireLine fireLine;
-    
     private Vector3 initalForward;
-	[SerializeField] public float muzzleFlashDuration = 0.1f;
+    private AudioSource audioSource;
+	[SerializeField] private float muzzleFlashDuration = 0.1f;
     [SerializeField] public float startingShotCooldownSeconds = 0.3f;
     [SerializeField] public float startingPenetration = 3f;
     [SerializeField] public float startingKnockbackForce = 3f;
@@ -33,6 +32,8 @@ public class PistolController : MonoBehaviour, IGunStatUpgradeable
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
     public Light muzzleDirectionalFlashLight;
+    private Cooldown cooldown;
+
 
     void Start()
     {
@@ -47,26 +48,22 @@ public class PistolController : MonoBehaviour, IGunStatUpgradeable
         this.baseDamageUpgradeCount = 0;
 
         fireLine = GetComponentInChildren<FireLine>();
-
+        audioSource = GetComponent<AudioSource>();
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
     	initalForward = transform.forward;
+        cooldown = new (shotCooldownSeconds);
     }
 
     public void Fire()
     {
-        float lastShotDifference = Time.time - lastShotTime;
-		bool gunCooledDown = lastShotDifference >= shotCooldownSeconds;
-		if (!gunCooledDown)
-		{
-			return;
-		}
+        if (!cooldown.IsReady()) return;
 		
 		muzzlePointFlashLight.enabled = true;
         muzzleDirectionalFlashLight.enabled = true;
 		Invoke(nameof(DisableMuzzleFlashLight), muzzleFlashDuration); 
 		muzzleFlash.Play();
-		lastShotTime = Time.time;
+        audioSource.Play();
 
         fireLine.Fire(penetration, knockbackForce, baseDamage);
     }
@@ -87,15 +84,16 @@ public class PistolController : MonoBehaviour, IGunStatUpgradeable
             break;
             case GunStatPanelTypeEnum.ShotCooldownSeconds:
                 shotCooldownSecondsUpgradeCount++;
-                baseDamage = startingShotCooldownSeconds + shotCooldownSecondsUpgradeCount*2;
+                shotCooldownSeconds = startingShotCooldownSeconds / shotCooldownSecondsUpgradeCount;
+                cooldown = new (shotCooldownSeconds);
             break;
             case GunStatPanelTypeEnum.Penetration:
                 penetrationUpgradeCount++;
-                baseDamage = startingPenetration + penetrationUpgradeCount;
+                penetration = startingPenetration + penetrationUpgradeCount;
             break;
             case GunStatPanelTypeEnum.Knockback:
                 knockbackForceUpgradeCount++;
-                baseDamage = startingKnockbackForce + knockbackForceUpgradeCount*2;
+                knockbackForce = startingKnockbackForce + knockbackForceUpgradeCount*2;
             break;
         }
         Debug.Log("upgraded: " + stat);

@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class FlyingOrb : MonoBehaviour
 {
-  [SerializeField] private int radius;
-  [SerializeField] Transform orbitTarget;
-  [SerializeField] private float damage;
-  [SerializeField] private float speed;
-  [SerializeField] private float knockbackForce = 2f;
+  public Transform orbitTarget;
+  public int radius;
+  public float damage;
+  public float speed;
+  public float knockbackForce = 2f;
   void FixedUpdate()
   {
     // Orbit around target keeping radius
@@ -19,8 +19,8 @@ public class FlyingOrb : MonoBehaviour
   {
     if (other.CompareTag("Enemy"))
     {
-      other.GetComponent<IDamagable>().TakeDamage(damage);
-      other.GetComponent<IKnockable>().TakeKnockback(knockbackForce);
+      other.GetComponent<IDamagable>()?.TakeDamage(damage);
+      other.GetComponent<IKnockable>()?.TakeKnockback(knockbackForce, transform.position);
     }
   }
 }

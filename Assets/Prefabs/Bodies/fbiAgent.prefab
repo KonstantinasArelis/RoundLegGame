@@ -285,10 +285,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.9756965
+  m_Radius: 1.5191325
   m_Height: 4.8455343
   m_Direction: 1
-  m_Center: {x: -0.024303421, y: 0.4227276, z: 0}
+  m_Center: {x: -0.005737543, y: 0.4227276, z: 0}
 --- !u!54 &3553373017672496627
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -329,9 +329,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  selectedGun: 1
-  healthBar: {fileID: 1549358798561699462, guid: 1ac180b5698acfd44aebc79b3d23b1a3, type: 3}
-  xpBar: {fileID: 2646753383457170479, guid: 4f08539e3288eea48bbfe6a9e5b45d19, type: 3}
+  playerBar: {fileID: 0}
+  maxHealth: 10
   positionOffsetFromCamera: {x: 0, y: 8, z: -5}
   gunObject: {fileID: 1786187274623435711}
   uziObject: {fileID: 4731448355195064952}
@@ -417,15 +416,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4478824570570428659, guid: 9b98e4c7df549c02f9413956a3502a9e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.03
+      value: 0.703
       objectReference: {fileID: 0}
     - target: {fileID: 4478824570570428659, guid: 9b98e4c7df549c02f9413956a3502a9e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 1.215
       objectReference: {fileID: 0}
     - target: {fileID: 4478824570570428659, guid: 9b98e4c7df549c02f9413956a3502a9e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.17
+      value: 2.601
       objectReference: {fileID: 0}
     - target: {fileID: 4478824570570428659, guid: 9b98e4c7df549c02f9413956a3502a9e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -521,6 +520,18 @@ PrefabInstance:
     - target: {fileID: 7941383431893014895, guid: d06c788dd2809a130ba92c15c2bd973c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253200979824366593, guid: d06c788dd2809a130ba92c15c2bd973c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.10842
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253200979824366593, guid: d06c788dd2809a130ba92c15c2bd973c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00041
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253200979824366593, guid: d06c788dd2809a130ba92c15c2bd973c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0121
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

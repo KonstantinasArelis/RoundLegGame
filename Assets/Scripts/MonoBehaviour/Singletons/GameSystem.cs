@@ -6,11 +6,13 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private GameObject monster1Prefab;
     [SerializeField] private GameObject player;
-    [SerializeField] private float spawnTimeSeconds = 3f;
+    [SerializeField] private float spawnTimeSeconds = 1f;
     private Vector3 worldViewFromPlayerBounds = new (20f, 0, 20f);
     private Transform floorTransform;
     private Vector3 randomSpawnPositionBounds = new (10f, 2f, 10f);
     private int maxZombiesAtOneTime = 100;
+
+        private SceneFadeController sceneFadeController;
 
     private MainHudController mainHudController;
 
@@ -26,18 +28,21 @@ public class GameSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        sceneFadeController.FadeIn(() =>
+        {
+            StartCoroutine(SpawnZombiesCoroutine());
+        });  
         // randomly spawn zombies
         StartCoroutine(SpawnZombiesCoroutine());
         StartCoroutine(SpawnMonster1Coroutine());
+        StartCoroutine(CountdownTimeCoroutine());
     }
 
     void Awake()
     {
         mainHudController = GameObject.Find("MainHud").GetComponent<MainHudController>();
-        StartCoroutine(CountdownTimeCoroutine());
+        sceneFadeController = GameObject.Find("SceneFade").GetComponent<SceneFadeController>();
     }
-
-    
 
     private IEnumerator SpawnZombiesCoroutine()
     {

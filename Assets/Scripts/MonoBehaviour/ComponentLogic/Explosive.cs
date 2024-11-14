@@ -1,26 +1,45 @@
+using Codice.Client.Common.GameUI;
 using UnityEngine;
+
 
 public class Explosive : MonoBehaviour
 {
   public float impactRadius;
   public int damage;
-  [SerializeField] public float knockbackForce = 10;
-  [SerializeField] private GameObject explosionFX;
+  public float knockbackForce = 10;
+
+
+  public void ExplodeWithDelay(float delay=0.1f)
+  {
+    Invoke(nameof(Explode), delay);
+  }
 
   public void Explode()
   {
-    // sphere raycast
-    Collider[] hitColliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemy"));
+    AffectTargets();
+    var explosionFx = Resources.Load("Prefabs/FX/Explosion") as GameObject;
+    Instantiate(explosionFx, transform.position, transform.rotation).AddComponent<SelfDestroy>().Destroy(2f);
+    Destroy(gameObject);
+  }
+
+  private void AffectTargets()
+  {
+    Collider[] hitColliders = Physics.OverlapSphere(transform.position, impactRadius, LayerMask.GetMask("Enemy", "Building"));
     foreach (var hitCollider in hitColliders)
     {
-      if (hitCollider.GetComponent<ZombieController>() != null)
+      if (hitCollider.TryGetComponent<IKnockable>(out IKnockable knockable))
       {
-        hitCollider.GetComponent<ZombieController>().TakeDamage(damage);
-        hitCollider.GetComponent<ZombieController>().TakeKnockback(knockbackForce);
+        knockable.TakeKnockback(knockbackForce, transform.position);
+      }
+      if (hitCollider.TryGetComponent<IDamagable>(out IDamagable damagable))
+      {
+        damagable.TakeDamage(damage);
+      }
+      if (hitCollider.TryGetComponent<Explosive>(out Explosive explosive))
+      {
+        // chain explosions on other explosive buildings
+        explosive.ExplodeWithDelay();
       }
     }
-    GameObject explosion = Instantiate(explosionFX, transform.position, transform.rotation);
-    explosion.GetComponent<Dissapearer>().Dissapear();
-    Destroy(gameObject);
   }
 }
