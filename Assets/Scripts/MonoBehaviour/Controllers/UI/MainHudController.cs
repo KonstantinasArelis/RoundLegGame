@@ -353,6 +353,28 @@ public class MainHudController : MonoBehaviour
         }
     }
 
+    public void AnimateGunStatPanelUpdate()
+    {
+        InitiateGunStatPanel();
+
+        for(int i=0;i<playerController.selectedGunController.baseDamageUpgradeCount;i++)
+        {
+            DamageProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+        for(int i=0;i<playerController.selectedGunController.shotCooldownSecondsUpgradeCount;i++)
+        {
+            FireRateProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+        for(int i=0;i<playerController.selectedGunController.penetrationUpgradeCount;i++)
+        {
+            PenetrationProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+        for(int i=0;i<playerController.selectedGunController.knockbackForceUpgradeCount;i++)
+        {
+            KnockBackProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+    }
+
     private void ActivateLevelUpPanel()
     {
         if (levelUpPanel.activeSelf) return;

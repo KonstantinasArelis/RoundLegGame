@@ -212,6 +212,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         currentGun = gunObject;
         selectedGunController = currentGun.GetComponent<IGunStatUpgradeable>();
         currentGun.SetActive(true);
+        mainHudController.AnimateGunStatPanelUpdate();
     }
 
     private void SelectPassiveUpgrade(UpgradeData upgrade)
