@@ -80,15 +80,16 @@ public class UziController : MonoBehaviour, IFireable, IGunStatUpgradeable
             break;
             case GunStatPanelTypeEnum.ShotCooldownSeconds:
                 shotCooldownSecondsUpgradeCount++;
-                baseDamage = startingShotCooldownSeconds + shotCooldownSecondsUpgradeCount*2;
+                shotCooldownSeconds = startingShotCooldownSeconds / shotCooldownSecondsUpgradeCount;
+                cooldown = new (shotCooldownSeconds);
             break;
             case GunStatPanelTypeEnum.Penetration:
                 penetrationUpgradeCount++;
-                baseDamage = startingPenetration + penetrationUpgradeCount;
+                penetration = startingPenetration + penetrationUpgradeCount;
             break;
             case GunStatPanelTypeEnum.Knockback:
                 knockbackForceUpgradeCount++;
-                baseDamage = startingKnockbackForce + knockbackForceUpgradeCount*2;
+                knockbackForce = startingKnockbackForce + knockbackForceUpgradeCount*2;
             break;
         }
         Debug.Log("upgraded: " + stat);
