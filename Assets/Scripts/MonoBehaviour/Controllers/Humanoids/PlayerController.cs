@@ -6,20 +6,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
-    [Serializable]
-    private struct Directions
-    {
-        public float front, right, back, left;
-
-        public static Directions operator +(Directions a, Directions b) => new()
-        {
-            front = a.front + b.front,
-            right = a.right + b.right,
-            back = a.back + b.back,
-            left = a.left + b.left
-        };
-    }
-
     [SerializeField] private float speed;
     [SerializeField] private GameObject playerBar;
     private GameObject healthBar, xpBar;
@@ -89,13 +75,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
         
-        ground = GameObject.Find("Plane");
-        groundBoundary = new Directions{
-            front = ground.transform.position.z + ground.GetComponent<Collider>().bounds.extents.z,
-            right = ground.transform.position.x + ground.GetComponent<Collider>().bounds.extents.x,
-            back = ground.transform.position.z - ground.GetComponent<Collider>().bounds.extents.z,
-            left = ground.transform.position.x - ground.GetComponent<Collider>().bounds.extents.x
-        };
+        ground = GameObject.FindWithTag("Ground");
+        groundBoundary = Utility.GetCollidableObjectBoundaries(ground);
 
 
         // for testing

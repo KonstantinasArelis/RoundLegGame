@@ -57,6 +57,16 @@ public static class Utility
         material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
     }
 
+    public static Directions GetCollidableObjectBoundaries(GameObject gameObject)
+    {
+        return new Directions{
+            front = gameObject.transform.position.z + gameObject.GetComponent<Collider>().bounds.extents.z,
+            right = gameObject.transform.position.x + gameObject.GetComponent<Collider>().bounds.extents.x,
+            back = gameObject.transform.position.z - gameObject.GetComponent<Collider>().bounds.extents.z,
+            left = gameObject.transform.position.x - gameObject.GetComponent<Collider>().bounds.extents.x
+        };
+    }
+
 }
 
 
