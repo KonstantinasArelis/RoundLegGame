@@ -61,7 +61,9 @@ public class PlayerController : MonoBehaviour, IDamagable
     public GameObject gunObject; 
     public GameObject uziObject; 
     public GameObject shotgunObject;
-    public IGunStatUpgradeable currentGunStatUpgradable;
+    public IGunStatUpgradeable selectedGunController;
+
+    Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -70,6 +72,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         initialRight = transform.right;
         camera = Camera.main.gameObject;
         animator = GetComponent<Animator>();
+        gunToObject = new () {
+            {UpgradeTypeEnum.Pistol, gunObject},
+            {UpgradeTypeEnum.Uzi, uziObject},
+            {UpgradeTypeEnum.Shotgun, shotgunObject}
+        };
         
 
         healthProvider = new HealthProvider(maxHealth);
@@ -203,8 +210,9 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         if (currentGun != null) currentGun.SetActive(false);
         currentGun = gunObject;
-        currentGunStatUpgradable = currentGun.GetComponent<IGunStatUpgradeable>();
+        selectedGunController = currentGun.GetComponent<IGunStatUpgradeable>();
         currentGun.SetActive(true);
+        mainHudController.AnimateGunStatPanelUpdate();
     }
 
     private void SelectPassiveUpgrade(UpgradeData upgrade)
@@ -276,24 +284,25 @@ public class PlayerController : MonoBehaviour, IDamagable
         mainHudController.OnLevelUp();
     }
 
-    public void UpgradeSelectedGun(string statName)
+    public void UpgradeSelectedGun(GunStatPanelTypeEnum statName)
     {
+        selectedGunController.IncreaseStat(statName);
+        /*
         switch (statName)
         {
             case "shotCooldownSeconds":
-                currentGunStatUpgradable.shotCooldownSeconds /= 2f;
+                selectedGunController.shotCooldownSecondsUpgradeCount++;
                 break;
             case "penetration":
-                currentGunStatUpgradable.penetration += 1f;
+                selectedGunController.penetrationUpgradeCount++;
                 break;
             case "knockbackForce":
-                currentGunStatUpgradable.knockbackForce += 5f;
+                selectedGunController.knockbackForceUpgradeCount++;
                 break;
             case "baseDamage":
-                currentGunStatUpgradable.baseDamage += 1f;
+                selectedGunController.baseDamageUpgradeCount++;
                 break;
         }
-
-        Debug.Log("Upgraded: " + statName);
+        */
     }
 }

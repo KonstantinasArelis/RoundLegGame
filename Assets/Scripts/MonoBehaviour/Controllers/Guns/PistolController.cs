@@ -22,6 +22,13 @@ public class PistolController : MonoBehaviour, IFireable, IGunStatUpgradeable
     public float penetration {get; set;}
     public float knockbackForce {get; set;}
     public float baseDamage {get; set;}
+
+    public int shotCooldownSecondsUpgradeCount {get; set;}
+    public int penetrationUpgradeCount {get; set;}
+    public int knockbackForceUpgradeCount {get; set;}
+    public int baseDamageUpgradeCount {get; set;}
+
+    private float lastShotTime = 0.0f;
     public VisualEffect muzzleFlash;
 	public Light muzzlePointFlashLight;
     public Light muzzleDirectionalFlashLight;
@@ -34,6 +41,11 @@ public class PistolController : MonoBehaviour, IFireable, IGunStatUpgradeable
         this.penetration = startingPenetration;
         this.knockbackForce = startingKnockbackForce;
         this.baseDamage = startingBaseDamage;
+        
+        this.shotCooldownSecondsUpgradeCount = 0;
+        this.penetrationUpgradeCount = 0;
+        this.knockbackForceUpgradeCount = 0;
+        this.baseDamageUpgradeCount = 0;
 
         fireLine = GetComponentInChildren<FireLine>();
         audioSource = GetComponent<AudioSource>();
@@ -60,5 +72,30 @@ public class PistolController : MonoBehaviour, IFireable, IGunStatUpgradeable
     {
         muzzlePointFlashLight.enabled = false;
         muzzleDirectionalFlashLight.enabled = false;
+    }
+
+    public void IncreaseStat(GunStatPanelTypeEnum stat){
+
+        switch(stat)
+        {
+            case GunStatPanelTypeEnum.BaseDamage:
+                baseDamageUpgradeCount++;
+                baseDamage = startingBaseDamage + baseDamageUpgradeCount*2;
+            break;
+            case GunStatPanelTypeEnum.ShotCooldownSeconds:
+                shotCooldownSecondsUpgradeCount++;
+                shotCooldownSeconds = startingShotCooldownSeconds / shotCooldownSecondsUpgradeCount;
+                cooldown = new (shotCooldownSeconds);
+            break;
+            case GunStatPanelTypeEnum.Penetration:
+                penetrationUpgradeCount++;
+                penetration = startingPenetration + penetrationUpgradeCount;
+            break;
+            case GunStatPanelTypeEnum.Knockback:
+                knockbackForceUpgradeCount++;
+                knockbackForce = startingKnockbackForce + knockbackForceUpgradeCount*2;
+            break;
+        }
+        Debug.Log("upgraded: " + stat);
     }
 }

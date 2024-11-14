@@ -126,34 +126,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2b92bc4d3b87e644a8e59f20a50a3afc, type: 2}
   upgradeItemUIPrefab: {fileID: 2229875143866525215, guid: 0a63a0c97a818a241b55e04298eafdd9, type: 3}
   buildingItemUIPrefab: {fileID: 2229875143866525215, guid: 7445a4638a203cc4d9b5cefad541ffb0, type: 3}
-  DamageProgressBar:
-  - {fileID: 9178618913074405450, guid: 7112be674ad5ad15e9601204b0dcf6e7, type: 3}
-  - {fileID: 872882647941077742, guid: 4a36c58f6a248b7e4b43692ed59f6db0, type: 3}
-  - {fileID: 3050662025522593653, guid: 9392b0c8c017fffbaa4213361ab1ac71, type: 3}
-  - {fileID: 7636320472429940498, guid: 3133f0970a71be9c6bb43f25399e1cfb, type: 3}
-  - {fileID: 1285156738341642277, guid: fecd7e224a09ba23fb4ba5a9061286ff, type: 3}
-  FireRateProgressBar:
-  - {fileID: 2286035876179705345, guid: d36318f57ace61dfa9a7995ba89d572a, type: 3}
-  - {fileID: 3346724790924110479, guid: a0e4fc1afcc89db41ab9a906f84598ee, type: 3}
-  - {fileID: 1448324038387144769, guid: fd1eabb3cefe6661dba72d1c9da2f324, type: 3}
-  - {fileID: 4317978701771778569, guid: 7802bfe4be41591e8bda2584fe5d52f5, type: 3}
-  - {fileID: 1463134877830317007, guid: 690e28775aa94ce5daf88836f6f99c6a, type: 3}
-  PenetrationProgressBar:
-  - {fileID: 4774827772874275592, guid: 7e0e548fec747597dbb070f0b506db0f, type: 3}
-  - {fileID: 3454106060160367792, guid: 1aa0066d8121fdbb59a335177ab3ae78, type: 3}
-  - {fileID: 7763494534608811513, guid: 8a9a42a4137cf3132abeda9c0904c231, type: 3}
-  - {fileID: 6019239155909806310, guid: 9bc6428a41ec4a95690cd32d41a77d26, type: 3}
-  - {fileID: 3283489573442429098, guid: 7aa3feda01c17c9b583c5dbc3dfb7d50, type: 3}
-  KnockBackProgressBar:
-  - {fileID: 2679709337550869225, guid: 5244554fce6da138eaf88da1e03d36ca, type: 3}
-  - {fileID: 8465948609994827153, guid: 32ba07b6e9af01c3aa50d9816d233ff8, type: 3}
-  - {fileID: 2787786055156533716, guid: 7e9846409c5bcd4f983130d0bdab2033, type: 3}
-  - {fileID: 7751564002099460488, guid: 795fab099f55fb9388dd1548e890c590, type: 3}
-  - {fileID: 9221088916192228424, guid: 0088c7536a8cf1b04a57935a8e00e74d, type: 3}
   DamageProgress: 0
   FireRateProgress: 0
   PenetrationProgress: 0
   KnockBackProgress: 0
+  DamageProgressBits:
+  - {fileID: 8164765420549063090, guid: e17a9da9b4d1a61e496e555765c95842, type: 3}
+  - {fileID: 9209133007366636880, guid: b93897afeec618f2b936d39e4787fdd5, type: 3}
+  - {fileID: 3567212636120639086, guid: 980f01d9ff64b82358c59385e4439511, type: 3}
+  - {fileID: 5472411243109425426, guid: a7ee6aaf3b4299937babbd01dab4aa76, type: 3}
+  - {fileID: 4088190073029064379, guid: 3473694de1227d5fb84963c2db393766, type: 3}
+  - {fileID: 7014273837805927586, guid: 4ce2c32e5d27c98d4897f9cc1976e38a, type: 3}
+  - {fileID: 4199880299271843509, guid: 7b81aaee441c2d94bb82f19ceed63ddd, type: 3}
+  FireRateProgressBits: []
+  PenetrationProgressBits: []
+  KnockBackProgressBits: []
   gunStatPanel: {fileID: 2085159728944918299, guid: 2889cf47e3e4f01f0b3eea0f8783b0f8, type: 3}
 --- !u!1001 &3442765378918743522
 PrefabInstance:

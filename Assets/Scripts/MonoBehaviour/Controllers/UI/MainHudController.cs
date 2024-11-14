@@ -4,6 +4,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using Mono.Cecil;
 
@@ -30,29 +34,38 @@ public class MainHudController : MonoBehaviour
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
 
-    public GameObject[] DamageProgressBar;
-    public GameObject[] FireRateProgressBar;
-    public GameObject[] PenetrationProgressBar;
-    public GameObject[] KnockBackProgressBar;
-
     public int DamageProgress;
     public int FireRateProgress;
     public int PenetrationProgress;
     public int KnockBackProgress;
 
+    [SerializeField] private Transform[] DamageProgressBits;
+    [SerializeField] private Transform[] FireRateProgressBits;
+    [SerializeField] private Transform[] PenetrationProgressBits;
+    [SerializeField] private Transform[] KnockBackProgressBits;
+
     public GameObject gunStatPanel;
+    private Vector3 activatedBitSize;
+
+    private Dictionary<string, GunStatPanelTypeEnum> statNameToEnum;
 
     private Vector3 initialLevelUpScale;
 
     void Awake()
     {
-        DamageProgressBar[0].SetActive(false);
-        DamageProgressBar[1].SetActive(false);
-        DamageProgressBar[2].SetActive(false);
         DamageProgress=0;
         FireRateProgress=0;
         PenetrationProgress=0;
         KnockBackProgress=0;
+
+        statNameToEnum = new () {
+            {"shotCooldownSeconds", GunStatPanelTypeEnum.ShotCooldownSeconds},
+            {"penetration", GunStatPanelTypeEnum.Penetration},
+            {"knockbackForce", GunStatPanelTypeEnum.Knockback},
+            {"baseDamage", GunStatPanelTypeEnum.BaseDamage}
+        };
+
+        activatedBitSize = new Vector3(0.6866899f, 0.3495518f, 1f);
 
         scoreText = transform.Find("Score/Amount").GetComponent<TextMeshProUGUI>();
         levelUpPanel = transform.Find("LevelUpPanel").gameObject;
@@ -64,6 +77,9 @@ public class MainHudController : MonoBehaviour
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         waveTimeText.text = "00:00";
         BuildingEnabledChanged(true);
+        // levelUpPanel.SetActive(false);
+        InitiateGunStatPanel();
+
         levelUpPanel.SetActive(false);
     }
 
@@ -281,30 +297,82 @@ public class MainHudController : MonoBehaviour
         waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
     }
 
+    void InitiateGunStatPanel()
+    {
+        foreach(Transform bit in DamageProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+        foreach(Transform bit in FireRateProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+        foreach(Transform bit in PenetrationProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+        foreach(Transform bit in KnockBackProgressBits)
+        {
+            bit.DOScale(Vector3.zero, 0.5f);
+        }
+    }
+
     public void UpgradeSelectedGun(string statName) // cannot pass more than 1 value, or a enum value, in unity button onClick
     {
-        
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
-        playerController.UpgradeSelectedGun(statName);
+        GunStatPanelTypeEnum stat = statNameToEnum[statName];
 
-        switch (statName)
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
+        AnimateStatIncrease(statName);
+        playerController.UpgradeSelectedGun(stat);
+        
+
+    }
+
+    public void AnimateStatIncrease(string statName)
+    {
+
+        float currentStat;
+        switch(statName)
         {
+            case "baseDamage":
+                currentStat = playerController.selectedGunController.baseDamageUpgradeCount;
+                DamageProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
+                break;
             case "shotCooldownSeconds":
-                DamageProgressBar[DamageProgress].SetActive(true);
-                DamageProgress++;
+                currentStat = playerController.selectedGunController.shotCooldownSecondsUpgradeCount;
+                FireRateProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "penetration":
-                
+                currentStat = playerController.selectedGunController.penetrationUpgradeCount;
+                PenetrationProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
             case "knockbackForce":
-                
-                break;
-            case "baseDamage":
-                
+                currentStat = playerController.selectedGunController.knockbackForceUpgradeCount;
+                KnockBackProgressBits[(int)currentStat].DOScale(activatedBitSize, 0.5f).SetEase(Ease.InBounce);
                 break;
         }
-        Canvas.ForceUpdateCanvases();
+    }
 
+    public void AnimateGunStatPanelUpdate()
+    {
+        InitiateGunStatPanel();
+
+        for(int i=0;i<playerController.selectedGunController.baseDamageUpgradeCount;i++)
+        {
+            DamageProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+        for(int i=0;i<playerController.selectedGunController.shotCooldownSecondsUpgradeCount;i++)
+        {
+            FireRateProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+        for(int i=0;i<playerController.selectedGunController.penetrationUpgradeCount;i++)
+        {
+            PenetrationProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
+        for(int i=0;i<playerController.selectedGunController.knockbackForceUpgradeCount;i++)
+        {
+            KnockBackProgressBits[i].DOScale(activatedBitSize, 0.5f);
+        }
     }
 
     private void ActivateLevelUpPanel()
