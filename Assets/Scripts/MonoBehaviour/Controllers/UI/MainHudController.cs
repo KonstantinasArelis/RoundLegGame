@@ -98,7 +98,10 @@ public class MainHudController : MonoBehaviour
         buildSystem.BuildingPlacedEvent.RemoveListener(OnBuildingPlaced);
         buildSystem.BuildingDestroyedEvent.RemoveListener(OnBuildingDestroyed);
     }
-
+    public int GetScore()
+    {
+        return currentScore;
+    }
     public void AddScore(int score)
     {
         currentScore += score;

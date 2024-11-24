@@ -10,7 +10,7 @@ public class PauseMenuManager : MonoBehaviour
     [Tooltip("The name of the main menu scene to load.")]
     public string mainMenuSceneName = "MainMenu";
 
-    private bool isPaused = false;
+    public static bool isPaused = false;
 
     void Start()
     {
@@ -18,6 +18,7 @@ public class PauseMenuManager : MonoBehaviour
         if (pauseMenu != null)
         {
             pauseMenu.SetActive(false);
+            isPaused = false;
         }
         else
         {
