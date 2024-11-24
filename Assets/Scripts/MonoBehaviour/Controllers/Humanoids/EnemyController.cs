@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 // A lot of logic will be shared among enemies, so override this class if needed
 public class EnemyController : MonoBehaviour, IDamagable, IKnockable
@@ -49,12 +50,12 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (nearestPlayer != null && isDying != true) 
-        {
-            transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));
-            // move towards player
-            transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
-        }
+        // if (nearestPlayer != null && isDying != true) 
+        // {
+        //     transform.LookAt(new Vector3(nearestPlayer.transform.position.x, transform.position.y, nearestPlayer.transform.position.z));
+        //     // move towards player
+        //     transform.position = Vector3.MoveTowards(transform.position, nearestPlayer.transform.position, speedDeltaToPlayer * Time.deltaTime);
+        // }
     }
 
     void ChaseNearestTarget()
@@ -69,6 +70,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
         while (true)
         {
             ChaseNearestTarget();
+            GetComponent<NavMeshAgent>().destination = nearestPlayer.transform.position;
             yield return new WaitForSeconds(chaseTargetCooldownSeconds);
         }
     }
@@ -129,6 +131,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
 
     private void OnDeath()
     {
+        GetComponent<NavMeshAgent>().isStopped = true;
         animator.SetTrigger("Died");
         mainHudController.AddScore(scoreGivenOnDeath);
         GameObject.FindWithTag("Player").GetComponent<PlayerController>().GainXp(xpGivenOnDeath);

@@ -2273,6 +2273,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelArena
       objectReference: {fileID: 0}
+    - target: {fileID: 8923650460147567264, guid: 0de22aafb04c3ab4fa47242d03f95758, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 80f79e70f3b7e6e4caccc5a23475cdc9, type: 2}
+    - target: {fileID: 8923650460147567264, guid: 0de22aafb04c3ab4fa47242d03f95758, type: 3}
+      propertyPath: m_LayerMask.m_Bits
+      value: 3072
+      objectReference: {fileID: 0}
     - target: {fileID: 9051789937036455373, guid: 0de22aafb04c3ab4fa47242d03f95758, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.7013656
@@ -2528,6 +2536,14 @@ PrefabInstance:
     - target: {fileID: 778392139560085931, guid: 50e02b00d6e196112a45e486ff5023a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2747668203931804494, guid: 50e02b00d6e196112a45e486ff5023a1, type: 3}
+      propertyPath: m_Speed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8849204505250726533, guid: 50e02b00d6e196112a45e486ff5023a1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
