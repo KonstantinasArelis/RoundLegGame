@@ -75,7 +75,7 @@ public class MainHudController : MonoBehaviour
         buildingPanel = transform.Find("BuildingItems").gameObject;
         buildSystem = GameObject.Find("BuildSystem").GetComponent<BuildSystem>();
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        waveTimeText.text = "00:00";
+        waveTimeText.text = "10:00";
         BuildingEnabledChanged(true);
         InitiateGunStatPanel();
 
