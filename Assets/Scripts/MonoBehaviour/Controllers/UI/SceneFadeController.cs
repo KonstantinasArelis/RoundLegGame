@@ -19,7 +19,7 @@ public class SceneFadeController : MonoBehaviour
     float alpha = shouldFadeIn ? 1f : 0f;
     fadeImage.color = fadeImage.color.WithTweakedAlpha(alpha);
     // ease slow to fast
-    fadeImage.DOFade(1 - alpha, fadeTime).OnComplete(() =>
+    fadeImage.DOFade(1 - alpha, fadeTime).SetUpdate(true).OnComplete(() =>
     {
       callback?.Invoke();
     });

@@ -1976,6 +1976,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayAgainButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6358311147224148935, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
+      propertyPath: m_SortingOrder
+      value: 101
+      objectReference: {fileID: 0}
     - target: {fileID: 6700383433443906748, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
       propertyPath: m_text
       value: Play Again
@@ -1987,6 +1991,22 @@ PrefabInstance:
     - target: {fileID: 8031178994702304576, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
       propertyPath: m_Name
       value: EndMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527944000432170323, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
+      propertyPath: m_Color.a
+      value: 0.70980394
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527944000432170323, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527944000432170323, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8527944000432170323, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}
+      propertyPath: m_Color.r
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3848331829614030737, guid: 7f1e194820923524bb2ee63e254e4162, type: 3}

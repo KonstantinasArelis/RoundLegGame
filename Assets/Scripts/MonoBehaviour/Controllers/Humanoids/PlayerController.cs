@@ -242,25 +242,28 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         Time.timeScale = 0f;
         int playerScore = mainHudController.GetScore();
-        if (endMenu != null)
+        GameObject.Find("SceneFade").GetComponent<SceneFadeController>().FadeOut(() =>
         {
-            endMenu.SetActive(true);
-            if (scoreText != null)
+            if (endMenu != null)
             {
-                scoreText.text = $"Final score: {playerScore}";
+                endMenu.SetActive(true);
+                if (scoreText != null)
+                {
+                    scoreText.text = $"Final score: {playerScore}";
+                }
+                else
+                {
+                    Debug.LogError("Score text is not assigned!");
+                }
             }
             else
             {
-                Debug.LogError("Score text is not assigned!");
+                Debug.LogError("End menu object is not assigned!");
             }
-        }
-        else
-        {
-            Debug.LogError("End menu object is not assigned!");
-        }
-        Destroy(healthBar);
-        Destroy(xpBar);
-        Destroy(gameObject);
+            Destroy(healthBar);
+            Destroy(xpBar);
+            Destroy(gameObject);
+        });
     }
 
     public async void TakeDamage(float damage)
