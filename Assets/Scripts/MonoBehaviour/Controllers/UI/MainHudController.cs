@@ -1,17 +1,16 @@
 using System;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
-using Mono.Cecil;
 
-// TODO: refactor this to their own controllers
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class MainHudController : MonoBehaviour
 {
     private TextMeshProUGUI scoreText;
@@ -53,16 +52,17 @@ public class MainHudController : MonoBehaviour
 
     void Awake()
     {
-        DamageProgress=0;
-        FireRateProgress=0;
-        PenetrationProgress=0;
-        KnockBackProgress=0;
+        DamageProgress = 0;
+        FireRateProgress = 0;
+        PenetrationProgress = 0;
+        KnockBackProgress = 0;
 
-        statNameToEnum = new () {
-            {"shotCooldownSeconds", GunStatPanelTypeEnum.ShotCooldownSeconds},
-            {"penetration", GunStatPanelTypeEnum.Penetration},
-            {"knockbackForce", GunStatPanelTypeEnum.Knockback},
-            {"baseDamage", GunStatPanelTypeEnum.BaseDamage}
+        statNameToEnum = new()
+        {
+            { "shotCooldownSeconds", GunStatPanelTypeEnum.ShotCooldownSeconds },
+            { "penetration", GunStatPanelTypeEnum.Penetration },
+            { "knockbackForce", GunStatPanelTypeEnum.Knockback },
+            { "baseDamage", GunStatPanelTypeEnum.BaseDamage }
         };
 
         activatedBitSize = new Vector3(0.6866899f, 0.3495518f, 1f);
@@ -77,7 +77,6 @@ public class MainHudController : MonoBehaviour
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         waveTimeText.text = "00:00";
         BuildingEnabledChanged(true);
-        // levelUpPanel.SetActive(false);
         InitiateGunStatPanel();
 
         levelUpPanel.SetActive(false);
@@ -99,7 +98,10 @@ public class MainHudController : MonoBehaviour
         buildSystem.BuildingPlacedEvent.RemoveListener(OnBuildingPlaced);
         buildSystem.BuildingDestroyedEvent.RemoveListener(OnBuildingDestroyed);
     }
-
+    public int GetScore()
+    {
+        return currentScore;
+    }
     public void AddScore(int score)
     {
         currentScore += score;
@@ -148,17 +150,13 @@ public class MainHudController : MonoBehaviour
 
     public void OnLevelUp()
     {
-        // TODO: don't empty everytime for performance?
-        // the panel HAS to be active first because strange things can happen
-        // upgrade only when the level is right or when the upgrade is the last
         if (
             currentUpgrade.nextUpgradeLevel > playerController.levelProvider.GetCurrentLevel()
             || currentUpgrade.nextUpgrades.Length == 0)
         {
             return;
         }
-        print("LEVEL" + playerController.levelProvider.GetCurrentLevel());
-        // if the level is right look if the current upgrade was accepted
+
         ActivateLevelUpPanel();
         Utility.DestroyChildren(upgradeItemsPanel);
         DisplayLevelUpItems();
@@ -180,9 +178,7 @@ public class MainHudController : MonoBehaviour
         buildingPanel.SetActive(true);
         Utility.DestroyChildren(buildingPanel);
         DisplayBuildingItems();
-        RenewItems(buildingPanel, () => {
-            BuildingClickSetup();
-        });
+        RenewItems(buildingPanel, () => { BuildingClickSetup(); });
     }
 
     private void DisplayBuildingItems()
@@ -193,6 +189,8 @@ public class MainHudController : MonoBehaviour
             buildingItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = buildings[i].name;
             buildingItem.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = buildings[i].cost.ToString();
             RawImage rawImage = buildingItem.transform.Find("ItemDisplay/ItemImage").GetComponent<RawImage>();
+
+#if UNITY_EDITOR
             Texture2D thumbnail = AssetPreview.GetAssetPreview(buildings[i].prefab);
             if (thumbnail != null)
             {
@@ -203,6 +201,10 @@ public class MainHudController : MonoBehaviour
             {
                 StartCoroutine(Coroutines.WaitForThumbnailCoroutine(buildings[i].prefab, rawImage));
             }
+#else
+            Debug.LogWarning("AssetPreview is not available in builds.");
+            rawImage.texture = null;
+#endif
         }
     }
 
@@ -217,11 +219,11 @@ public class MainHudController : MonoBehaviour
     private void SetupUpgradeClick(int i)
     {
         Button button = upgradeItemsPanel.transform.GetChild(i).GetComponentInChildren<Button>();
-        button.onClick.AddListener(async () => {
+        button.onClick.AddListener(async () =>
+        {
             playerController.SelectUpgrade(currentUpgrade.nextUpgrades[i]);
             currentUpgrade = currentUpgrade.nextUpgrades[i];
             await DeactivateLevelUpPanel();
-            // it will level up if it has to - prevents unclicked upgrades
             OnLevelUp();
         });
     }
@@ -238,11 +240,11 @@ public class MainHudController : MonoBehaviour
     {
         GameObject buildingItemUI = buildingPanel.transform.GetChild(i).gameObject;
         Button button = buildingItemUI.GetComponentInChildren<Button>();
-        button.onClick.AddListener(async () => {
+        button.onClick.AddListener(async () =>
+        {
             await Tweens.Pop(buildingItemUI.GetComponent<RectTransform>(), 1.2f, 0.2f).AsyncWaitForCompletion();
             if (lastSelectedBuildingItem != null)
             {
-                // default color
                 lastSelectedBuildingItem.GetComponent<RawImage>().color = buildingItemUIPrefab.GetComponent<RawImage>().color;
                 if (buildSystem.currentBuilding.Equals(buildings[i]))
                 {
@@ -266,6 +268,7 @@ public class MainHudController : MonoBehaviour
             GameObject upgradeGun = currentUpgrade.nextUpgrades[i].prefab;
             upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = currentUpgrade.nextUpgrades[i].name;
 
+#if UNITY_EDITOR
             Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
             if (thumbnail != null)
             {
@@ -276,6 +279,10 @@ public class MainHudController : MonoBehaviour
             {
                 StartCoroutine(Coroutines.WaitForThumbnailCoroutine(upgradeGun, rawImage));
             }
+#else
+            Debug.LogWarning("AssetPreview is not available in builds.");
+            rawImage.texture = null;
+#endif
         }
     }
 
@@ -287,11 +294,8 @@ public class MainHudController : MonoBehaviour
             .WithCallback(callback));
     }
 
-
-
     public void SetWaveTime(int waveTime)
     {
-        // TODO: don't do this every 1s
         int minutes = waveTime / 60;
         int seconds = waveTime % 60;
         waveTimeText.text = minutes.ToString("D2") + ":" + seconds.ToString("D2");
@@ -299,40 +303,36 @@ public class MainHudController : MonoBehaviour
 
     void InitiateGunStatPanel()
     {
-        foreach(Transform bit in DamageProgressBits)
+        foreach (Transform bit in DamageProgressBits)
         {
             bit.DOScale(Vector3.zero, 0.5f);
         }
-        foreach(Transform bit in FireRateProgressBits)
+        foreach (Transform bit in FireRateProgressBits)
         {
             bit.DOScale(Vector3.zero, 0.5f);
         }
-        foreach(Transform bit in PenetrationProgressBits)
+        foreach (Transform bit in PenetrationProgressBits)
         {
             bit.DOScale(Vector3.zero, 0.5f);
         }
-        foreach(Transform bit in KnockBackProgressBits)
+        foreach (Transform bit in KnockBackProgressBits)
         {
             bit.DOScale(Vector3.zero, 0.5f);
         }
     }
 
-    public void UpgradeSelectedGun(string statName) // cannot pass more than 1 value, or a enum value, in unity button onClick
+    public void UpgradeSelectedGun(string statName)
     {
         GunStatPanelTypeEnum stat = statNameToEnum[statName];
-
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>(); // PlayerController resets itself to null if this line is not here. I dont know why.
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         AnimateStatIncrease(statName);
         playerController.UpgradeSelectedGun(stat);
-        
-
     }
 
     public void AnimateStatIncrease(string statName)
     {
-
         float currentStat;
-        switch(statName)
+        switch (statName)
         {
             case "baseDamage":
                 currentStat = playerController.selectedGunController.baseDamageUpgradeCount;
@@ -357,19 +357,19 @@ public class MainHudController : MonoBehaviour
     {
         InitiateGunStatPanel();
 
-        for(int i=0;i<playerController.selectedGunController.baseDamageUpgradeCount;i++)
+        for (int i = 0; i < playerController.selectedGunController.baseDamageUpgradeCount; i++)
         {
             DamageProgressBits[i].DOScale(activatedBitSize, 0.5f);
         }
-        for(int i=0;i<playerController.selectedGunController.shotCooldownSecondsUpgradeCount;i++)
+        for (int i = 0; i < playerController.selectedGunController.shotCooldownSecondsUpgradeCount; i++)
         {
             FireRateProgressBits[i].DOScale(activatedBitSize, 0.5f);
         }
-        for(int i=0;i<playerController.selectedGunController.penetrationUpgradeCount;i++)
+        for (int i = 0; i < playerController.selectedGunController.penetrationUpgradeCount; i++)
         {
             PenetrationProgressBits[i].DOScale(activatedBitSize, 0.5f);
         }
-        for(int i=0;i<playerController.selectedGunController.knockbackForceUpgradeCount;i++)
+        for (int i = 0; i < playerController.selectedGunController.knockbackForceUpgradeCount; i++)
         {
             KnockBackProgressBits[i].DOScale(activatedBitSize, 0.5f);
         }

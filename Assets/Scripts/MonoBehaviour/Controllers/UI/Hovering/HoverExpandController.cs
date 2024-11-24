@@ -11,11 +11,13 @@ public class HoverExpandController : AbstractHoverController
   }
   override protected void PointerEnter()
   {
-    transform.DOScale(initialScale * 1.2f, 0.2f);
+    // setupdate - independent time (no time scale)
+    transform.DOScale(initialScale * 1.2f, 0.2f).SetUpdate(true);
   }
 
   override protected void PointerExit()
   {
-    transform.DOScale(initialScale, 0.2f);
+    // setupdate - independent time (no time scale)
+    transform.DOScale(initialScale, 0.2f).SetUpdate(true);
   }
 }
