@@ -384,11 +384,15 @@ public class MainHudController : MonoBehaviour
         if (levelUpPanel.activeSelf) return;
         levelUpPanel.transform.localScale = Vector3.zero;
         levelUpPanel.SetActive(true);
-        levelUpPanel.transform.DOScale(initialLevelUpScale, 0.5f).SetEase(Ease.OutBack);
+        levelUpPanel.transform.DOScale(initialLevelUpScale, 0.5f).SetEase(Ease.OutBack).OnComplete(() => Time.timeScale = 0f);;
+
+        PauseMenuManager.isPaused = true;
     }
 
     private Task DeactivateLevelUpPanel()
     {
+        Time.timeScale = 1f;
+        PauseMenuManager.isPaused = false;
         return levelUpPanel.transform.DOScale(Vector3.zero, 0.5f)
             .SetEase(Ease.InBack).OnComplete(() => levelUpPanel.SetActive(false))
             .AsyncWaitForCompletion();
