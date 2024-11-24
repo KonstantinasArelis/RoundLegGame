@@ -190,21 +190,23 @@ public class MainHudController : MonoBehaviour
             buildingItem.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = buildings[i].cost.ToString();
             RawImage rawImage = buildingItem.transform.Find("ItemDisplay/ItemImage").GetComponent<RawImage>();
 
-#if UNITY_EDITOR
-            Texture2D thumbnail = AssetPreview.GetAssetPreview(buildings[i].prefab);
-            if (thumbnail != null)
-            {
-                rawImage.texture = thumbnail;
-                rawImage.color = Color.white;
-            }
-            else
-            {
-                StartCoroutine(Coroutines.WaitForThumbnailCoroutine(buildings[i].prefab, rawImage));
-            }
-#else
-            Debug.LogWarning("AssetPreview is not available in builds.");
-            rawImage.texture = null;
-#endif
+// #if UNITY_EDITOR
+//             Texture2D thumbnail = AssetPreview.GetAssetPreview(buildings[i].prefab);
+//             if (thumbnail != null)
+//             {
+//                 rawImage.texture = thumbnail;
+//                 rawImage.color = Color.white;
+//             }
+//             else
+//             {
+//                 StartCoroutine(Coroutines.WaitForThumbnailCoroutine(buildings[i].prefab, rawImage));
+//             }
+// #else
+//             Debug.LogWarning("AssetPreview is not available in builds.");
+//             rawImage.texture = null;
+// #endif
+            rawImage.texture = buildings[i].icon;
+            rawImage.color = Color.white;
         }
     }
 
@@ -268,21 +270,23 @@ public class MainHudController : MonoBehaviour
             GameObject upgradeGun = currentUpgrade.nextUpgrades[i].prefab;
             upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = currentUpgrade.nextUpgrades[i].name;
 
-#if UNITY_EDITOR
-            Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
-            if (thumbnail != null)
-            {
-                rawImage.texture = thumbnail;
-                rawImage.color = Color.white;
-            }
-            else
-            {
-                StartCoroutine(Coroutines.WaitForThumbnailCoroutine(upgradeGun, rawImage));
-            }
-#else
-            Debug.LogWarning("AssetPreview is not available in builds.");
-            rawImage.texture = null;
-#endif
+// #if UNITY_EDITOR
+//             Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
+//             if (thumbnail != null)
+//             {
+//                 rawImage.texture = thumbnail;
+//                 rawImage.color = Color.white;
+//             }
+//             else
+//             {
+//                 StartCoroutine(Coroutines.WaitForThumbnailCoroutine(upgradeGun, rawImage));
+//             }
+// #else
+//             Debug.LogWarning("AssetPreview is not available in builds.");
+//             rawImage.texture = null;
+// #endif
+            rawImage.texture = currentUpgrade.nextUpgrades[i].icon;
+            rawImage.color = Color.white;
         }
     }
 
