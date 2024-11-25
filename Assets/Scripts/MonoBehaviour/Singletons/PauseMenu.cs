@@ -22,7 +22,7 @@ public class PauseMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PauseMenuUI is not assigned in the Inspector.");
+            // Debug.LogWarning("PauseMenuUI is not assigned in the Inspector.");
         }
     }
     void Update()
