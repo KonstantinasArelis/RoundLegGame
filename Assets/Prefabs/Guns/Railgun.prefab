@@ -161,8 +161,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4349688868867577119, guid: f720c9d4d5f2cbb2b86f90fde3813218, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6759112525096681782}
   m_SourcePrefab: {fileID: 100100000, guid: f720c9d4d5f2cbb2b86f90fde3813218, type: 3}
+--- !u!1 &6326928989359388670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4349688868867577119, guid: f720c9d4d5f2cbb2b86f90fde3813218, type: 3}
+  m_PrefabInstance: {fileID: 7750966125654024929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6759112525096681782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6326928989359388670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 494fc8d7ac3c0b93cb030ed0eb9e271a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineDuration: 0.3
+  maxAngleDeviation: 30
+  direction: {x: 0, y: 0, z: 0}
+  lastTransformDireciton: {x: 0, y: 0, z: 0}
+  endPoint: {x: 0, y: 0, z: 0}
+  position: {x: 0, y: 0, z: 0}
+  lengthOfLineRenderer: 2
+  points: []
 --- !u!4 &7778105489235248760 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 27469256011785369, guid: f720c9d4d5f2cbb2b86f90fde3813218, type: 3}
