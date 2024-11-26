@@ -21,6 +21,8 @@ public class GameSystem : MonoBehaviour
 
     private int waveTime = 0;
     private readonly int waveEndTime = 60 * 10;
+    public GameObject endMenu;
+
     [SerializeField] public int currentWave = 0;
 
     float monsterSpawnInterval;
@@ -122,7 +124,13 @@ public class GameSystem : MonoBehaviour
                 Debug.Log("Zombie count this wave: " + zombieCountInWaves[currentWave]);
                 Debug.Log("Current transform amount: " + transform.childCount);
             }
-            mainHudController.SetWaveTime(waveTime);
+            mainHudController.SetWaveTime(waveEndTime - waveTime);
         }
+
+        Time.timeScale = 0f;
+        PauseMenuManager.isPaused = true;
+        endMenu.SetActive(true);
+
+
     }
 }

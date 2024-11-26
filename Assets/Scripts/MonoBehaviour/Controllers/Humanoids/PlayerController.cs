@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     public IGunStatUpgradeable selectedGunController;
 
     public GameObject endMenu;
+    public GameObject creditsPanel;
+
     public TextMeshProUGUI scoreText; // Reference to the score text
 
     // private int playerScore; // Variable to track the player's score
@@ -247,6 +249,8 @@ public class PlayerController : MonoBehaviour, IDamagable
             if (endMenu != null)
             {
                 endMenu.SetActive(true);
+                creditsPanel.SetActive(false);
+
                 if (scoreText != null)
                 {
                     scoreText.text = $"Final score: {playerScore}";

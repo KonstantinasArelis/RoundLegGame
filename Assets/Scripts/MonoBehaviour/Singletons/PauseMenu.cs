@@ -22,7 +22,7 @@ public class PauseMenuManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PauseMenuUI is not assigned in the Inspector.");
+            // Debug.LogWarning("PauseMenuUI is not assigned in the Inspector.");
         }
     }
     void Update()
@@ -61,8 +61,8 @@ public class PauseMenuManager : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1f; // Resume the game
         isPaused = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>
