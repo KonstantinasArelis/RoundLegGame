@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 8966860364317346379}
   - component: {fileID: 8686335161741750622}
   - component: {fileID: 2883835906471655595}
-  - component: {fileID: 5623063433850410486}
   m_Layer: 8
   m_Name: ExplosiveBarrel
   m_TagString: Untagged
@@ -158,19 +157,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: b465634aa802dbcd8bde2e774eef4b78, type: 3}
---- !u!208 &5623063433850410486
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7453549253102005150}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.010000001, y: 0.010000001, z: 0.010000001}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
