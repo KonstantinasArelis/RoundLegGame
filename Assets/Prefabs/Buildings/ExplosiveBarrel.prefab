@@ -42,8 +42,9 @@ GameObject:
   - component: {fileID: 7798971363950440740}
   - component: {fileID: 6598996900357783169}
   - component: {fileID: 8966860364317346379}
-  - component: {fileID: 8686335161741750622}
   - component: {fileID: 2883835906471655595}
+  - component: {fileID: 8686335161741750622}
+  - component: {fileID: -5357692907175455435}
   m_Layer: 8
   m_Name: ExplosiveBarrel
   m_TagString: Untagged
@@ -120,21 +121,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8686335161741750622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7453549253102005150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b2e73aa7feaef64c9403872a0ef7cb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  impactRadius: 5
-  damage: 1
-  knockbackForce: 10
 --- !u!64 &2883835906471655595
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -157,3 +143,32 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: b465634aa802dbcd8bde2e774eef4b78, type: 3}
+--- !u!114 &8686335161741750622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453549253102005150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2e73aa7feaef64c9403872a0ef7cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  impactRadius: 5
+  damage: 2
+  knockbackForce: 10
+--- !u!114 &-5357692907175455435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7453549253102005150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9adba8003cefc4fac365efdbbd8e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 30
+  damageCooldownTime: 0
