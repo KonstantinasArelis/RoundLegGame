@@ -8,6 +8,12 @@ public abstract class AbstractThrowable : MonoBehaviour
   private readonly float gravityScale = -10f;
   private bool isFrozen = false;
 
+  protected void Start()
+  {
+    // make sure it's destroyed if nothing at some point
+    Destroy(gameObject, 10f);
+  }
+
   protected void Update()
   {
     if (isFrozen) return;

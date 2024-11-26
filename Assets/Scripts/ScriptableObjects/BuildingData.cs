@@ -4,6 +4,7 @@ using UnityEngine;
 public class BuildingData : ScriptableObject
 {
   public GameObject prefab;
+  public Texture2D icon;
   public new string name;
   public int cost;
 

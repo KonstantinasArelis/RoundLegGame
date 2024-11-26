@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Molotov thrower
   prefab: {fileID: 6956756420190466156, guid: 5f93d22e3c80ceb479a167039fe103d9, type: 3}
+  icon: {fileID: 2800000, guid: 6745ba6d495eadd4f9d44fdb748fb28a, type: 3}
   type: 5
   nextUpgrades: []
   nextUpgradeLevel: 20

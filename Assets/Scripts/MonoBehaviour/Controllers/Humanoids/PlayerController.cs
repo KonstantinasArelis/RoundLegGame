@@ -6,20 +6,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
-    [Serializable]
-    private struct Directions
-    {
-        public float front, right, back, left;
-
-        public static Directions operator +(Directions a, Directions b) => new()
-        {
-            front = a.front + b.front,
-            right = a.right + b.right,
-            back = a.back + b.back,
-            left = a.left + b.left
-        };
-    }
-
     [SerializeField] private float speed;
     [SerializeField] private GameObject playerBar;
     private GameObject healthBar, xpBar;
@@ -64,6 +50,13 @@ public class PlayerController : MonoBehaviour, IDamagable
     public GameObject railgunObject;
     public IGunStatUpgradeable selectedGunController;
 
+    public GameObject endMenu;
+    public GameObject creditsPanel;
+
+    public TextMeshProUGUI scoreText; // Reference to the score text
+
+    // private int playerScore; // Variable to track the player's score
+
     Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -90,13 +83,8 @@ public class PlayerController : MonoBehaviour, IDamagable
         healthBar.GetComponent<QuantityBarController>().SetupQuantityBar(healthProvider.health, healthProvider.maxHealth);
         levelText = xpBar.transform.Find("Level").GetComponent<TextMeshProUGUI>();
         
-        ground = GameObject.Find("Plane");
-        groundBoundary = new Directions{
-            front = ground.transform.position.z + ground.GetComponent<Collider>().bounds.extents.z,
-            right = ground.transform.position.x + ground.GetComponent<Collider>().bounds.extents.x,
-            back = ground.transform.position.z - ground.GetComponent<Collider>().bounds.extents.z,
-            left = ground.transform.position.x - ground.GetComponent<Collider>().bounds.extents.x
-        };
+        ground = GameObject.FindWithTag("Ground");
+        groundBoundary = Utility.GetCollidableObjectBoundaries(ground);
 
 
         // for testing
@@ -111,10 +99,13 @@ public class PlayerController : MonoBehaviour, IDamagable
     // Update is called once per frame
     void Update()
     {
-        MakeStatBarsKeepOffset();
-        MakeCameraKeepOffset();
-        Shoot();
-        ExtraControls();
+        if(!PauseMenuManager.isPaused)
+        {
+            MakeStatBarsKeepOffset();
+            MakeCameraKeepOffset();
+            Shoot();
+            ExtraControls();
+        }
     }
 
     void FixedUpdate()
@@ -255,9 +246,32 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void OnDeath()
     {
-        Destroy(healthBar);
-        Destroy(xpBar);
-        Destroy(gameObject);
+        Time.timeScale = 0f;
+        int playerScore = mainHudController.GetScore();
+        GameObject.Find("SceneFade").GetComponent<SceneFadeController>().FadeOut(() =>
+        {
+            if (endMenu != null)
+            {
+                endMenu.SetActive(true);
+                creditsPanel.SetActive(false);
+
+                if (scoreText != null)
+                {
+                    scoreText.text = $"Final score: {playerScore}";
+                }
+                else
+                {
+                    Debug.LogError("Score text is not assigned!");
+                }
+            }
+            else
+            {
+                Debug.LogError("End menu object is not assigned!");
+            }
+            Destroy(healthBar);
+            Destroy(xpBar);
+            Destroy(gameObject);
+        });
     }
 
     public async void TakeDamage(float damage)
