@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public GameObject gunObject; 
     public GameObject uziObject; 
     public GameObject shotgunObject;
+    public GameObject railgunObject;
     public IGunStatUpgradeable selectedGunController;
 
     Dictionary<UpgradeTypeEnum, GameObject> gunToObject;
@@ -246,6 +247,9 @@ public class PlayerController : MonoBehaviour, IDamagable
         } else if (Input.GetKey(KeyCode.Alpha3))
         {
             SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.Shotgun).First()); 
+        } else if (Input.GetKey(KeyCode.Alpha4))
+        {
+            SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.Railgun).First()); 
         }
     }
 
