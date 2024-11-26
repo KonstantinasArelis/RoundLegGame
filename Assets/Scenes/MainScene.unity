@@ -257,13 +257,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1549358798561699462, guid: 932feba92542b4b43b871a746c6c41dd, type: 3}
     - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
-      propertyPath: scoreText
-      value: 
-      objectReference: {fileID: 1291924804}
-    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
       propertyPath: creditsPanel
       value: 
       objectReference: {fileID: 1194539286}
+    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: railgunObject
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
       propertyPath: cameraBoundaryFromGround.left
       value: 11
@@ -1380,6 +1380,10 @@ PrefabInstance:
     - target: {fileID: 4795276481685555379, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4795276481685555379, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 32.242188
       objectReference: {fileID: 0}
     - target: {fileID: 5120615784068331166, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: m_AnchorMax.y
