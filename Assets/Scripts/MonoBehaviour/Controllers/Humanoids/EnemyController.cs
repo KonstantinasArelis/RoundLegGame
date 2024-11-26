@@ -67,10 +67,12 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
 
     private IEnumerator ChaseNearestTargetCoroutine()
     {
-        while (true)
+        var agent = GetComponent<NavMeshAgent>();
+
+        while (agent.enabled)
         {
             ChaseNearestTarget();
-            GetComponent<NavMeshAgent>().destination = nearestPlayer.transform.position;
+            agent.destination = nearestPlayer.transform.position;
             yield return new WaitForSeconds(chaseTargetCooldownSeconds);
         }
     }
@@ -131,7 +133,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
 
     private void OnDeath()
     {
-        GetComponent<NavMeshAgent>().isStopped = true;
+        GetComponent<NavMeshAgent>().enabled = false;
         animator.SetTrigger("Died");
         mainHudController.AddScore(scoreGivenOnDeath);
         GameObject.FindWithTag("Player").GetComponent<PlayerController>().GainXp(xpGivenOnDeath);
