@@ -79,17 +79,17 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  - {x: 10, y: 10, z: 10}
+  - {x: 10, y: 10, z: 10}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 2
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.72752655
-        value: 0.022491813
+        time: 0.7592648
+        value: 0.016281486
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -129,11 +129,11 @@ LineRenderer:
       m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 2
-    numCapVertices: 8
+    numCornerVertices: 16
+    numCapVertices: 16
     alignment: 0
     textureMode: 0
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 101, y: 101}
     shadowBias: 0.5
     generateLightingData: 0
   m_MaskInteraction: 0
