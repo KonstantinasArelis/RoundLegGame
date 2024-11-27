@@ -16,6 +16,5 @@ MonoBehaviour:
   prefab: {fileID: 6271509002931686649, guid: 8494d6c8bf729f540b6c3edd424c59d5, type: 3}
   icon: {fileID: 2800000, guid: 0623794d521a3a841b49817115a943e5, type: 3}
   type: 3
-  nextUpgrades:
-  - {fileID: 11400000, guid: a728acec8c4aacc47b09a0908fb15f87, type: 2}
-  nextUpgradeLevel: 5
+  nextUpgrade: {fileID: 0}
+  requiredLevel: 15
