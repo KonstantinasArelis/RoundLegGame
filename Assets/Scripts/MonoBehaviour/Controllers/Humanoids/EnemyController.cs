@@ -31,7 +31,7 @@ public class EnemyController : MonoBehaviour, IDamagable, IKnockable
 
     private float colliderExtentY;
     
-    Animator animator;
+    protected Animator animator;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
