@@ -3821,6 +3821,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: starterUpgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f69a5f7b4a63b745ab7bdd9a6183ca0, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: upgradeLevelInterval
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'upgrades.Array.data[3]'
       value: 
       objectReference: {fileID: 11400000, guid: d76a6ae1e0a65ca49bb46d20c1cbed8f, type: 2}
@@ -3829,6 +3837,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 2b92bc4d3b87e644a8e59f20a50a3afc, type: 2}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: nextUpgrades.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: 'nextUpgrades.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a728acec8c4aacc47b09a0908fb15f87, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: 'nextUpgrades.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: aaa6bc79eac67144b9a420ca6fc7a33c, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: availableUpgrades.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: DamageProgressBits.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -3836,6 +3860,14 @@ PrefabInstance:
       propertyPath: FireRateProgressBits.Array.size
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: 'availableUpgrades.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: aaa6bc79eac67144b9a420ca6fc7a33c, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: 'availableUpgrades.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: c38544db85ed9e342bd26362a1608ac0, type: 2}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'DamageProgressBits.Array.data[0]'
       value: 

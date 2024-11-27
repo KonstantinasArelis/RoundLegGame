@@ -28,7 +28,10 @@ public class MainHudController : MonoBehaviour
 
     private GameObject lastSelectedBuildingItem = null;
 
-    [SerializeField] private UpgradeData currentUpgrade;
+    private int previousLevel = 0;
+    public int upgradeLevelInterval;
+    [SerializeField] private UpgradeData starterUpgrade;
+    [SerializeField] private List<UpgradeData> nextUpgrades;
     [SerializeField] private BuildingData[] buildings;
     [SerializeField] private GameObject upgradeItemUIPrefab;
     [SerializeField] private GameObject buildingItemUIPrefab;
@@ -84,7 +87,7 @@ public class MainHudController : MonoBehaviour
 
     void Start()
     {
-        playerController.SelectUpgrade(currentUpgrade);
+        playerController.SelectUpgrade(starterUpgrade);
     }
 
     void OnEnable()
@@ -150,17 +153,15 @@ public class MainHudController : MonoBehaviour
 
     public void OnLevelUp()
     {
-        if (
-            currentUpgrade.nextUpgradeLevel > playerController.levelProvider.GetCurrentLevel()
-            || currentUpgrade.nextUpgrades.Length == 0)
+        if (playerController.levelProvider.GetCurrentLevel() - previousLevel >= upgradeLevelInterval
+            && nextUpgrades.Count > 0)
         {
-            return;
+            previousLevel += upgradeLevelInterval;
+            ActivateLevelUpPanel();
+            Utility.DestroyChildren(upgradeItemsPanel);
+            DisplayLevelUpItems();
+            RenewItems(upgradeItemsPanel, UpgradeClickSetup);
         }
-
-        ActivateLevelUpPanel();
-        Utility.DestroyChildren(upgradeItemsPanel);
-        DisplayLevelUpItems();
-        RenewItems(upgradeItemsPanel, UpgradeClickSetup);
     }
 
     public void BuildingEnabledChanged(bool isBuildingEnabled)
@@ -212,7 +213,7 @@ public class MainHudController : MonoBehaviour
 
     private void UpgradeClickSetup()
     {
-        for (int i = 0; i < currentUpgrade.nextUpgrades.Length; ++i)
+        for (int i = 0; i < nextUpgrades.Count; ++i)
         {
             SetupUpgradeClick(i);
         }
@@ -223,8 +224,12 @@ public class MainHudController : MonoBehaviour
         Button button = upgradeItemsPanel.transform.GetChild(i).GetComponentInChildren<Button>();
         button.onClick.AddListener(async () =>
         {
-            playerController.SelectUpgrade(currentUpgrade.nextUpgrades[i]);
-            currentUpgrade = currentUpgrade.nextUpgrades[i];
+            playerController.SelectUpgrade(nextUpgrades[i]);
+            nextUpgrades[i] = nextUpgrades[i].nextUpgrade;
+
+            if (nextUpgrades[i] == null)
+                nextUpgrades.RemoveAt(i);
+
             await DeactivateLevelUpPanel();
             OnLevelUp();
         });
@@ -263,12 +268,14 @@ public class MainHudController : MonoBehaviour
 
     private void DisplayLevelUpItems()
     {
-        for (int i = 0; i < currentUpgrade.nextUpgrades.Length; ++i)
+        int currentLevel = playerController.levelProvider.GetCurrentLevel();
+
+        foreach (UpgradeData upgrade in nextUpgrades)
         {
             GameObject upgradeItem = Instantiate(upgradeItemUIPrefab, upgradeItemsPanel.GetComponent<RectTransform>());
             RawImage rawImage = upgradeItem.GetComponentInChildren<RawImage>();
-            GameObject upgradeGun = currentUpgrade.nextUpgrades[i].prefab;
-            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = currentUpgrade.nextUpgrades[i].name;
+            GameObject upgradeGun = upgrade.prefab;
+            upgradeItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = upgrade.name;
 
 // #if UNITY_EDITOR
 //             Texture2D thumbnail = AssetPreview.GetAssetPreview(upgradeGun);
@@ -285,7 +292,7 @@ public class MainHudController : MonoBehaviour
 //             Debug.LogWarning("AssetPreview is not available in builds.");
 //             rawImage.texture = null;
 // #endif
-            rawImage.texture = currentUpgrade.nextUpgrades[i].icon;
+            rawImage.texture = upgrade.icon;
             rawImage.color = Color.white;
         }
     }
