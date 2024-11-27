@@ -458,13 +458,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1549358798561699462, guid: 932feba92542b4b43b871a746c6c41dd, type: 3}
     - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
-      propertyPath: scoreText
-      value: 
-      objectReference: {fileID: 1291924804}
-    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
       propertyPath: creditsPanel
       value: 
       objectReference: {fileID: 1194539286}
+    - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: railgunObject
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3860573725764655575, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
       propertyPath: cameraBoundaryFromGround.left
       value: 11
@@ -481,6 +481,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5843835722898250721, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.586
+      objectReference: {fileID: 0}
+    - target: {fileID: 5843835722898250721, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.986
+      objectReference: {fileID: 0}
     - target: {fileID: 6223586758400132524, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.10842
@@ -493,8 +501,13 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.0121
       objectReference: {fileID: 0}
+    - target: {fileID: 6508450282113253723, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6508450282113253723, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3de3f41ff066206438c4b50c5e5e2e9d, type: 3}
@@ -1943,7 +1956,7 @@ MonoBehaviour:
   endMenu: {fileID: 0}
   scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
-  mainMenuSceneName: MainMenu
+  PlayAgainScene: MainScene
   creditsContent: {fileID: 0}
   scrollSpeed: 50
 --- !u!1 &700500145
@@ -2492,6 +2505,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1194539286}
     - target: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
+      propertyPath: PlayAgainScene
+      value: MainScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
       propertyPath: creditsContent
       value: 
       objectReference: {fileID: 900905395}
@@ -2659,7 +2676,7 @@ MonoBehaviour:
   endMenu: {fileID: 0}
   scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
-  mainMenuSceneName: MainMenu
+  PlayAgainScene: MainScene
   creditsContent: {fileID: 0}
   scrollSpeed: 50
 --- !u!224 &1028353454 stripped
@@ -3628,6 +3645,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4795276481685555379, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 32.242188
+      objectReference: {fileID: 0}
     - target: {fileID: 5120615784068331166, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4023,7 +4044,7 @@ MonoBehaviour:
   endMenu: {fileID: 0}
   scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
-  mainMenuSceneName: MainMenu
+  PlayAgainScene: MainScene
   creditsContent: {fileID: 0}
   scrollSpeed: 50
 --- !u!224 &1217842755 stripped

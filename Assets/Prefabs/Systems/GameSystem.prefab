@@ -46,5 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombiePrefab: {fileID: 2800108410043042268, guid: 923c07f6d7f9ff847b66b8692a97b08a, type: 3}
   monster1Prefab: {fileID: 109976633089143569, guid: 50e02b00d6e196112a45e486ff5023a1, type: 3}
-  player: {fileID: 0}
+  monster2Prefab: {fileID: 2995706648826096752, guid: ec60012e72b7546da9953ce7c2b6e3b6, type: 3}
   spawnTimeSeconds: 0.1
+  endMenu: {fileID: 0}
+  currentWave: 0

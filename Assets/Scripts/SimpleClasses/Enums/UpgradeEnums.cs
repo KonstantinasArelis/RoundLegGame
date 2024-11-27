@@ -12,7 +12,8 @@ public enum UpgradeTypeEnum
     Shotgun,
     KillerOrb,
     AxeThrower,
-    MolotovThrower
+    MolotovThrower,
+    Railgun
 }
 
 [Serializable]

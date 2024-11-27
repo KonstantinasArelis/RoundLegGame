@@ -11,9 +11,9 @@ public class EndMenuManager : MonoBehaviour
     public TextMeshProUGUI scoreText; // Reference to the score text
     public GameObject creditsPanel;
 
-    [Header("Main Menu Scene")]
+    [Header("Play Again Scene")]
     [Tooltip("The name of the main menu scene to load.")]
-    public string mainMenuSceneName = "MainMenu";
+    public string PlayAgainScene = "MainScene";
 
 
     [Header("Credits Settings")]
@@ -25,7 +25,7 @@ public class EndMenuManager : MonoBehaviour
     public void PlayAgain()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene(PlayAgainScene);
     }
 
     void Start()
