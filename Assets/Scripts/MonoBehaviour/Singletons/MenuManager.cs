@@ -45,6 +45,14 @@ public class MenuManager : MonoBehaviour
         });
     }
 
+    public void StartTutorial()
+    {
+        sceneFadeController.FadeOut(() =>
+        {
+            SceneManager.LoadScene("TutorialScene");
+        });
+    }
+
     public void OpenSettings()
     {
         // Code to open the settings screen or menu
