@@ -5,6 +5,7 @@ public class GameSystem : MonoBehaviour
 {
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private GameObject monster1Prefab;
+    [SerializeField] private GameObject monster2Prefab;
     
     [SerializeField] private float spawnTimeSeconds = 1f;
     private int maxZombiesAtOneTime = 100;
@@ -30,6 +31,7 @@ public class GameSystem : MonoBehaviour
 
     private int[] zombieCountInWaves = {15,30,50,40,30,10,20,80,100,30,100,300,20,150,20,100,100,20,60,100,100,300,200,300,300,100,150,300,300,300};
     private int[] monster1CountInWaves = {1,3,5,7,3,10,2,8,1,10,10,30,5,15,20,5,10,20,30,10,10,3,2,30,3,10,15,30,30,30};
+    private int[] monster2CountInWaves = {15,30,50,40,30,10,20,80,100,30,100,300,20,150,20,100,100,20,60,100,100,300,200,300,300,100,150,300,300,300};
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,6 +40,7 @@ public class GameSystem : MonoBehaviour
             groundBoundary = Utility.GetCollidableObjectBoundaries(ground) + groundBorderClip;
             StartCoroutine(SpawnMonsterCoroutine(zombieCountInWaves, maxZombiesAtOneTime, zombiePrefab));
             StartCoroutine(SpawnMonsterCoroutine(monster1CountInWaves, maxZombiesAtOneTime, monster1Prefab));
+            StartCoroutine(SpawnMonsterCoroutine(monster2CountInWaves, maxZombiesAtOneTime, monster2Prefab));
             StartCoroutine(CountdownTimeCoroutine());
         });
     }
