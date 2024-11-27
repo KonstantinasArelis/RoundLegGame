@@ -15,6 +15,7 @@ public class MainHudController : MonoBehaviour
 {
     private TextMeshProUGUI scoreText;
     private int currentScore;
+    private int gunStatUpgradeScoreCost;
 
     private GameObject levelUpPanel;
     private GameObject upgradeItemsPanel;
@@ -327,10 +328,31 @@ public class MainHudController : MonoBehaviour
 
     public void UpgradeSelectedGun(string statName)
     {
-        GunStatPanelTypeEnum stat = statNameToEnum[statName];
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        AnimateStatIncrease(statName);
-        playerController.UpgradeSelectedGun(stat);
+        if(currentScore-gunStatUpgradeScoreCost >= 20 && getStatCount(statName) < 7)
+        {
+            gunStatUpgradeScoreCost+=20;
+            GunStatPanelTypeEnum stat = statNameToEnum[statName];
+            playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            AnimateStatIncrease(statName);
+            playerController.UpgradeSelectedGun(stat);
+        }
+    }
+
+    public int getStatCount(string statName)
+    {
+        switch (statName)
+        {
+            case "baseDamage":
+                return playerController.selectedGunController.baseDamageUpgradeCount;
+            case "shotCooldownSeconds":
+                return playerController.selectedGunController.shotCooldownSecondsUpgradeCount;
+            case "penetration":
+                return playerController.selectedGunController.penetrationUpgradeCount;
+            case "knockbackForce":
+                return playerController.selectedGunController.knockbackForceUpgradeCount;
+        }
+        Debug.Log("Gun stat is bugging out");
+        return 0;
     }
 
     public void AnimateStatIncrease(string statName)
