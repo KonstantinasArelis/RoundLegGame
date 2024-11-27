@@ -836,11 +836,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2829305292895713299, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
   m_PrefabInstance: {fileID: 1167571804}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &181422778 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4602426604150293934, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
-  m_PrefabInstance: {fileID: 1167571804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &211222407
 GameObject:
   m_ObjectHideFlags: 0
@@ -4438,11 +4433,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!224 &1070408011 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4342113646604103529, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
-  m_PrefabInstance: {fileID: 1167571804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1108679448 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4256411418932371462, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
@@ -5644,6 +5634,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: starterUpgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f69a5f7b4a63b745ab7bdd9a6183ca0, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: upgradeLevelInterval
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'upgrades.Array.data[3]'
       value: 
       objectReference: {fileID: 11400000, guid: d76a6ae1e0a65ca49bb46d20c1cbed8f, type: 2}
@@ -5651,6 +5649,18 @@ PrefabInstance:
       propertyPath: 'buildings.Array.data[2]'
       value: 
       objectReference: {fileID: 11400000, guid: 2b92bc4d3b87e644a8e59f20a50a3afc, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: nextUpgrades.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: 'nextUpgrades.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 43bc776dc53d8b74dbc34a31c3742c46, type: 2}
+    - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
+      propertyPath: 'nextUpgrades.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d76a6ae1e0a65ca49bb46d20c1cbed8f, type: 2}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: DamageProgressBits.Array.size
       value: 7
@@ -5698,19 +5708,19 @@ PrefabInstance:
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'FireRateProgressBits.Array.data[1]'
       value: 
-      objectReference: {fileID: 181422778}
+      objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'FireRateProgressBits.Array.data[2]'
       value: 
-      objectReference: {fileID: 1502290872}
+      objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'FireRateProgressBits.Array.data[3]'
       value: 
-      objectReference: {fileID: 1070408011}
+      objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'FireRateProgressBits.Array.data[4]'
       value: 
-      objectReference: {fileID: 1217842755}
+      objectReference: {fileID: 0}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'FireRateProgressBits.Array.data[5]'
       value: 
@@ -5949,11 +5959,6 @@ MonoBehaviour:
   PlayAgainScene: MainMenu
   creditsContent: {fileID: 0}
   scrollSpeed: 50
---- !u!224 &1217842755 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5060755070113307032, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
-  m_PrefabInstance: {fileID: 1167571804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1249181022 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
@@ -7345,11 +7350,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477074731}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!224 &1502290872 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7743756587148951359, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
-  m_PrefabInstance: {fileID: 1167571804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1502514729
 GameObject:
   m_ObjectHideFlags: 0
