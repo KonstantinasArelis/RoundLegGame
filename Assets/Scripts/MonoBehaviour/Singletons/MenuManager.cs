@@ -53,6 +53,14 @@ public class MenuManager : MonoBehaviour
         });
     }
 
+    public void LoadCredits()
+    {
+        sceneFadeController.FadeOut(() =>
+        {
+            SceneManager.LoadScene("CreditsScene");
+        });
+    }
+
     public void OpenSettings()
     {
         // Code to open the settings screen or menu
