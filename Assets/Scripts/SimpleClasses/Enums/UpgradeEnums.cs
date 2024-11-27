@@ -10,10 +10,10 @@ public enum UpgradeTypeEnum
     Pistol,
     Uzi,
     Shotgun,
-    Railgun,
     KillerOrb,
     AxeThrower,
-    MolotovThrower
+    MolotovThrower,
+    Railgun
 }
 
 [Serializable]
