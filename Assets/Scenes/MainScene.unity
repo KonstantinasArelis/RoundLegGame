@@ -1943,7 +1943,7 @@ MonoBehaviour:
   endMenu: {fileID: 0}
   scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
-  mainMenuSceneName: MainMenu
+  PlayAgainScene: MainScene
   creditsContent: {fileID: 0}
   scrollSpeed: 50
 --- !u!1 &700500145
@@ -2492,6 +2492,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1194539286}
     - target: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
+      propertyPath: PlayAgainScene
+      value: MainScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
       propertyPath: creditsContent
       value: 
       objectReference: {fileID: 900905395}
@@ -2659,7 +2663,7 @@ MonoBehaviour:
   endMenu: {fileID: 0}
   scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
-  mainMenuSceneName: MainMenu
+  PlayAgainScene: MainScene
   creditsContent: {fileID: 0}
   scrollSpeed: 50
 --- !u!224 &1028353454 stripped
@@ -3991,7 +3995,7 @@ MonoBehaviour:
   endMenu: {fileID: 0}
   scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
-  mainMenuSceneName: MainMenu
+  PlayAgainScene: MainScene
   creditsContent: {fileID: 0}
   scrollSpeed: 50
 --- !u!224 &1217842755 stripped
