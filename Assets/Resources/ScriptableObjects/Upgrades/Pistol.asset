@@ -16,10 +16,4 @@ MonoBehaviour:
   prefab: {fileID: 919132149155446097, guid: 59ed955f69aad14e691127ba2807524c, type: 3}
   icon: {fileID: 2800000, guid: c19f90f4de24f194badf98d1c108d5c5, type: 3}
   type: 0
-  nextUpgrades:
-  - {fileID: 11400000, guid: a728acec8c4aacc47b09a0908fb15f87, type: 2}
-  - {fileID: 11400000, guid: 43bc776dc53d8b74dbc34a31c3742c46, type: 2}
-  - {fileID: 11400000, guid: c38544db85ed9e342bd26362a1608ac0, type: 2}
-  - {fileID: 11400000, guid: aaa6bc79eac67144b9a420ca6fc7a33c, type: 2}
-  - {fileID: 11400000, guid: d3c3d00ddb8ceb573828967287edd4f0, type: 2}
-  nextUpgradeLevel: 2
+  nextUpgrade: {fileID: 11400000, guid: aaa6bc79eac67144b9a420ca6fc7a33c, type: 2}

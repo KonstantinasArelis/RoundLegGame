@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WoodenWall : MonoBehaviour, IDamagable
+public class DamageableBuilding : MonoBehaviour, IDamagable
 {
     [SerializeField] private float maxHealth;
     [SerializeField] private float damageCooldownTime;

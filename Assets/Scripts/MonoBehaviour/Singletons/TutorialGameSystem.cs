@@ -1,11 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class GameSystem : MonoBehaviour
+public class TutorialGameSystem : MonoBehaviour
 {
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private GameObject monster1Prefab;
-    [SerializeField] private GameObject monster2Prefab;
     
     [SerializeField] private float spawnTimeSeconds = 1f;
     private int maxZombiesAtOneTime = 100;
@@ -28,18 +27,16 @@ public class GameSystem : MonoBehaviour
     float monsterSpawnInterval;
     float monster1SpawnInterval;
 
-    private int[] zombieCountInWaves = {15,30,50,40,30,10,20,80,100,30,100,300,20,150,20,100,100,20,60,100,100,300,200,300,300,100,150,300,300,300};
-    private int[] monster1CountInWaves = {1,3,5,7,3,10,2,8,1,10,10,30,5,15,20,5,10,20,30,10,10,3,2,30,3,10,15,30,30,30};
-    private int[] monster2CountInWaves = {15,30,50,40,30,10,20,80,100,30,100,300,20,150,20,100,100,20,60,100,100,300,200,300,300,100,150,300,300,300};
+    // private int[] zombieCountInWaves = {15,30,50,40,30,10,20,80,100,30,100,300,20,150,20,100,100,20,60,100,100,300,200,300,300,100,150,300,300,300};
+    // private int[] monster1CountInWaves = {1,3,5,7,3,10,2,8,1,10,10,30,5,15,20,5,10,20,30,10,10,3,2,30,3,10,15,30,30,30};
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         sceneFadeController.FadeIn(() =>
         {
             groundBoundary = Utility.GetCollidableObjectBoundaries(ground) + groundBorderClip;
-            StartCoroutine(SpawnMonsterCoroutine(zombieCountInWaves, maxZombiesAtOneTime, zombiePrefab));
-            StartCoroutine(SpawnMonsterCoroutine(monster1CountInWaves, maxZombiesAtOneTime, monster1Prefab));
-            StartCoroutine(SpawnMonsterCoroutine(monster2CountInWaves, maxZombiesAtOneTime, monster2Prefab));
+            // StartCoroutine(SpawnMonsterCoroutine(zombieCountInWaves, maxZombiesAtOneTime, zombiePrefab));
+            // StartCoroutine(SpawnMonsterCoroutine(monster1CountInWaves, maxZombiesAtOneTime, monster1Prefab));
             StartCoroutine(CountdownTimeCoroutine());
         });
     }
@@ -114,6 +111,8 @@ public class GameSystem : MonoBehaviour
 
     private IEnumerator CountdownTimeCoroutine()
     {
+        EndMenuManager endMenuManager = GameObject.Find("/EndMenuManager")?.GetComponent<EndMenuManager>();
+
         while (waveTime < waveEndTime)
         {
             yield return new WaitForSeconds(1f);
@@ -123,13 +122,14 @@ public class GameSystem : MonoBehaviour
                 Debug.Log("Current wave: " + currentWave);
                 Debug.Log("Zombie spawn interval: " + monsterSpawnInterval);
                 Debug.Log("Monster1 spawn interval: " + monster1SpawnInterval);
-                Debug.Log("Zombie count this wave: " + zombieCountInWaves[currentWave]);
+                // Debug.Log("Zombie count this wave: " + zombieCountInWaves[currentWave]);
                 Debug.Log("Current transform amount: " + transform.childCount);
             }
             mainHudController.SetWaveTime(waveEndTime - waveTime);
-        }
 
-        EndMenuManager endMenuManager = GameObject.Find("/EndMenuManager")?.GetComponent<EndMenuManager>();
+            if (endMenuManager & transform.childCount == 0)
+                endMenuManager.ShowEndMenu(mainHudController.GetScore());
+        }
 
         if (endMenuManager)
             endMenuManager.ShowEndMenu(mainHudController.GetScore());

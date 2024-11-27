@@ -50,10 +50,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     public GameObject railgunObject;
     public IGunStatUpgradeable selectedGunController;
 
-    public GameObject endMenu;
     public GameObject creditsPanel;
-
-    public TextMeshProUGUI scoreText; // Reference to the score text
 
     // private int playerScore; // Variable to track the player's score
 
@@ -246,32 +243,14 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void OnDeath()
     {
-        Time.timeScale = 0f;
-        int playerScore = mainHudController.GetScore();
-        GameObject.Find("SceneFade").GetComponent<SceneFadeController>().FadeOut(() =>
-        {
-            if (endMenu != null)
-            {
-                endMenu.SetActive(true);
-                creditsPanel.SetActive(false);
+        Destroy(healthBar);
+        Destroy(xpBar);
+        Destroy(gameObject);
 
-                if (scoreText != null)
-                {
-                    scoreText.text = $"Final score: {playerScore}";
-                }
-                else
-                {
-                    Debug.LogError("Score text is not assigned!");
-                }
-            }
-            else
-            {
-                Debug.LogError("End menu object is not assigned!");
-            }
-            Destroy(healthBar);
-            Destroy(xpBar);
-            Destroy(gameObject);
-        });
+        EndMenuManager endMenuManager = GameObject.Find("/EndMenuManager")?.GetComponent<EndMenuManager>();
+
+        if (endMenuManager)
+            endMenuManager.ShowEndMenu(mainHudController.GetScore());
     }
 
     public async void TakeDamage(float damage)

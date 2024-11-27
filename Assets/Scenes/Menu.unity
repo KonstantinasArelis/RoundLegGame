@@ -645,6 +645,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4000262092628756558, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1024493590}
+    - target: {fileID: 4000262092628756558, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlaySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000262092628756558, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ButtonSound, MonoBehaviour
+      objectReference: {fileID: 0}
     - target: {fileID: 5463606912296391601, guid: d26875f02f594a04d8dee0cbc4cba6f9, type: 3}
       propertyPath: m_Pivot.x
       value: 0
