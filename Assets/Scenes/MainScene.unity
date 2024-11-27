@@ -3843,7 +3843,7 @@ PrefabInstance:
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'nextUpgrades.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: a728acec8c4aacc47b09a0908fb15f87, type: 2}
+      objectReference: {fileID: 11400000, guid: c38544db85ed9e342bd26362a1608ac0, type: 2}
     - target: {fileID: 8893243202585230722, guid: e7d57bc5d6186cb459efe72d38c028db, type: 3}
       propertyPath: 'nextUpgrades.Array.data[1]'
       value: 
