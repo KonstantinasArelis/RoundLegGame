@@ -8,7 +8,8 @@ public static class Maps
     {UpgradeTypeEnum.Pistol, "Pistol"},
     {UpgradeTypeEnum.Uzi, "Uzi"},
     {UpgradeTypeEnum.Shotgun, "Shotgun"},
-    {UpgradeTypeEnum.Railgun, "Railgun"}
+    {UpgradeTypeEnum.Railgun, "Railgun"},
+    {UpgradeTypeEnum.DoubleUzi, "DoubleUzi"}
   };
   
   public static int[] xpNeededPerLevel = Enumerable.Range(1, 100).Select(level => XpNeededPerLevelFormula(level)).ToArray();

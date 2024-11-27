@@ -11,6 +11,7 @@ public enum UpgradeTypeEnum
     Uzi,
     Shotgun,
     Railgun,
+    DoubleUzi,
     KillerOrb,
     AxeThrower,
     MolotovThrower

@@ -241,7 +241,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         } else if (Input.GetKey(KeyCode.Alpha4))
         {
             SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.Railgun).First()); 
+        } else if (Input.GetKey(KeyCode.Alpha5))
+        {
+            SelectUpgrade(availableUpgrades.Where(u => u.type == UpgradeTypeEnum.DoubleUzi).First()); 
         }
+        
     }
 
     private void OnDeath()
