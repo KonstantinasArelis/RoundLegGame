@@ -21,7 +21,6 @@ public class GameSystem : MonoBehaviour
 
     private int waveTime = 0;
     private readonly int waveEndTime = 60 * 10;
-    public GameObject endMenu;
 
     [SerializeField] public int currentWave = 0;
 
@@ -127,10 +126,9 @@ public class GameSystem : MonoBehaviour
             mainHudController.SetWaveTime(waveEndTime - waveTime);
         }
 
-        Time.timeScale = 0f;
-        PauseMenuManager.isPaused = true;
-        endMenu.SetActive(true);
+        EndMenuManager endMenuManager = GameObject.Find("/EndMenuManager")?.GetComponent<EndMenuManager>();
 
-
+        if (endMenuManager)
+            endMenuManager.ShowEndMenu(mainHudController.GetScore());
     }
 }

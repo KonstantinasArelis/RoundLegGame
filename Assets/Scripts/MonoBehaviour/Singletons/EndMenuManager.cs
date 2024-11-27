@@ -3,10 +3,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using Codice.Client.BaseCommands.TubeClient;
 public class EndMenuManager : MonoBehaviour
 {
     [Header("UI Panels")]
     public GameObject endMenu;
+    public TextMeshProUGUI scoreText; // Reference to the score text
     public GameObject creditsPanel;
 
     [Header("Main Menu Scene")]
@@ -79,6 +81,38 @@ public class EndMenuManager : MonoBehaviour
         isScrolling = false;
         creditsPanel.SetActive(false);
         endMenu.SetActive(true); // Optionally show the end menu
+    }
+
+    /// <summary>
+    /// Displays end menu with player score.
+    /// </summary>
+    /// <param name="score"></param>
+    public void ShowEndMenu(int score)
+    {
+        PauseMenuManager.isPaused = true;    // I'm sorry...
+        Time.timeScale = 0f;
+
+        GameObject.Find("SceneFade").GetComponent<SceneFadeController>().FadeOut(() =>
+        {
+            if (endMenu != null)
+            {
+                endMenu.SetActive(true);
+                creditsPanel.SetActive(false);
+
+                if (scoreText != null)
+                {
+                    scoreText.text = $"Final score: {score}";
+                }
+                else
+                {
+                    Debug.LogError("Score text is not assigned!");
+                }
+            }
+            else
+            {
+                Debug.LogError("End menu object is not assigned!");
+            }
+        });
     }
 
     private IEnumerator ScrollCredits()

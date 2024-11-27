@@ -1941,6 +1941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endMenu: {fileID: 0}
+  scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
   mainMenuSceneName: MainMenu
   creditsContent: {fileID: 0}
@@ -2483,6 +2484,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1026970604}
     - target: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 1291924804}
+    - target: {fileID: 6384908112205363003, guid: 8866280c5fd2bb745b2a819d554fce88, type: 3}
       propertyPath: creditsPanel
       value: 
       objectReference: {fileID: 1194539286}
@@ -2652,6 +2657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endMenu: {fileID: 0}
+  scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
   mainMenuSceneName: MainMenu
   creditsContent: {fileID: 0}
@@ -3983,6 +3989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endMenu: {fileID: 0}
+  scoreText: {fileID: 0}
   creditsPanel: {fileID: 0}
   mainMenuSceneName: MainMenu
   creditsContent: {fileID: 0}
