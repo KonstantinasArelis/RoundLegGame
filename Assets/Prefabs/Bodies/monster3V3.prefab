@@ -62,7 +62,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d879d18638f3faab48d8204bab92f283, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 99588324956027714}
+      addedObject: {fileID: 6545892721877547444}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d879d18638f3faab48d8204bab92f283, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4892534830204866786}
@@ -87,8 +87,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d879d18638f3faab48d8204bab92f283, type: 3}
   m_PrefabInstance: {fileID: 5987266205366480772}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &99588324956027714
-CapsuleCollider:
+--- !u!65 &6545892721877547444
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,11 +105,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 5
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  serializedVersion: 3
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
+  m_Center: {x: 0, y: 0.52, z: -0.03}
 --- !u!54 &4892534830204866786
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,7 +144,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 6905816160967381717}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.9
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -156,7 +154,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
-  m_BaseOffset: 0
+  m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!95 &1031406097848470025
